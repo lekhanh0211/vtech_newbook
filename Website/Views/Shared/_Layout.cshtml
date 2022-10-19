@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SeaBook - Quản lý bán hàng</title>
+    <link rel="stylesheet" href="~/plugins/Admin/bootstrap.css" />
+    <link rel="stylesheet" href="~/plugins/font-awesome-4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/plugins/morris/morris-0.4.3.min.css" />
+    <link rel="stylesheet" href="~/plugins/metisMenu/metisMenu.css" />
+    <link rel="stylesheet" href="~/plugins/tinymce/skins/lightgray/content.min.css" />
+    <link rel="stylesheet" href="~/plugins/tinymce/skins/lightgray/skin.min.css" />
+    <link rel="stylesheet" href="~/css/animate.css" />
+    <link rel="stylesheet" href="~/css/style.css?v=20220525" />
+
+    <link href="~/plugins/toastr/toastr.css" rel="stylesheet" />
+    <link href="~/plugins/angular-hotkeys/src/hotkeys.css" rel="stylesheet" />
+    <link href="~/plugins/ngprogress/ngProgress.css" rel="stylesheet" />
+    <link href="~/plugins/angular-ui-select/dist/select.css" rel="stylesheet" />
+    <link href="~/plugins/angucomplete-alt/angucomplete-alt.css" rel="stylesheet" />
+    <link href="~/plugins/Admin/angular-toggle-switch.css" rel="stylesheet" />
+    <link href="~/plugins/Admin/popup.css" rel="stylesheet">
+    <link href="~/plugins/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link href="~/plugins/ui-codemirror/codemirror.css" rel="stylesheet" />
+    <link href="~/plugins/ui-codemirror/theme/eclipse.css" rel="stylesheet" />
+    <base href="/">
+    @RenderSection("Styles", false)
+</head>
+<body ng-app="uiApp" class="fixed-navigation body-baithi">
+    <div id="wrapper">
+        <toaster-container toaster-options="{'close-button': true, 'position-class': 'toast-bottom-right'}"></toaster-container>
+        <div ng-include="'/partials/rootLeftNav.html'"></div>
+        <div id="page-wrapper" class="gray-bg" style="display: flow-root;">
+            <div class="row border-bottom">
+                <div ng-include="'/partials/rootTopNav.html'"></div>
+            </div>
+            @RenderBody()
+        </div>
+    </div>
+
+    <div id="loader">
+    </div>
+    <div id="loader-progress">
+        <div class="spinner-icon"></div>
+        <div class="spinner-icon-2"></div>
+        <p>
+            Vui lòng chờ trong giây lát
+        </p>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="/plugins/Admin/jquery-1.10.2.js"></script>
+    <script src="/plugins/Admin/bootstrap.min.js"></script>
+    <script src="/plugins/Admin/jquery.ba-bbq.js"></script>
+    <script src="/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script type="text/javascript" src="/plugins/Admin/jquery-ui.sortable.js"></script>
+    <!-- Custom and plugin javascript -->
+    <!-- jQuery UI -->
+    @*<script src="/plugins/jquery-ui/jquery-ui.min.js"></script>*@
+    <script type="text/javascript" src="/plugins/moment/moment.js"></script>
+    <script type="text/javascript" src="/plugins/underscore/underscore.js"></script>
+    <script type="text/javascript" src="/js/ui/jquery.jkey.js"></script>
+    <script type="text/javascript" src="/js/ui/mousetrap.min.js"></script>
+    <script type="text/javascript" src="/js/site.js?v=20220808"></script>
+    <script type="text/javascript" src="/js/inspinia.js"></script>
+
+
+    <!-- Load angular, angular libraries -->
+    <script type="text/javascript" src="/plugins/angular/angular.js"></script>
+    <script type="text/javascript" src="/plugins/angular-ui-utils/index.js"></script>
+    <script type="text/javascript" src="/plugins/angular-resource/angular-resource.js"></script>
+    <script type="text/javascript" src="/plugins/angular-cookies/angular-cookies.js"></script>
+    <script type="text/javascript" src="/plugins/angular-sanitize/angular-sanitize.js"></script>
+    <script type="text/javascript" src="/plugins/angular-animate/angular-animate.js"></script>
+    <script type="text/javascript" src="/plugins/angular-ui-router/angular-ui-router.js"></script>
+    <script type="text/javascript" src="/plugins/angular-ui-select/dist/select.js"></script>
+    <script type="text/javascript" src="/plugins/ngprogress/build/ngprogress.js"></script>
+    <script type="text/javascript" src="/plugins/AngularJS-Toaster/toaster.js"></script>
+    <script type="text/javascript" src="/plugins/angular-ui-sortable/sortable.js"></script>
+    <script type="text/javascript" src="/plugins/angular-touch/angular-touch.js"></script>
+    <script type="text/javascript" src="/plugins/angular-toggle-switch/angular-toggle-switch.js"></script>
+    <script type="text/javascript" src="/plugins/angular-hotkeys/build/hotkeys.js"></script>
+    <script type="text/javascript" src="/plugins/angular-ui-mask/dist/mask.js"></script>
+    <script type="text/javascript" src="/plugins/ngdragdrop/angular-dragdrop.min.js"></script>
+    <script type="text/javascript" src="/plugins/angular-state-files/state-files.js"></script>
+    <script type="text/javascript" src="/plugins/angucomplete-alt/dist/angucomplete-alt.min.js"></script>
+
+    <script type="text/javascript" src="/plugins/tinymce/tinymce.js"></script>
+    <script type="text/javascript" src="/js/ui/tinymce.js"></script>
+    <script type="text/javascript" src="/plugins/tinymce/plugins/table/plugin.js"></script>
+    <script type="text/javascript" src="/plugins/tinymce/themes/modern/theme.js"></script>
+    <script type="text/javascript" src="/plugins/angular-ui-tinymce/src/tinymce.js"></script>
+    <script type="text/javascript" src="/plugins/ui-codemirror/codemirror.js"></script>
+    <script type="text/javascript" src="/plugins/ui-codemirror/mode/xml.js"></script>
+    <script type="text/javascript" src="/plugins/ui-codemirror/ui-codemirror.min.js"></script>
+    @*<script type="text/javascript" src="/plugins/bootstrap/dist/js/ui-bootstrap-tpls-0.11.0.min.js"></script>*@
+
+    <!-- Load angular module, app -->
+    <script type="text/javascript" src="/js/app.module.js?v=20220525"></script>
+    <script type="text/javascript" src="/js/app.route.js?v=20220525"></script>
+
+    <script type="text/javascript" src="/plugins/handlebars/handlebars.min.js?v=20211221142200"></script>
+    <script type="text/javascript" src="/plugins/moment/locale/vi.js"></script>
+    <script type="text/javascript" src="/plugins/eonasdan-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="/js/ui/directives.js?v=20220525"></script>
+    <script type="text/javascript" src="/js/ui/angular-local-storage.js"></script>
+    <script type="text/javascript" src="/js/ui/common.js"></script>
+    <script type="text/javascript" src="/js/ui/logger.js"></script>
+
+    <!-- must include services -->
+    <script type="text/javascript" src="~/js/services/services.js?v=20220603"></script>
+
+    <!-- must include Controller -->
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,329 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var IsGiaSi = (bool)ViewBag.IsGiaSi;
+}
+@section Styles{
+    <meta name="description" content="@Model.MoTa">
+    <meta property="og:description" content='@Model.MoTa' />
+    <meta property="og:image" content="@Contant.UrlWebApp@Model.UrlHinhAnh" />
+}
+<div ng-controller="ProductCtrl">
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="/"><i class="fa fa-home"></i> Trang chủ</a>
+                        <a href="/shop">Shop</a>
+                        @if (ViewBag.DanhMuc != null)
+                        {
+                            if (ViewBag.DanhMuc.TenCap1 != null)
+                            {
+                                <a href="/shop/@ViewBag.DanhMuc.UrlCap1">@ViewBag.DanhMuc.TenCap1</a>
+                            }
+                            if (ViewBag.DanhMuc.TenCap2 != null)
+                            {
+                                <a href="/shop/@ViewBag.DanhMuc.UrlCap2">@ViewBag.DanhMuc.TenCap2</a>
+                            }
+                            <a href="/shop/@ViewBag.DanhMuc.Url">@ViewBag.DanhMuc.Ten</a>
+                        }
+                        <span>@Model.Ten</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Section Begin -->
+    <!-- Product Shop Section Begin -->
+    <section class="product-shop spad page-details">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-12 order-2 order-lg-1">
+                    <div class="filter-widget search-form">
+                        <h4 class="fw-title">Tìm kiếm</h4>
+                        <form>
+                            <input type="text" ng-model="sSearch" placeholder="Sản phẩm . . .  ">
+                            <button type="submit" ng-click="TimKiemSanPham(sSearch, '@(ViewBag.DanhMuc != null ? ViewBag.DanhMuc.Url : "")', '@(ViewBag.Order != null ? ViewBag.Order : "")')"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Danh mục sản phẩm</h4>
+                        <ul class="filter-catagories">
+                            @foreach (var dm in ViewBag.ListDanhMuc)
+                            {
+                                <li>
+                                    <a href="/shop/@dm.Url">@dm.Ten</a>
+                                    @if (dm.DanhMucCon != null && dm.DanhMucCon.Count > 0)
+                                    {
+                                        <ul class="level-2">
+                                            @foreach (var dm2 in dm.DanhMucCon)
+                                            {
+                                                <li>
+                                                    &nbsp;&nbsp; - <a href="/shop/@dm2.Url">@dm2.Ten</a>
+                                                    @if (dm2.DanhMucCon != null && dm2.DanhMucCon.Count > 0)
+                                                    {
+                                                        <ul class="level-3">
+                                                            @foreach (var dm3 in dm2.DanhMucCon)
+                                                            {
+                                                                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a href="/shop/@dm3.Url">@dm3.Ten</a></li>
+                                                            }
+                                                        </ul>
+                                                    }
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Thẻ sản phẩm</h4>
+                        <div class="fw-tags">
+                            <a href="#">VVP</a>
+                            <a href="#">Văn phòng phẩm</a>
+                            <a href="#">Sách</a>
+                            <a href="#">Bút</a>
+                            <a href="#">Đồ chơi</a>
+                            <a href="#">Lịch</a>
+                            <a href="#">Sổ</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-4 col-12 order-1 order-lg-2">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="product-pic-zoom">
+                                <img class="product-big-img" src="@Contant.UrlWebApp@Model.UrlHinhAnh" alt="">
+                                <div class="zoom-icon">
+                                    <i class="fa fa-search-plus"></i>
+                                </div>
+                            </div>
+                            <div class="product-thumbs">
+                                <div class="product-thumbs-track ps-slider owl-carousel">
+                                    <div class="pt active" data-imgbigurl="@Contant.UrlWebApp@Model.UrlHinhAnh">
+                                        <img src="@Contant.UrlWebApp@Model.UrlHinhAnh" alt="">
+                                    </div>
+                                    @if (Model.DanhSachHinhAnh != null)
+                                    {
+                                        var lha = Model.DanhSachHinhAnh.Split(',');
+                                        foreach (var item in lha)
+                                        {
+                                            <div class="pt" data-imgbigurl="@Contant.UrlWebApp@item">
+                                                <img src="@Contant.UrlWebApp@item" alt="">
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="product-details">
+                                <div class="pd-title">
+                                    <span><b>Mã: </b>@Model.MaSanPham</span>
+                                    <h3>@Model.Ten</h3>
+                                    <a class="heart-icon" href="javascript:void(0)" ng-click="addToHeart(mSanPham)"><i class="icon_heart_alt"></i></a>
+                                </div>
+                                <div class="pd-desc">
+                                    @if (IsGiaSi)
+                                    {
+                                    <h4 class="gia-si">
+                                        {{mSanPham.mGiaSi | number: 0}} đ
+                                        <span>@Model.GiaGoc.ToString("#,###") đ</span>
+                                    </h4>
+                                    }
+                                    else
+                                    {
+                                        <h4>
+                                            @Model.GiaBan.ToString("#,###") đ
+                                            @if (Model.GiaBan != Model.GiaGoc)
+                                            {
+                                                <span>@Model.GiaGoc.ToString("#,###") đ</span>
+                                            }
+                                        </h4>
+                                    }
+                                </div>
+                                <div class="pd-size-choose" ng-repeat="th in mThuocTinh"  ng-init="$ThIndex=$index">
+                                    <h6>{{th.TenThuocTinh}}: </h6>
+                                    <div class="sc-item" ng-repeat="vl in th.DsGiaTri">
+                                        <input type="radio" id="value-{{$ThIndex}}-{{$index}}" value="{{vl.GiaTri}}" ng-model="th.GiaTri">
+                                        <label for="value-{{$ThIndex}}-{{$index}}">{{vl.GiaTri}}</label>
+                                    </div>
+                                </div>
+                                <div class="quantity">
+                                    <div class="pro-qty">
+                                        <input type="text" id="sp-so-luong" ng-model="mSanPham.SoLuong" ng-change="changeSoLuong()" value="1">
+                                    </div>
+                                    <a href="javascript:void(0)" class="primary-btn pd-cart" ng-click="addToGioHang()">Thêm vào giỏ hàng</a>
+                                </div>
+                                <ul class="pd-tags">
+                                    <li>
+                                        <span>Danh mục</span>:
+                                        @if (ViewBag.DanhMuc != null)
+                                        {
+                                            @ViewBag.DanhMuc.Ten
+                                        }
+                                    </li>
+                                    <li><span>Thẻ</span>: Sách, VPP, Đồ chơi</li>
+                                </ul>
+                                <p>@Model.MoTa</p>
+                                <div class="pd-share">
+                                    <div class="pd-social">
+                                        <a href="#"><i class="ti-facebook"></i></a>
+                                        <a href="#"><i class="ti-twitter-alt"></i></a>
+                                        <a href="#"><i class="ti-linkedin"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Product Shop Section End -->
+    <!-- Related Products Section End -->
+    <div class="related-products spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>Sản phẩm liên quan</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var sp in ViewBag.ListSanPham)
+                {
+                    <div class="col-md-3 col-6">
+                        <div class="product-item">
+                            <div class="pi-pic set-bg middle" data-setbg="@Contant.UrlWebApp@sp.UrlHinhAnh">
+                                @if (sp.GiaBan != sp.GiaGoc)
+                                {
+                                    <div class="sale pp-sale">Giảm giá</div>
+                                }
+                                <div class="icon">
+                                    <i class="icon_heart_alt" ng-click="themYeuThich('@sp.Id')"></i>
+                                </div>
+                                <ul>
+                                    <li class="w-icon active"><a href="javascript:void(0)" title="Thêm vào giỏ hàng" ng-click="themGioHang('@sp.Id')"><i class="icon_cart_alt"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="pi-text">
+                                <div class="catagory-name">@sp.DanhMuc</div>
+                                <a href="/@(sp.Url).html">
+                                    <h5>@sp.Ten</h5>
+                                </a>
+                                @if (IsGiaSi)
+                                {
+                                    <div class="product-price gia-si">
+                                        @sp.GiaSi.ToString("#,###")
+                                        <span>@sp.GiaGoc.ToString("#,###")</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="product-price">
+                                        @sp.GiaBan.ToString("#,###");
+                                        @if (sp.GiaBan !=sp.GiaGoc)
+                                        {
+                                        <span>@sp.GiaGoc.ToString("#,###")</span>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Related Products Section End -->
+@section Scripts{
+    <script>
+        fRedrectMobile = function () {
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                location.href = '@Contant.UrlWebMobile/Product?id=@Model.Id';
+            }
+        };
+        app.controller('ProductCtrl', ['$scope', '$http', 'toaster', function ($scope, $http, toaster) {
+            $http({
+                method: 'GET',
+                url: `/api/sanpham/@Model.Id`,
+                headers: {
+                    'content-type': 'application/json'
+                },
+            }).then(function mySuccess(result) {
+                if (result && result.data) {
+                    $scope.mSanPham = result.data;
+                    $scope.mSanPham.SoLuong = 1;
+                    $scope.mSanPham.mGiaSi = $scope.mSanPham.GiaSi;
+                    if ($scope.mSanPham && $scope.mSanPham.ThuocTinh) {
+                        $scope.mThuocTinh = JSON.parse($scope.mSanPham.ThuocTinh);
+                        setTimeout(() => {
+                            $(".pd-size-choose .sc-item label").on('click', function () {
+                                $(".pd-size-choose .sc-item label").removeClass('active');
+                                $(this).addClass('active');
+                            });
+                        }, 100)
+                    }
+                }
+            });
+
+            $scope.changeSoLuong = function () {
+                $scope.mSanPham.mGiaSi = $scope.getDonGiaBan($scope.mSanPham, $scope.mSanPham.SoLuong);
+            }
+
+            $scope.addToGioHang = function () {
+                if ($scope.mSanPham.SoLuong < 0) {
+                    toaster.pop('warning', 'Số lượng sản phẩm phải lớn hơn 0');
+                    return;
+                }
+                let lThuocTinh = '';
+                let isContinue = true;
+                _.each($scope.mThuocTinh, x => {
+                    if (!x.GiaTri) {
+                        toaster.pop('warning', 'Chưa chọn thuộc tính của sản phẩm');
+                        isContinue = false;
+                        return false;
+                    }
+                    lThuocTinh += `${x.TenThuocTinh}: ${x.GiaTri},`;
+                });
+                if (isContinue) {
+                    $scope.addToCart($scope.mSanPham, $scope.mSanPham.SoLuong, lThuocTinh);
+                }
+            }
+
+            // Dùng cho danh sách liên quan
+            $scope.themGioHang = function (id) {
+                $http({
+                    method: 'GET',
+                    url: `/api/sanpham/${id}`,
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                }).then(function mySuccess(result) {
+                    if (result && result.data) {
+                        $scope.addToCart(result.data, 1);
+                    }
+                });
+            }
+
+            $scope.themYeuThich = function (id) {
+                $http({
+                    method: 'GET',
+                    url: `/api/sanpham/${id}`,
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                }).then(function mySuccess(result) {
+                    if (result && result.data) {
+                        $scope.addToHeart(result.data);
+                    }
+                });
+            }
+        }]);
+    </script>
+}

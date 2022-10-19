@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <a href="/"><i class="fa fa-home"></i> Trang chủ</a>
+                    <span>Đăng ký</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Form Section Begin -->
+<!-- Register Section Begin -->
+<div class="register-login-section spad" ng-controller="RegisterCtrl">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="register-form">
+                    <h2>Đăng ký tài khoản</h2>
+                    <form method="post" ng-submit="CreateAcc()">
+                        <div class="group-input">
+                            <label for="username">Số điện thoại / Email *</label>
+                            <input type="text" id="username" ng-model="mUser.UserName" ng-change="CheckUsername(mUser.UserName)" required>
+                            <span class="help-block text-left text-danger" ng-show="IsErrorUserName && mUser.UserName">{{mssErrorUserName}}</span>
+                        </div>
+                        <div class="group-input">
+                            <label for="pass">Mật khẩu *</label>
+                            <input type="password" id="pass" ng-model="mUser.Password" ng-change="CheckPass()" required>
+                        </div>
+                        <div class="group-input">
+                            <label for="con-pass">Nhập lại mật khẩu *</label>
+                            <input type="password" id="con-pass" ng-model="mUser.Password2" ng-change="CheckPass()" required>
+                            <span class="help-block text-left text-danger" ng-show="IsErrorPass && mUser.Password2">Nhập lại mật khẩu không giống</span>
+                        </div>
+                        <button type="submit" class="site-btn register-btn">Đăng ký</button>
+                    </form>
+                    <div class="switch-login">
+                        <a href="/oauth/login" class="or-login">Hoặc đăng nhập</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Register Form Section End -->
+@section Scripts{
+    <script src="~/Plugins/angular.min.js"></script>
+    <script src="~/Plugins/jquery.ba-bbq.js"></script>
+    <script src="~/js/Shop/RegisterCtrl.js"></script>
+}

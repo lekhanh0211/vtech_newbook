@@ -1,0 +1,118 @@
+﻿<div class="body-wrapper space-pt--70 space-pb--60">
+    <!--====================  breadcrumb area ====================-->
+    <header>
+        <div class="breadcrumb-area space-y--15">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-1">
+                        <a href="javascript: history.back()" class="back-link"> <i class="fa fa-arrow-left">&nbsp;</i></a>
+                    </div>
+                    <div class="col-10">
+                        <h1 class="page-title text-center">Đặt hàng</h1>
+                    </div>
+                    <div class="col-1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--====================  End of breadcrumb area  ====================-->
+    <!--====================  checkout body ====================-->
+    <div class="checkout-body space-mt--30">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="notification-item notification-item--unread" ng-show="IsDangNhap">
+                        <p class="notification-item__content">
+                            <span class="highlight"><i class="fa fa-map-marker"></i> Địa chỉ nhận hàng</span>
+                            <span class="float-right" ng-click="IsEdit = true"> <span class="fa fa-pencil-square-o"></span> Chỉnh sửa</span>
+                        </p>
+                        <p class="notification-item__content" ng-show="!IsEdit"> {{mDonHang.TenNguoiNhan}} | {{mDonHang.SoDienThoai}}<br />{{mDonHang.DiaChiFull}}</p>
+                    </div>
+                    <!-- checkout form -->
+                    <div class="checkout-form">
+                        <form>
+                            <div ng-if="IsEdit">
+                                <div class="checkout-form__single-field space-mb--30">
+                                    <label for="fullName">Họ tên</label>
+                                    <input type="text" name="fullName" id="fullName" placeholder="NHập họ tên người nhận" ng-model="mDonHang.TenNguoiNhan">
+                                </div>
+                                <div class="checkout-form__single-field space-mb--30">
+                                    <label for="phoneNo">Số điện thoại</label>
+                                    <input type="text" name="phoneNo" id="phoneNo" placeholder="Nhập số điện thoại" ng-model="mDonHang.SoDienThoai">
+                                </div>
+                                <div class="checkout-form__single-field space-mb--30">
+                                    <label for="emailAddress">Email</label>
+                                    <input type="text" name="emailAddress" id="emailAddress" placeholder="Nhập địa chỉ Email" ng-model="mDonHang.Email">
+                                </div>
+                                <div class="edit-profile-form__single-field space-mb--30">
+                                    <label for="dsTinhThanh">Tỉnh/Thành phố</label>
+                                    <select id="dsTinhThanh" ng-model="mDonHang.IdTinhThanh" ng-change="changeTinhThanh(mDonHang.IdTinhThanh)">
+                                        <option value="{{o.Id}}" ng-repeat="o in DsTinhThanh">{{o.Ten}}</option>
+                                    </select>
+                                </div>
+                                <div class="edit-profile-form__single-field space-mb--30">
+                                    <label for="dsQuanHuyen">Quận/Huyện</label>
+                                    <select id="dsQuanHuyen" ng-model="mDonHang.IdQuanHuyen" ng-change="changeQuanHuyen(mDonHang.IdQuanHuyen)">
+                                        <option value="{{o.Id}}" ng-repeat="o in DsQuanHuyen">{{o.Ten}}</option>
+                                    </select>
+                                </div>
+                                <div class="edit-profile-form__single-field space-mb--30">
+                                    <label for="dsXaPhuong">Xã/Phường</label>
+                                    <select id="dsXaPhuong" ng-model="mDonHang.IdXaPhuong">
+                                        <option value="{{o.Id}}" ng-repeat="o in DsXaPhuong">{{o.Ten}}</option>
+                                    </select>
+                                </div>
+                                <div class="checkout-form__single-field space-mb--30">
+                                    <label for="shippingAddress">Địa chỉ số nhà</label>
+                                    <textarea name="shippingAddress" id="shippingAddress" cols="30" rows="2" ng-model="mDonHang.DiaChi" placeholder="Số nhà, đường phố"></textarea>
+                                </div>
+                            </div>
+                            <div class="checkout-form__single-field space-mb--30">
+                                <label for="orderNotes">Ghi chú nhận hàng</label>
+                                <textarea name="orderNotes" id="orderNotes" cols="30" rows="2" ng-model="mDonHang.GhiChuNhanHang"></textarea>
+                            </div>
+                            <div class="your-order-area space-mb--30">
+                                <div class="your-order-wrap gray-bg-4">
+                                    <div class="your-order-product-info">
+                                        <div class="your-order-top">
+                                            <ul>
+                                                <li>Sản phẩm</li>
+                                                <li>Tổng tiền</li>
+                                            </ul>
+                                        </div>
+                                        <div class="your-order-middle">
+                                            <ul>
+                                                <li ng-repeat="sp in GioHang.DsSanPham track by sp.IdTrack">
+                                                    <div class="order-line">{{sp.Ten}}</div>
+                                                    <span class="order-middle-left">{{sp.GiaBan | number: 0}} x {{sp.SoLuong}}</span>
+                                                    <span class="order-price float-right">{{sp.GiaBan * sp.SoLuong | number: 0}} đ</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="your-order-bottom">
+                                            <ul>
+                                                <li class="your-order-shipping">Phí vận chuyển</li>
+                                                <li>{{mDonHang.TienVanChuyen | number: 0}} đ</li>
+                                            </ul>
+                                        </div>
+                                        <div class="your-order-total">
+                                            <ul>
+                                                <li class="order-total">THÀNH TIỀN</li>
+                                                <li>{{mDonHang.TongTien | number: 0}} đ</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer-nav-wrapper">
+                                <button class="checkout-form__button" ng-click="saveDonHang()">ĐẶT HÀNG</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====================  End of checkout body  ====================-->
+</div>

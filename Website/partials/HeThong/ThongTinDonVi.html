@@ -1,0 +1,24 @@
+﻿<div class="wrapper-content animated fadeInUp">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Thông tin đơn vị</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="list-item">
+                <table class="table table-bordered table-striped table-middle">
+                    <tbody>
+                        <tr ng-repeat="r in ListDatas">
+                            <td width="20%">{{r.GhiChu}}:</td>
+                            <td>
+                                <input type="text" class="form-control" ng-model="r.Value" required ng-change="r.Change = true" />
+                            </td>
+                            <td class="text-center" width="100px">
+                                <button class="btn btn-primary btn-sm" ng-click="CreateOrUpdate(r)" ng-disabled="!r.Change"><i class="fa fa-pencil"></i> Cập nhật </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

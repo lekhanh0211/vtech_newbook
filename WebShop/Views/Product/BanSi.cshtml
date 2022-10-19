@@ -1,0 +1,218 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <a href="/"><i class="fa fa-home"></i> Trang chủ</a>
+                    @if (ViewBag.DanhMuc != null || ViewBag.sSearch != null)
+                    {
+                        <a href="/shop">Shop</a>
+                    }
+                    else
+                    {
+                        <span>Shop</span>
+                    }
+                    @if (ViewBag.DanhMuc != null)
+                    {
+                        if (ViewBag.DanhMuc.TenCap1 != null)
+                        {
+                            <a href="/shop/@ViewBag.DanhMuc.UrlCap1">@ViewBag.DanhMuc.TenCap1</a>
+                        }
+                        if (ViewBag.DanhMuc.TenCap2 != null)
+                        {
+                            <a href="/shop/@ViewBag.DanhMuc.UrlCap2">@ViewBag.DanhMuc.TenCap2</a>
+                        }
+                        if (ViewBag.sSearch != null)
+                        {
+                            <a href="/shop/@ViewBag.DanhMuc.Url">@ViewBag.DanhMuc.Ten</a>
+                            <span>Kết quả tìm kiếm cho `@ViewBag.sSearch`: @ViewBag.Total.ToString("#,###") sản phẩm</span>
+                        }
+                        else
+                        {
+                            <span>@ViewBag.DanhMuc.Ten</span>
+                        }
+                    }
+                    else if (ViewBag.sSearch != null)
+                    {
+                        <span>Kết quả tìm kiếm cho `@ViewBag.sSearch`: @ViewBag.Total.ToString("#,###") sản phẩm</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section Begin -->
+<!-- Product Shop Section Begin -->
+<section class="product-shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-12 order-2 order-lg-1 produts-sidebar-filter">
+                <div class="filter-widget search-form">
+                    <h4 class="fw-title">Tìm kiếm</h4>
+                    <form>
+                        <input type="text" ng-model="sSearch" placeholder="Sản phẩm . . .  ">
+                        <button type="submit" ng-click="TimKiemSanPham(sSearch, '@(ViewBag.DanhMuc != null ? ViewBag.DanhMuc.Url : "")', '@(ViewBag.Order != null ? ViewBag.Order : "")')"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+                <div class="filter-widget">
+                    <h4 class="fw-title">Danh mục sản phẩm</h4>
+                    <ul class="filter-catagories">
+                        @foreach (var dm in ViewBag.ListDanhMuc)
+                        {
+                            <li>
+                                <a href="/shop/@dm.Url">@dm.Ten</a>
+                                @if (dm.DanhMucCon != null && dm.DanhMucCon.Count > 0)
+                                {
+                                    <ul class="level-2">
+                                        @foreach (var dm2 in dm.DanhMucCon)
+                                        {
+                                            <li>
+                                                &nbsp;&nbsp; - <a href="/shop/@dm2.Url">@dm2.Ten</a>
+                                                @if (dm2.DanhMucCon != null && dm2.DanhMucCon.Count > 0)
+                                                {
+                                                    <ul class="level-3">
+                                                        @foreach (var dm3 in dm2.DanhMucCon)
+                                                        {
+                                                            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a href="/shop/@dm3.Url">@dm3.Ten</a></li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="filter-widget">
+                    <h4 class="fw-title">Thẻ sản phẩm</h4>
+                    <div class="fw-tags">
+                        <a href="#">VVP</a>
+                        <a href="#">Văn phòng phẩm</a>
+                        <a href="#">Sách</a>
+                        <a href="#">Bút</a>
+                        <a href="#">Đồ chơi</a>
+                        <a href="#">Lịch</a>
+                        <a href="#">Sổ</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-4 col-12 order-1 order-lg-2" ng-controller="ProductCtrl">
+                <div class="product-show-option">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-7">
+                            <div class="select-option">
+                                <select class="sorting" ng-model="order" ng-change="changeOrder(order)">
+                                    <option value="">Sắp xếp mặc định</option>
+                                    <option value="1">Sắp xếp giá tăng dần</option>
+                                    <option value="2">Sắp xếp giá giảm dần</option>
+                                    <option value="3">Sắp xếp tên A-Z</option>
+                                    <option value="4">Sắp xếp tên Z-Z</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-5 text-right">
+                            <p>Hiển thị @(((int)ViewBag.Index - 1)*24 + 1)- @((int)ViewBag.Index * 24) / @ViewBag.Total.ToString("#,###")  Sản phẩm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-list">
+                    <div class="row">
+                        @foreach (var sp in Model)
+                        {
+                            <div class="col-lg-3 col-sm-4 col-6">
+                                <div class="product-item">
+                                    <div class="pi-pic set-bg middle" data-setbg="@Contant.UrlWebApp@sp.UrlHinhAnh">
+                                        <div class="icon">
+                                            <i class="icon_heart_alt" ng-click="themYeuThich('@sp.Id')"></i>
+                                        </div>
+                                        <ul>
+                                            <li class="w-icon active"><a href="javascript:void(0)" title="Thêm vào giỏ hàng" ng-click="themGioHang('@sp.Id')"><i class="icon_cart_alt"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="pi-text">
+                                        <div class="catagory-name">@sp.DanhMuc</div>
+                                        <a href="/@(sp.Url).html">
+                                            <h5>@sp.Ten</h5>
+                                        </a>
+                                        <div class="product-price gia-si">
+                                            @sp.GiaSi.ToString("#,###")
+                                            <span>@sp.GiaGoc.ToString("#,###")</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        @Html.Raw(ViewBag.lstPage)
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Shop Section End -->
+<!-- Partner Logo Section Begin -->
+<div class="partner-logo">
+    <div class="container">
+        <div class="logo-carousel owl-carousel">
+            @foreach (var dt in ViewBag.ListDoiTac)
+            {
+                <div class="logo-item">
+                    <div class="tablecell-inner">
+                        <img src="@Contant.UrlWebApp@dt.LogoUrl" alt="@dt.TenDoiTac">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Partner Logo Section End -->
+@section Scripts{
+    <script>
+        app.controller('ProductCtrl', ['$scope', '$http', function ($scope, $http) {
+            $scope.order = '@ViewBag.Order';
+            $scope.str = '@(ViewBag.sSearch ?? "")';
+            $scope.themGioHang = function (id) {
+                $http({
+                    method: 'GET',
+                    url: `/api/sanpham/${id}`,
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                }).then(function mySuccess(result) {
+                    if (result && result.data) {
+                        $scope.addToCart(result.data, 1);
+                    }
+                });
+            }
+
+            $scope.themYeuThich = function (id) {
+                $http({
+                    method: 'GET',
+                    url: `/api/sanpham/${id}`,
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                }).then(function mySuccess(result) {
+                    if (result && result.data) {
+                        $scope.addToHeart(result.data);
+                    }
+                });
+            }
+
+            $scope.changeOrder = function (order) {
+                $scope.TimKiemSanPham($scope.str, '@(ViewBag.DanhMuc != null ? ViewBag.DanhMuc.Url : "")', order)
+            }
+        }]);
+    </script>
+}

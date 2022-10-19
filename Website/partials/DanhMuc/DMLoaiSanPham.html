@@ -1,0 +1,166 @@
+﻿<div class="wrapper-content animated fadeInUp">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Quản lý danh mục sản phẩm</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row m-b-sm">
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-success" ng-click="OpenDetailForm()">
+                        <span class="glyphicon glyphicon-plus"></span> Thêm mới
+                    </button>
+                </div>
+                <div class="col-sm-1 float-right">
+                    <select class="form-control" ng-change="refreshData(1)" ng-model="iPageSize"
+                            ng-options="o.v as o.n for o in [{v:5,n:'05'},{v:10,n:'10'},{v:20,n:'20'},{v:50,n:'50'},{v:100,n:'100'}]">
+                    </select>
+                </div>
+                <div class="col-sm-3 float-right">
+                    <div class="input-group">
+                        <input type="text" id="sSearch" class="form-control" ng-change="refreshData(1)" ng-model-options="{updateOn : 'change blur'}" placeholder="Tìm kiếm" ng-model="sSearch" />
+                        <label class="input-group-addon"><i class="fa fa-search"></i></label>
+                    </div>
+                </div>
+                <div class="col-sm-3 float-right">
+                    <ui-select data-ng-model="mParam.mDMCap1" reset-search-input="false" ng-change="refreshData(1); reloadCapDuoi(mParam.mDMCap1);">
+                        <ui-select-match allow-clear="true" placeholder="Chọn DM cấp 1 ">{{$select.selected.Ten}}</ui-select-match>
+                        <ui-select-choices repeat="lk as lk in DsDMCap1 | filter: $select.search">
+                            <div ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="col-sm-3 float-right" ng-show="mParam.mDMCap1">
+                    <ui-select data-ng-model="mParam.mDMCap2" reset-search-input="false" ng-change="refreshData(1)">
+                        <ui-select-match allow-clear="true" placeholder="Chọn DM cấp 2 ">{{$select.selected.Ten}}</ui-select-match>
+                        <ui-select-choices repeat="lk as lk in DsDMCap2 | filter: $select.search">
+                            <div ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+            <div class="list-item">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="5%">Cấp</th>
+                            <th class="text-center">Tên</th>
+                            <th class="text-center">Cấp trên</th>
+                            <th class="text-center" width="69px">Nổi bật</th>
+                            <th class="text-center" width="69px">Trang chủ</th>
+                            <th class="text-center" width="69px">Thứ tự</th>
+                            <th class="text-center" width="80px">Kích hoạt</th>
+                            <th class="text-center" width="150px">#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="r in ListDatas">
+                            <td class="text-center">{{r.Cap}}</td>
+                            <td><a ng-click="OpenDetailForm(r)"><img ng-if="r.UrlIcon" ng-src="{{r.UrlIcon}}" style="width: 39px; height: 39px;" /> {{r.Ten}}</a></td>
+                            <td>{{r.TenCapTren}}</td>
+                            <td class="text-center">
+                                <i class="fa fa-check-square-o fa-lg text-success" ng-if="r.IsNoiBat"
+                                data-toggle="tooltip" data-placement="top" data-original-title="Hiển thị banner"></i></td><td class="text-center">
+                                    <i class="fa fa-check-square-o fa-lg text-success" ng-if="r.IsHienThiTrangChu"
+                                    data-toggle="tooltip" data-placement="top" data-original-title="Hiển thị trang chủ"></i></td>
+                            <td class="text-center">{{r.UuTien}}</td>
+                            <td class="text-center">
+                                <i class="fa fa-check-square-o fa-lg text-success" ng-if="r.Active"
+                                   data-toggle="tooltip" data-placement="top" data-original-title="Hiển thị"></i>
+                                <i class="fa fa-square-o fa-lg text-default" ng-if="!r.Active" data-toggle="tooltip"
+                                   data-placement="top" data-original-title="Đã hủy"></i>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-white btn-sm" ng-click="OpenDetailForm(r)"><i class="fa fa-pencil text-warning"></i> Chi tiết </a>
+                                <a class="btn btn-white btn-sm" ng-click="delete(r)"><i class="fa fa-trash text-danger"></i> Xóa </a>
+                            </td>
+                        </tr>
+                        <tr ng-if="total == 0 ">
+                            <td colspan="6" class="text-center">Không có dữ liệu</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-3">
+                        Tổng: <strong>{{total}}</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="dataTables_paginate paging_simple_numbers text-right">
+                            <ul class="pagination" id="lstPage"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal-detail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="text-right m-t-n-xs float-right">
+                    <button class="btn btn-primary" ng-click="CreateOrUpdate()">Lưu dữ liệu</button>
+                    <button class="btn btn-white" ng-click="CheckSave()">Thoát</button>
+                </div>
+                <h4 class="modal-title">Thông tin Danh mục</h4>
+            </div>
+            <div class="modal-body">
+                <form method="get" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Tên<a style='color:red'>(*)</a></label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" ng-model="mData.Ten" required ng-change="ChangeTen()" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Đường dẫn</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" ng-model="mData.Url" ng-change="ChangeData()" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Hiển thị</label>
+                        <div class="col-sm-4">
+                            <input type="checkbox" class="i-checks" ng-model="mData.IsNoiBat"  ng-change="ChangeData()"
+                                   data-title="Nổi bật">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="checkbox" class="i-checks" ng-model="mData.IsHienThiTrangChu"  ng-change="ChangeData()"
+                                   data-title="Danh sách trang chủ">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Thứ tự</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" ng-model="mData.UuTien" ng-change="ChangeData()" />
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="checkbox" class="i-checks" id="DaXoa" ng-model="mData.Active"  ng-change="ChangeData()"
+                                   data-title="Hoạt động">
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="mData.Cap == 1">
+                        <label class="col-sm-2 control-label">Hình ảnh</label>
+                        <div class="col-xs-4">
+                            <label>Icon (Tỷ lệ: 1x1)</label>
+                            <a href="#" class="thumbnail" style="width: 200px; height: 200px; background-color: #eee;" title="Chọn ảnh"  onclick="$('#myFile1').click();">
+                                <div class="img-thumbnail">
+                                    <img id="imgdAnh1" style="max-width: 100%; max-height: 100%;" src="{{mData.UrlIcon}}" />
+                                </div>
+                            </a>
+                            <input type="file" id="myFile1" class="btn btn-success hidden" accept=".jpg,.png" onchange="angular.element(this).scope().ChonAnh1()">
+                        </div>
+                        <div class="col-xs-6">
+                            <label>Ảnh banner (570x320px)</label>
+                            <a href="#" class="thumbnail" style="width: 345px; height: 200px; background-color: #eee;" title="Chọn ảnh"  onclick="$('#myFile').click();">
+                                <div class="img-thumbnail">
+                                    <img id="imgdAnh" style="max-width: 100%; max-height: 100%;" src="{{mData.UrlHinhAnh}}" />
+                                </div>
+                            </a>
+                            <input type="file" id="myFile" class="btn btn-success hidden" accept=".jpg,.png" onchange="angular.element(this).scope().ChonAnh()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

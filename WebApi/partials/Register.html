@@ -1,0 +1,63 @@
+﻿<div class="body-wrapper space-pt--70">
+    <!--====================  breadcrumb area ====================-->
+    <header>
+        <div class="breadcrumb-area space-y--15">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-1">
+                        <a href="/" class="back-link"> <i class="fa fa-home"></i></a>
+                    </div>
+                    <div class="col-10">
+                        <h1 class="page-title text-center">Đăng ký</h1>
+                    </div>
+                    <div class="col-1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--====================  End of breadcrumb area  ====================-->
+    <!-- auth page header -->
+    <div class="auth-page-header space-pt--15 space-mb--10">
+        <div class="container text-center">
+            <img src="/assets/img/logo-color.png" style="width: 60%;" />
+            <p class="auth-page-header__text">Hãy đăng ký tài khoản<br/>để theo dõi lịch sử đơn hàng của bản</p>
+        </div>
+    </div>
+    <!-- auth page body -->
+    <div class="auth-page-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Auth form -->
+                    <div class="auth-form">
+                        <form method="post" ng-submit="CreateAcc()">
+                            <div class="auth-form__single-field space-mb--20">
+                                <label for="name">Họ tên</label>
+                                <input type="text" id="hoten" ng-model="mUser.HoTen" placeholder="Nhập họ tên của bạn">
+                            </div>
+                            <div class="auth-form__single-field space-mb--20">
+                                <label for="name">Số điện thoại / Email</label>
+                                <input type="text" id="username" ng-model="mUser.UserName" ng-change="CheckUsername(mUser.UserName)" required placeholder="Nhập số điện thoại / email">
+                                <span class="help-block text-left text-danger" ng-show="IsErrorUserName && mUser.UserName">{{mssErrorUserName}}</span>
+                            </div>
+                            <div class="auth-form__single-field space-mb--20">
+                                <label for="password">Mật khẩu</label>
+                                <input type="password" id="pass" ng-model="mUser.Password" ng-change="CheckPass()" required placeholder="Nhập mật khẩu">
+                            </div>
+                            <div class="auth-form__single-field space-mb--20">
+                                <label for="password">Xác nhận mật khẩu</label>
+                                <input type="password" id="con-pass" ng-model="mUser.Password2" ng-change="CheckPass()" required placeholder="Nhập lại mật khẩu">
+                                <span class="help-block text-left text-danger" ng-show="IsErrorPass && mUser.Password2">Nhập lại mật khẩu không giống</span>
+                            </div>
+                            <div class="auth-form__single-field space-mb--20">
+                                <p class="auth-form__info-text">Bạn đã có một tài khoản? <a href="/Login">Đăng nhập ngay</a></p>
+                            </div>
+                            <button class="auth-form__button">Đăng ký</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

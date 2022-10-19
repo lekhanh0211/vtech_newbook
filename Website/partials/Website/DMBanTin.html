@@ -1,0 +1,148 @@
+﻿<div class="wrapper-content animated fadeInUp">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Quản lý bản tin</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row m-b-sm">
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-success" ng-click="OpenDetailForm()">
+                        <span class="glyphicon glyphicon-plus"></span> Thêm mới
+                    </button>
+                </div>
+                <div class="col-sm-1 float-right">
+                    <select class="form-control" ng-change="refreshData(1)" ng-model="iPageSize"
+                            ng-options="o.v as o.n for o in [{v:5,n:'05'},{v:10,n:'10'},{v:20,n:'20'},{v:50,n:'50'},{v:100,n:'100'}]">
+                    </select>
+                </div>
+                <div class="col-sm-3 float-right">
+                    <div class="input-group ">
+                        <label class="input-group-addon"><i class="fa fa-search"></i></label>
+                        <input type="text" id="sSearch" class="form-control" ng-change="refreshData(1)" ng-model-options="{updateOn : 'change blur'}" placeholder="Tìm kiếm" ng-model="sSearch" />
+                    </div>
+                </div>
+            </div>
+            <div class="list-item">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="5%">STT</th>
+                            <th class="text-center">Hình ảnh</th>
+                            <th class="text-center">Tiêu đề</th>
+                            <th class="text-center">Tóm tắt</th>
+                            <th class="text-center" width="139px">Ngày đăng</th>
+                            <th class="text-center" width="80px">#</th>
+                            <th class="text-center" width="139px">#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in ListDatas">
+                            <td class="text-center">{{$index + 1 + ((iPageIndex -1)*iPageSize)}}</td>
+                            <td><img ng-src="{{row.UrlHinh}}" style="width: 50px; height: 40px;" /></td>
+                            <td><a ng-click="OpenDetailForm(row)">{{row.TieuDe}}</a></td>
+                            <td>{{row.TomTat}}</td>
+                            <td class="text-right">
+                                {{row.NgayDang | date: 'HH:mm dd/MM/yyyy'}}<br />
+                                <i>{{row.NguoiDang}}</i>
+                            </td>
+                            <td class="text-center">
+                                <i class="fa fa-check-square-o fa-lg text-success" ng-if="row.Active"
+                                   data-toggle="tooltip" data-placement="top" data-original-title="Hiển thị"></i>
+                                <i class="fa fa-square-o fa-lg text-default" ng-if="!row.Active" data-toggle="tooltip"
+                                   data-placement="top" data-original-title="Đã hủy"></i>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-white btn-sm" ng-click="OpenDetailForm(row)"><i class="fa fa-pencil text-warning"></i> Sửa </a>
+                                <a class="btn btn-white btn-sm" ng-click="delete(row)"><i class="fa fa-trash text-danger"></i> Xóa </a>
+                            </td>
+                        </tr>
+                        <tr ng-if="total == 0 ">
+                            <td colspan="7" class="text-center">Không có dữ liệu</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-3">
+                        Tổng: <strong>{{total}}</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="dataTables_paginate paging_simple_numbers text-right">
+                            <ul class="pagination" id="lstPage"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal-detail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="text-right m-t-n-xs float-right">
+                    <button class="btn btn-primary" ng-click="CreateOrUpdate()">Lưu dữ liệu</button>
+                    <button class="btn btn-white" ng-click="CheckSave()">Thoát</button>
+                </div>
+                <h4 class="modal-title">Bản tin</h4>
+            </div>
+            <div class="modal-body">
+                <form method="get" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Tiêu đề<a style='color:red'>(*)</a></label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" ng-model="mData.TieuDe" required ng-change="ChangeTieuDe()" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Đường dẫn</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" ng-model="mData.url" ng-change="ChangeData()" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">KeyWord</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" ng-model="mData.KeyWord" ng-change="ChangeData()" />
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="checkbox" class="i-checks" id="DaXoa" ng-model="mData.Active"
+                                   data-title="Hiển thị">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Hình ảnh (300px:180px)</label>
+                        <div class="col-xs-10">
+                            <a href="#" class="thumbnail center-block" style="width: 300px; height: 180px; background-color: #eee;" title="Chọn ảnh"  onclick="$('#myFile').click();">
+                                <img id="imgdAnh" style="max-width: 100%; max-height: 100%;" ng-src="{{mData.UrlHinh}}" />
+                            </a>
+                            <input type="file" id="myFile" class="hidden" accept=".jpg,.png" onchange="angular.element(this).scope().ChonAnh()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Người đăng</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" ng-model="mData.NguoiDang" ng-change="ChangeData()" />
+                        </div>
+                        <label class="col-sm-2 control-label">Ngày đăng</label>
+                        <div class="col-sm-4">
+                            <my-date data-class="form-control" ng-model="mData.NgayDang" format="dateTime" ng-change="ChangeData()"></my-date>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Tóm tắt</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" ng-model="mData.TomTat" ng-change="ChangeData()" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Nội dung</label>
+                        <div class="col-sm-10">
+                            <textarea rows="15" class="form-control" ng-model="mData.NoiDung" ui-tinymce="tinymceOptions" ng-change="ChangeData()"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

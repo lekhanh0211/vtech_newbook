@@ -1,0 +1,145 @@
+﻿<div class="wrapper-content animated fadeInUp">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Quản lý Mã giảm giá</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row m-b-sm">
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-success" ng-click="OpenDetailForm()">
+                        <span class="glyphicon glyphicon-plus"></span> Thêm mới
+                    </button>
+                </div>
+                <div class="col-sm-1 float-right">
+                    <select class="form-control" ng-change="refreshData(1)" ng-model="iPageSize"
+                            ng-options="o.v as o.n for o in [{v:5,n:'05'},{v:10,n:'10'},{v:20,n:'20'},{v:50,n:'50'},{v:100,n:'100'}]">
+                    </select>
+                </div>
+                <div class="col-sm-3 float-right">
+                    <div class="input-group ">
+                        <label class="input-group-addon"><i class="fa fa-search"></i></label>
+                        <input type="text" id="sSearch" class="form-control" ng-change="refreshData(1)" ng-model-options="{updateOn : 'change blur'}" placeholder="Tìm kiếm" ng-model="sSearch" />
+                    </div>
+                </div>
+            </div>
+            <div class="list-item">
+                <table class="table table-bordered table-striped table-hover table-middle">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="5%">STT</th>
+                            <th class="text-center">Mã giảm giá</th>
+                            <th class="text-center">Thông tin</th>
+                            <th class="text-center" width="150px">Thời gian</th>
+                            <th class="text-center" width="50px">TT</th>
+                            <th class="text-center" width="150px">#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in ListDatas">
+                            <td class="text-center">{{$index + 1 + ((iPageIndex -1)*iPageSize)}}</td>
+                            <td>
+                                <a ng-click="OpenDetailForm(row)">{{row.Code}}</a><br/>
+                                <b>Tiều đề: </b>{{row.TieuDe}}
+                            </td>
+                            <td>
+                                <b>Điều kiện: </b>Giá trị đơn hàng tối thiểu {{row.GiaTriDonHang | number: 0}}đ<br/>
+                                <b>Giảm giá: </b>{{row.GiaTriKM | number: 0}}{{row.LoaiKM == 0 ? '%' : 'đ'}} - <b>Giảm tối đa: </b>{{row.KMToiDa | number: 0}}{{row.KMToiDa ? 'đ' : ''}}
+                                
+                            </td>
+                            <td><b>Bắt đầu: </b>{{row.NgayBatDau | date: 'dd/MM/yyyy'}}<br/>
+                                <b>Kết thúc: </b>{{row.NgayKetThuc | date: 'dd/MM/yyyy'}}
+                            </td>
+                            <td class="text-center">
+                                <i class="fa fa-check-square-o fa-lg text-success" ng-if="row.Active"
+                                   data-toggle="tooltip" data-placement="top" data-original-title="Hoạt động"></i>
+                                <i class="fa fa-square-o fa-lg text-default" ng-if="!row.Active" data-toggle="tooltip"
+                                   data-placement="top" data-original-title="Đã tắt"></i>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-white btn-sm" ng-click="OpenDetailForm(row)"><i class="fa fa-pencil text-warning"></i> Chi tiết </a>
+                                <a class="btn btn-white btn-sm" ng-click="delete(row)"><i class="fa fa-trash text-danger"></i> Xóa </a>
+                            </td>
+                        </tr>
+                        <tr ng-if="total == 0 ">
+                            <td colspan="6" class="text-center">Không có dữ liệu</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-3">
+                        Tổng: <strong>{{total}}</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="dataTables_paginate paging_simple_numbers text-right">
+                            <ul class="pagination" id="lstPage"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal-detail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="text-right m-t-n-xs float-right">
+                    <button class="btn btn-primary" ng-click="CreateOrUpdate()">Lưu dữ liệu</button>
+                    <button class="btn btn-white" ng-click="CheckSave()">Thoát</button>
+                </div>
+                <h4 class="modal-title">Thông tin Mã giảm giá</h4>
+            </div>
+            <div class="modal-body">
+                <form method="get" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Tiêu đề<i style='color:red'>(*)</i></label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" ng-model="mData.TieuDe" required ng-change="ChangeTieuDe()" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Mã<i style='color:red'>(*)</i></label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" ng-model="mData.Code" ng-change="ChangeData()" />
+                        </div>
+                        <label class="col-sm-3 control-label">Giá trị đơn hàng tối thiểu<i style='color:red'>(*)</i></label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" ng-model="mData.GiaTriDonHang" ng-change="ChangeData()" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Ngày bắt đầu<i style='color:red'>(*)</i></label>
+                        <div class="col-sm-4">
+                            <my-date data-class="form-control" ng-model="mData.NgayBatDau" format="" ng-change="ChangeData()"></my-date>
+                        </div>
+                        <label class="col-sm-2 control-label">Ngày kết thúc<i style='color:red'>(*)</i></label>
+                        <div class="col-sm-4">
+                            <my-date data-class="form-control" ng-model="mData.NgayKetThuc" format="" ng-change="ChangeData()"></my-date>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Loại khuyến mãi<i style='color:red'>(*)</i></label>
+                        <div class="col-sm-4">
+                            <select class="form-control" ng-change="ChangeData()" ng-model="mData.LoaiKM"
+                                    ng-options="o.v as o.n for o in [{v:0,n:'Phầm trăm'},{v:1,n:'Số tiền'}]">
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label">Giá trị<i style='color:red'>(*)</i></label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" ng-model="mData.GiaTriKM" ng-change="ChangeData()" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Giảm tối đa</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" ng-model="mData.KMToiDa" ng-change="ChangeData()" />
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="checkbox" class="i-checks" id="DaXoa" ng-model="mData.Active"  ng-change="ChangeData()" data-title="Hoạt động">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

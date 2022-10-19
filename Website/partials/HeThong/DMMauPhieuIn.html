@@ -1,0 +1,110 @@
+﻿<div class="row">
+    <div class="col-sm-3" ng-show="ViewDanhMuc">
+        <div class="content-css-body">
+            <div class="row m-b-xs">
+                <div class="col-sm-10">
+                    <div class="input-group ">
+                        <input type="text" id="sSearch" class="form-control" ng-change="refreshData(1)" ng-model-options="{updateOn : 'change blur'}" placeholder="Tìm kiếm" ng-model="sSearch" />
+                        <label class="input-group-addon"><i class="fa fa-search"></i></label>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-success" title="Thêm mới" ng-click="OpenDetailForm()">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+            </div>
+            <table class="table table-striped table-hover">
+                <tbody>
+                    <tr ng-repeat="row in DsMauPhieuIn">
+                        <td><a ng-click="OpenDetailForm(row)">{{row.Ma}}</a></td>
+                        <td style="width: 20px; padding: 1px;">
+                            <a class="btn btn-white btn-sm" ng-click="OpenDetailForm(row)"><i class="fa fa-pencil text-warning"></i> Sửa </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <div class="dataTables_paginate paging_simple_numbers text-right">
+                    <ul class="pagination" id="lstPage"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3" ng-show="!ViewDanhMuc">
+        <div class="content-css-body">
+            <div class="form-group">
+                <label>Mã<a style='color:red'>(*)</a></label>
+                <input type="text" id="strMa" class="form-control" ng-model="MauPhieuIn.Ma" required />
+            </div>
+            <div class="form-group">
+                <label>Ghi chú</label>
+                <textarea id="MauPhieuIn.GhiChu" ng-model="MauPhieuIn.GhiChu" style="max-width: 100%;"
+                          class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <div>Cấu hình Pdf:</div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <select class="form-control" ng-model="MauPhieuIn.PdfPagerFormat">
+                            <option value="">Mặc định A4</option>
+                            <option value="A4">A4</option>
+                            <option value="A5">A5</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="checkbox" class="i-checks" data-title=" Khổ ngang" data-style="" ng-model="MauPhieuIn.PdfIsLandscape" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" ng-click="CreateOrUpdate()"><i class="fa fa-save"></i> Lưu dữ liệu</button>
+                <button class="btn btn-white" ng-click="delete(row)"><i class="fa fa-trash text-danger"></i> Xóa</button>
+                <button class="btn btn-white float-right" ng-click="OpenMasterForm()">Thoát</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-9 content-css-body" ng-show="!ViewDanhMuc">
+        <div class="form-group">
+            <label>Nội dung HTML: <a ng-click="XemTruoc()"><i class="fa fa-eye"></i> Xem trước</a></label>
+            <ui-codemirror id="strNoiDung" ui-codemirror-opts="{
+            lineNumbers: true,
+            lineWrapping : true,
+            theme:'eclipse',
+            mode: 'text/html'
+            }" ng-model="MauPhieuIn.NoiDung" ui-refresh="refreshCodemirror" style="height: 500px;">
+            </ui-codemirror>
+        </div>
+        <div class="form-group">
+            <label>Script:</label>
+            <ui-codemirror ui-codemirror-opts="{
+            lineNumbers: true,
+            lineWrapping : true,
+            theme:'eclipse',
+            mode: 'javascript'
+            }" ng-model="MauPhieuIn.Script" ui-refresh="refreshCodemirror" style="height: 200px;">
+            </ui-codemirror>
+        </div>
+        <div class="form-group">
+            <label>Sample data:</label>
+            <ui-codemirror ui-codemirror-opts="{
+            lineNumbers: true,
+            lineWrapping : true,
+            theme:'eclipse',
+            mode: 'javascript'
+            }" ng-model="MauPhieuIn.SampleData" ui-refresh="refreshCodemirror" style="height: 200px;">
+            </ui-codemirror>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/plugins/ui-codemirror/mode/javascript.js"></script>
+<script>
+    var myModeSpec = {
+  name: "htmlmixed",
+  tags: {
+    style: [["type", /^text\/(x-)?scss$/, "text/x-scss"],
+            [null, null, "css"]],
+    custom: [[null, null, "customMode"]]
+  }
+}
+</script>

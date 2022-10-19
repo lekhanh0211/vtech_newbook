@@ -1,0 +1,95 @@
+﻿<div class="body-wrapper space-pt--70 space-pb--120">
+    <!--====================  breadcrumb area ====================-->
+    <header>
+        <div class="breadcrumb-area space-y--15">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-1">
+                        <a href="javascript: history.back()" class="back-link"> <i class="fa fa-arrow-left">&nbsp;</i></a>
+                    </div>
+                    <div class="col-10">
+                        <h1 class="page-title text-center">Giới thiệu</h1>
+                    </div>
+                    <div class="col-1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--====================  End of breadcrumb area  ====================-->
+    <!--====================  mobile menu overlay ====================-->
+    <div class="space-mt--40">
+        <ul class="ocontact-navigation" style="height: unset;">
+            <li><span class="icon"><i class="fa fa-info"></i></span><a href="/GioiThieu/gioi-thieu">Giới thiệu Sea Book</a></li>
+            <li><span class="icon"><i class="fa fa-address-card-o"></i></span><a href="/GioiThieu/lien-he">Liên hệ</a></li>
+            <li><span class="icon"><i class="fa fa-book"></i></span><a href="/GioiThieu/huong-dan-mua-hang">Hướng dẫn mua hàng</a></li>
+            <li><span class="icon"><i class="fa fa-credit-card"></i></span><a href="/GioiThieu/chinh-sach-thanh-toan">Chính sách thanh toán</a></li>
+            <li><span class="icon"><i class="fa fa-file-text-o"></i></span><a href="/GioiThieu/chinh-sach-bao-hanh">Chính sách bảo hành</a></li>
+            <li><span class="icon"><i class="fa fa-refresh"></i></span><a href="/GioiThieu/chinh-sach-doi-tra">Chính sách đổi trả</a></li>
+            <li><span class="icon"><i class="fa fa-truck"></i></span><a href="/GioiThieu/chinh-sach-van-chuyen">Chính sách vận chuyển</a></li>
+            <li><span class="icon"><i class="fa fa-lock"></i></span><a href="/GioiThieu/chinh-sach-bao-mat">Chính sách bảo mật</a></li>
+        </ul>
+    </div>
+    <!--====================  End of mobile menu overlay  ====================-->
+    <!--====================  footer area ====================-->
+    <footer>
+        <div class="footer-nav-wrapper">
+            <a href="/" class="footer-nav-single">
+                <div class="menu-wrapper">
+                    <img src="assets/img/icons/home.svg" class="injectable" alt="">
+                    <span>Trang chủ</span>
+                </div>
+            </a>
+            <a href="/Shop" class="footer-nav-single">
+                <div class="menu-wrapper">
+                    <img src="assets/img/icons/shop.svg" class="injectable" alt="">
+                    <span>Cửa hàng</span>
+                </div>
+            </a>
+            <a href="/Event" class="footer-nav-single">
+                <div class="menu-wrapper">
+                    <i class="fa fa-tags"></i>
+                    <span>Khuyến mại</span>
+                </div>
+            </a>
+            <a href="/Contact" class="footer-nav-single active">
+                <div class="menu-wrapper">
+                    <i class="fa fa-info-circle"></i>
+                    <span>Giới thiệu</span>
+                </div>
+            </a>
+            <a class="footer-nav-single header-menu-trigger">
+                <div class="menu-wrapper">
+                    <i class="fa fa-gear"></i>
+                    <span>Thêm</span>
+                </div>
+            </a>
+        </div>
+    </footer>
+    <!--====================  End of footer area  ====================-->
+    <!--====================  mobile menu overlay ====================-->
+    <div class="offcanvas-menu" id="offcanvas-menu">
+        <div class="profile-card text-center" ng-if="IsDaDangNhap()">
+            <div class="profile-card__image space-mb--10 px-4">
+                <img ng-if="user.Avatar" ng-src="/api/files?s={{user.Avatar}}" class="img-fluid" alt="">
+                <img ng-if="!user.Avatar" src="/assets/img/profile.jpg" class="img-fluid" alt="">
+            </div>
+            <div class="profile-card__content">
+                <p class="name">{{user.HoTen}} <span class="id">ID: {{user.UserName}}</span></p>
+            </div>
+        </div>
+        <div class="offcanvas-navigation-wrapper space-mt--40">
+            <ul class="offcanvas-navigation">
+                <li ng-if="!IsDaDangNhap()"><span class="icon"><i class="fa fa-sign-in"></i></span><a ng href="/Login">Đăng nhập</a></li>
+                <li><span class="icon"><i class="fa fa-info-circle"></i></span><a href="/Contact">Giới thiệu</a></li>
+                <li><span class="icon"><i class="fa fa-tags"></i></span><a href="/Event">Sự kiện - Khuyến mại</a></li>
+                <li><span class="icon"><i class="fa fa-bell-o"></i></span><a href="/">Thông báo</a></li>
+                <li><span class="icon"><img src="assets/img/icons/wishlist.svg" class="injectable" alt=""></span><span class="label">{{YeuThich.SoSanPham}}</span><a href="/Wishlist">Yêu thích</a></li>
+                <li><span class="icon"><img src="assets/img/icons/cart-three.svg" class="injectable" alt=""></span><span class="label">{{GioHang.SoSanPham}}</span><a href="/Cart">Giỏ hàng</a></li>
+                <li><span class="icon"><i class="fa fa-address-book-o"></i></span><a href="/Profile">Thông tin tài khoản</a></li>
+                <li ng-if="IsDaDangNhap()"><span class="icon"><i class="fa fa-sign-out"></i></span><a ng href="#" ng-click="logout()">Đăng xuất</a></li>
+            </ul>
+        </div>
+    </div>
+    <!--====================  End of mobile menu overlay  ====================-->
+</div>

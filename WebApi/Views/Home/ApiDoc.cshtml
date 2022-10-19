@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        var access_token = '';
+        $(document).ready(function () {
+            $("button.register").click(function () {
+                $.post("/api/user",
+                    {
+                        UserName: $("[name='user.dienthoai']").val(),
+                        Password: $("[name='user.password']").val(),
+                        HoTen: $("[name='user.hoten']").val(),
+                        Email: $("[name='user.email']").val(),
+                        DienThoai: $("[name='user.dienthoai']").val()
+                    },
+                    function (data, status) {
+                        alert("Data: " + data + "\nStatus: " + status);
+                    });
+            });
+            $("button.login").click(function () {
+                $.post("https://localhost:44360/token",
+                    {
+                        username: $("[name='username']").val(),
+                        password: $("[name='password']").val(),
+                        grant_type: "password"
+                    },
+                    function (data, status) {
+                        alert("Data: " + data + "\nStatus: " + status);
+                        access_token = data.access_token;
+                    });
+            });
+        });
+
+
+        function funcGet(i) {
+            $.ajaxSetup({
+                headers: {
+                    'Authorization': `Bearer ${access_token}`
+                }
+            });
+            $.get("/api/test/resource" + i,
+                function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                }).fail(function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+        };
+
+        function funcGetUser(i) {
+            $.ajaxSetup({
+                headers: {
+                    'Authorization': `Bearer ${access_token}`
+                }
+            });
+            $.get("/api/user/0356789999",
+                function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                }).fail(function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+        };
+    </script>
+</head>
+<body>
+    <div>
+        <h1>Đăng ký</h1>
+        <input type="text" name="user.dienthoai" placeholder="Số điện thoại" />
+        <input type="text" name="user.password" placeholder="Password" />
+        <input type="text" name="user.hoten" placeholder="Họ tên" />
+        <input type="text" name="user.email" placeholder="Email" />
+        <button class="register">Đăng ký</button>
+    </div>
+    <br /><br />
+    <div>
+        <h1>Đăng nhập</h1>
+        <input type="text" name="username" value="0356789999" />
+        <input type="text" name="password" value="123456" />
+        <button class="login">Đăng nhập</button>
+    </div>
+    <br /><br />
+    <button class="resource0" onclick="funcGet(0)">Api ko cần đăng nhập</button>
+    <button class="resource1" onclick="funcGet(1)">Api cần đăng nhập </button>
+    <button class="resource2" onclick="funcGetUser(1)">Thông tinh user </button>
+
+    <br/>
+    <h3>Danh sách API:</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Chức năng</th>
+                <th>Link</th>
+                <th width="60px">Method</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td colspan="3"><b>Danh mục sản phẩm (gồm 3 cấp: 1,2,3)</b></td></tr>
+            <tr>
+                <td>Toàn bộ: </td>
+                <td>http://apinewbook.vtechedu.vn/api/danhmuc</td>
+                <td>GET</td>
+            </tr>
+            <tr>
+                <td>DM cấp 1: </td>
+                <td>http://apinewbook.vtechedu.vn/api/danhmuc/bycap?cap=1</td>
+                <td>GET</td>
+            </tr>
+            <tr>
+                <td>DM theo cấp trên: </td>
+                <td>http://apinewbook.vtechedu.vn/api/danhmuc/bycaptren?id=bfc3d8f3-96dc-4cb9-b978-07ba461e4595&cap=2</td>
+                <td>GET</td>
+            </tr>
+            <tr><td colspan="3"><b>Danh sách sản phẩm</b></td></tr>
+            <tr>
+                <td>Load sản phẩm theo trang: </td>
+                <td>http://apinewbook.vtechedu.vn/api/sanpham/showpage?sSearch=&idLoai=&iPageIndex=1&iPageSize=10</td>
+                <td>GET</td>
+            </tr>
+            <tr><td colspan="3"><b>Danh sách người dùng</b></td></tr>
+            <tr>
+                <td>Lấy thông tin: </td>
+                <td>http://apinewbook.vtechedu.vn/api/user/{username}</td>
+                <td>GET</td>
+            </tr>
+            <tr>
+                <td>Cập nhật: </td>
+                <td>http://apinewbook.vtechedu.vn/api/user</td>
+                <td>POST</td>
+            </tr>
+            <tr><td colspan="3"><b>Banner</b></td></tr>
+            <tr>
+                <td>Lấy các Baner hiển thị: </td>
+                <td>http://apinewbook.vtechedu.vn/api/banner</td>
+                <td>GET</td>
+            </tr>
+            <tr><td colspan="3"><b>Bản tin</b></td></tr>
+            <tr>
+                <td>Ds bản tin theo trang: </td>
+                <td>http://apinewbook.vtechedu.vn/api/bantin/list?sSearch=&index=1&size=10</td>
+                <td>GET</td>
+            </tr>
+            <tr>
+                <td>Chi tiết bản tin: </td>
+                <td>http://apinewbook.vtechedu.vn/api/bantin/xemtin?url={BanTin.url}</td>
+                <td>GET</td>
+            </tr>
+        </tbody>
+        
+    </table>
+</body>
+</html>

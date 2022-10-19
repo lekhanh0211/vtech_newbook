@@ -1,0 +1,95 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SeaBook</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="icon" href="~/assets/img/favicon.ico">
+    <!-- CSS
+        ============================================ -->
+    <style>
+        :root {
+            --color1: @Contant.Color1;
+            --color2: @Contant.Color2;
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="~/assets/css/font-awesome.min.css">
+    <!-- Slick CSS -->
+    <link rel="stylesheet" href="~/assets/css/plugins/slick.min.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="~/assets/css/plugins/cssanimation.min.css">
+    <!-- IonRange slider CSS -->
+    <link rel="stylesheet" href="~/assets/css/plugins/ion.rangeSlider.min.css">
+
+    <link href="~/plugins/AngularJS-Toaster/toaster.css" rel="stylesheet" />
+    <link href="~/plugins/ngprogress/ngProgress.css" rel="stylesheet" />
+    <!-- Vendor & Plugins CSS (Please remove the comment from below vendor.min.css & plugins.min.css for better website load performance and remove css files from above) -->
+    <!--
+            <link rel="stylesheet" href="assets/css/vendor.min.css">
+            <link rel="stylesheet" href="assets/css/plugins/plugins.min.css">
+            -->
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="~/assets/css/style.css">
+    <base href="/">
+</head>
+<body ng-app="uiApp">
+    <toaster-container toaster-options="{'close-button': true, 'position-class': 'toast-bottom-full-width'}"></toaster-container>
+    <div ui-view=""></div>
+    <div id="loader"></div>
+    <div id="loader2" style="display: block;" ">
+        <img src="assets/img/logo.png" class="img-fluid" alt="">
+    </div>
+    <div id="loader-progress" style="display: block;">
+        <div class="spinner-icon"></div>
+        <div class="spinner-icon-2"></div>
+    </div>
+    <!-- JS
+    ============================================ -->
+    <script>
+        var _version = '20220813';
+        var _webapp = '@Contant.UrlWebApp';
+    </script>
+    <!-- Modernizer JS -->
+    <script src="~/assets/js/modernizr-2.8.3.min.js"></script>
+    <!-- jQuery JS -->
+    <script src="~/assets/js/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <!-- IonRanger JS -->
+    <script src="~/assets/js/plugins/ion.rangeSlider.min.js"></script>
+    <!-- SVG inject JS -->
+    <script src="~/assets/js/plugins/svg-inject.min.js"></script>
+    <!-- Slick slider JS -->
+    <script src="~/assets/js/plugins/slick.min.js"></script>
+    <!-- Plugins JS (Please remove the comment from below plugins.min.js for better website load performance and remove plugin js files from above) -->
+    <!--
+      <script src="assets/js/plugins/plugins.min.js"></script>
+    -->
+    <!-- Main JS -->
+    <script src="~/assets/js/main.js"></script>
+
+    <script type="text/javascript" src="~/plugins/moment/moment.js"></script>
+    <script type="text/javascript" src="~/plugins/angular/angular.js"></script>
+    <script type="text/javascript" src="~/plugins/angular-sanitize/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="~/plugins/angular-ui-router/angular-ui-router.js"></script>
+    <script type="text/javascript" src="~/plugins/ngprogress/build/ngprogress.js"></script>
+    <script type="text/javascript" src="~/plugins/AngularJS-Toaster/toaster.js"></script>
+    <script type="text/javascript" src="~/plugins/angular-touch/angular-touch.js"></script>
+    <script type="text/javascript" src="~/plugins/moment/moment.js"></script>
+    <script type="text/javascript" src="~/plugins/underscore/underscore.js"></script>
+    <script type="text/javascript" src="~/js/site.js?v=20220813"></script>
+    <script src="~/js/app.module.js?v=20220813"></script>
+    <script src="~/js/app.directives.js?v=20220813"></script>
+    <script src="~/js/app.controller.js?v=20220813"></script>
+</body>
+</html>

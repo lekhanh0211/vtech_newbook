@@ -1,0 +1,113 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <a href="/"><i class="fa fa-home"></i> Trang chủ</a>
+                    <span>Bản tin</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section Begin -->
+<!-- Blog Section Begin -->
+<section class="blog-section spad" ng-controller="BanTinCtrl">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1">
+                <div class="blog-sidebar">
+                    <div class="search-form">
+                        <h4>Tìm kiếm</h4>
+                        <form>
+                            <input type="text" ng-model="sSearch" placeholder="Bản tin . . .  ">
+                            <button type="submit" ng-click="LoadDsBanTin(1)"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="filter-widget">
+                        <h4>Danh mục sản phẩm</h4>
+                        <ul class="filter-catagories">
+                            @foreach (var dm in ViewBag.ListDanhMuc)
+                            {
+                                <li>
+                                    <a href="/shop/@dm.Url">@dm.Ten</a>
+                                    @if (dm.DanhMucCon != null && dm.DanhMucCon.Count > 0)
+                                    {
+                                        <ul class="level-2">
+                                            @foreach (var dm2 in dm.DanhMucCon)
+                                            {
+                                            <li>
+                                                &nbsp;&nbsp; - <a href="/shop/@dm2.Url">@dm2.Ten</a>
+                                                @if (dm2.DanhMucCon != null && dm2.DanhMucCon.Count > 0)
+                                                {
+                                                    <ul class="level-3">
+                                                        @foreach (var dm3 in dm2.DanhMucCon)
+                                                        {
+                                                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a href="/shop/@dm3.Url">@dm3.Ten</a></li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            </li>
+                                            }
+                                        </ul>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="blog-tags">
+                        <h4>Thẻ sản phẩm</h4>
+                        <div class="tag-item">
+                            <a href="#">VVP</a>
+                            <a href="#">Văn phòng phẩm</a>
+                            <a href="#">Sách</a>
+                            <a href="#">Bút</a>
+                            <a href="#">Đồ chơi</a>
+                            <a href="#">Lịch</a>
+                            <a href="#">Sổ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 order-1 order-lg-2">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6" ng-repeat="row in ListDatas">
+                        <div class="single-latest-blog">
+                            <div class="latest-img"><img ng-src="@Contant.UrlWebApp{{row.UrlHinh}}" alt=""></div>
+                            <div class="latest-text">
+                                <div class="tag-list">
+                                    <div class="tag-item">
+                                        <i class="fa fa-calendar-o"></i>
+                                        {{row.NgayDang | date: 'dd/MM/yyyy'}}
+                                    </div>
+                                </div>
+                                <a ng-href="/ban-tin/{{row.url}}_{{row.Id}}.html">
+                                    <h4>{{row.TieuDe}}</h4>
+                                </a>
+                                <p>{{row.TomTat}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12" ng-if="totalPage > iPageIndex">
+                        <div class="loading-more">
+                            <i class="icon_loading"></i>
+                            <a href="javascript:void(0)" ng-click="LoadDsBanTin(iPageIndex + 1)">
+                                Tải thêm
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Section End -->
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/Shop/app.BanTin.js"></script>
+}

@@ -1,0 +1,170 @@
+﻿<div class="row wrapper border-bottom white-bg page-heading" data-ng-cloak>
+    <div class="col-sm-6">
+        <h2>Quản Lý nhóm quyền</h2>
+    </div>
+</div>
+<div class="content-css-body">
+    <div class="row">
+        <div class="col-sm-12" data-ng-show="state != 1 && state != 2">
+            <div class="row" style="margin-bottom:10px;">
+                <div class="col-sm-4">
+                    <button type="button" class="btn btn-success" ng-click="goToDetail(true)" title="(Alt+A)">
+                        <span class="glyphicon glyphicon-plus"></span> Tạo mới
+                    </button>
+                    <a type="button" class="btn btn-warning" ui-sref="HT111_dm_menu" title="(Alt+B)">
+                        <span class="glyphicon glyphicon-edit"></span> Thêm chức năng
+                    </a>
+                </div>
+                <div class="col-lg-1 float-right">
+                    <select class="form-control" style="width: 80px" ng-change="refreshData(1)" ng-model="iPageSize">
+                        <option value="5">05</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+                <div class="col-sm-3 float-right">
+                    <div class="input-group ">
+                        <input type="text" id="sSearch" class="form-control" ng-change="refreshData(1)" ng-model-options="{updateOn : 'change blur'}" placeholder="Tìm kiếm" ng-model="sSearch" />
+                        <label class="input-group-addon"><i class="fa fa-search"></i></label>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Danh mục quyền <span class="float-right">Tổng: {{total}}</span></h4>
+                </div>
+                <div class="panel-body ibox">
+                    <table class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width:5%">STT</th>
+                                <th class="text-center" style="width:15%">Mã</th>
+                                <th class="text-center" style="width:30%">Tên</th>
+                                <th class="text-center">Ghi chú</th>
+                                <th style="width:20%">#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-repeat="role in DsRole" class="gradeU">
+                                <td class="text-center">{{$index+1}}</td>
+                                <td>{{role.Code}}</td>
+                                <td>{{role.Name}}</td>
+                                <td>{{role.Note}}</td>
+                                <td>
+                                    <button type="button" ng-click="goToUpdateMenu(role)" class="btn btn-warning btn-sm">Sửa menu</button>
+                                    <button type="button" ng-click="delete(role.Id)" class="btn btn-danger btn-sm float-right">Xóa</button>
+                                    <button type="button" ng-click="goToDetail(false, role)" class="btn btn-primary btn-sm float-right">Sửa role</button>
+                                </td>
+                            </tr>
+                            <tr data-ng-if="DsRole.length == 0"><td colspan="5" class="text-center">[Không có dữ liệu]</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="col-sm-12">
+                        <div class="dataTables_paginate paging_simple_numbers text-right">
+                            <ul class="pagination" id="lstPage"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12" data-ng-if="state === 1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Thêm / Sửa </h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Mã Role</label>
+                            <div class="col-sm-10"><input type="text" data-ng-model="Role.Code" class="form-control"></div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Tên Role</label>
+                            <div class="col-sm-10"><input type="text" data-ng-model="Role.Name" class="form-control"></div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Ghi chú</label>
+                            <div class="col-sm-10"><input type="text" data-ng-model="Role.Note" class="form-control"></div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button type="button" class="btn btn-w-m btn-primary" ng-click="updateOrCreate()">Xác nhận</button>
+                                <button type="button" class="btn btn-w-m btn-default" ng-click="exitDetail()">Thoát</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12" data-ng-if="state === 2">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Quyền: {{Role.Name}} - Chỉnh sửa chức năng <button type="button" class="btn btn-w-m btn2 btn-default float-right" ng-click="exitDetail()" style="margin-top: -4px;">Thoát</button></h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" ng-model="strSearchMenu" />
+                            </div>
+                            <div class="col-md-3">
+                            </div>
+                            <div class="col-md-3">
+                                <ui-select ng-model="Menu.selected">
+                                    <ui-select-match allow-clear="true" placeholder="Chọn menu cấp 1...">
+                                        <span ng-bind="$select.selected.DisplayText"></span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="item in (DsMenuInParentGroup | filter: $select.search) track by item.Id">
+                                        <span ng-bind="item.DisplayText"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-group has-margin" data-drop="true" style="background-color:#f3f3f4">
+                                    <li class="list-group-item list-group-item-info" ng-model="DsAllMenu"
+                                        data-ng-repeat="menu in DsAllMenu | filter : strSearchMenu" ng-class="{'bold': menu.IsParent}">
+                                        {{menu.DisplayText}}
+                                        <a ng-click="addMenu(menu)"><span class="fa fa-plus-circle" style="float:right; font-size:17px;"></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-group has-margin" ui-sortable="sortableOptions" ng-model="DsMenu" style="background-color:#f3f3f4">
+                                    <li class="list-group-item" data-ng-repeat="menu in DsMenu track by menu.Id">
+                                        <div class="row" style="cursor:move;">
+                                            <div class="col-xs-10 text-bold">
+                                                ({{menu.UuTien}}) {{menu.DisplayText}} <i style="font-size: 10px;">({{menu.ControllerName}} - {{menu.ActivityName}})</i>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <a ng-click="rmMenu(menu.Id)"><span class="fa fa-times pull-right" style="font-size:17px;"></span></a>
+                                            </div>
+                                        </div>
+                                        <div ng-show="menu.Children && menu.Children.length > 0">
+                                            <hr style="margin-top:5px;margin-bottom:5px;" />
+                                            <div class="fluid-row">
+                                                <ul class="list-group" ui-sortable="sortableOptions" ng-model="menu.Children">
+                                                    <li class="list-group-item-success list-group-item" style="cursor:move;"
+                                                        data-ng-repeat="menu2 in menu.Children track by menu2.Id">
+                                                        ({{menu2.UuTien}}) {{menu2.DisplayText}} <i style="font-size: 10px;">({{menu2.ControllerName}} - {{menu2.ActivityName}})</i>
+                                                        <a ng-click="rmMenu(menu2.Id)"><span class="fa fa-times pull-right" style="font-size:14px;"></span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

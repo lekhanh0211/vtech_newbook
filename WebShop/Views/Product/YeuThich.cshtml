@@ -1,0 +1,116 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <a href="/"><i class="fa fa-home"></i> Trang chủ</a>
+                    <a href="/shop">Shop</a>
+                    <span>Sản phẩm yêu thích</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section Begin -->
+<!-- Product Shop Section Begin -->
+<section class="product-shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
+                <div class="filter-widget">
+                    <h4 class="fw-title">Danh mục sản phẩm</h4>
+                    <ul class="filter-catagories">
+                        @foreach (var dm in ViewBag.ListDanhMuc)
+                        {
+                            <li>
+                                <a href="/shop/@dm.Url">@dm.Ten</a>
+                                @if (dm.DanhMucCon != null && dm.DanhMucCon.Count > 0)
+                                {
+                                    <ul class="level-2">
+                                        @foreach (var dm2 in dm.DanhMucCon)
+                                        {
+                                            <li>
+                                                &nbsp;&nbsp; - <a href="/shop/@dm2.Url">@dm2.Ten</a>
+                                                @if (dm2.DanhMucCon != null && dm2.DanhMucCon.Count > 0)
+                                                {
+                                                    <ul class="level-3">
+                                                        @foreach (var dm3 in dm2.DanhMucCon)
+                                                        {
+                                                            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a href="/shop/@dm3.Url">@dm3.Ten</a></li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="filter-widget">
+                    <h4 class="fw-title">Thẻ sản phẩm</h4>
+                    <div class="fw-tags">
+                        <a href="#">VVP</a>
+                        <a href="#">Văn phòng phẩm</a>
+                        <a href="#">Sách</a>
+                        <a href="#">Bút</a>
+                        <a href="#">Đồ chơi</a>
+                        <a href="#">Lịch</a>
+                        <a href="#">Sổ</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 order-1 order-lg-2" ng-controller="YeuThichCtrl">
+                <h4 ng-if="YeuThich.DsSanPham.length == 0">Không có sản phẩm nào trong danh sách yêu thích của bạn!</h4>
+                <div class="product-list">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-4 col-6" ng-repeat="sp in YeuThich.DsSanPham">
+                            <div class="product-item">
+                                <div class="pi-pic set-bg middle" data-setbg="@Contant.UrlWebApp{{sp.UrlHinhAnh}}">
+                                    <div ng-if="sp.GiaBan != sp.GiaGoc" class="sale">Giảm giá</div>
+                                    <div class="icon">
+                                        <i class="icon_close_alt2" ng-click="delHeart(sp)"></i>
+                                    </div>
+                                    <ul>
+                                        <li class="w-icon active"><a href="javascript:void(0)" title="Thêm vào giỏ hàng" ng-click="addToCart(sp)"><i class="icon_cart_alt"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="pi-text">
+                                    <div class="catagory-name">{{sp.DanhMuc}}</div>
+                                    <a ng-href="/{{sp.Url}}.html">
+                                        <h5>{{sp.Ten}}</h5>
+                                    </a>
+                                    <div class="product-price">
+                                        {{sp.GiaBan | number: 0}}
+                                        <span ng-if="sp.GiaBan != sp.GiaGoc">{{sp.GiaGoc | number: 0}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Shop Section End -->
+@section Scripts{
+    <script>
+        app.controller('YeuThichCtrl', ['$scope', 'toaster', function ($scope, toaster) {
+            $scope.delHeart = function (sp, index) {
+                $scope.YeuThich.DsSanPham.splice(index, 1);
+                $scope.YeuThich.SoSanPham -= 1;
+                localStorage.setItem(EStorageKey.YeuThich, JSON.stringify($scope.YeuThich));
+                toaster.pop('success', 'Đã xoá khỏi sản phảm yêu thích', sp.Ten);
+            }
+        }]);
+    </script>
+}

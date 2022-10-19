@@ -1,0 +1,574 @@
+﻿<script type="text/javascript" src="/plugins/Admin/xlsx.full.min.js"></script>
+<div class="wrapper-content animated fadeInUp">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Quản lý danh mục sản phẩm</h5>
+            <div class="ibox-tools">
+                <div class="btn-group m-t-n-sm">
+                    <button class="btn" ng-class="{'btn-white': !mQueryParam.Active, 'btn-primary': mQueryParam.Active}" ng-click="mQueryParam.Active = true; refreshData(1);" type="button">Sử dụng</button>
+                    <button class="btn" ng-class="{'btn-white': mQueryParam.Active, 'btn-primary': !mQueryParam.Active}" ng-click="mQueryParam.Active = false; refreshData(1);" type="button">Đã xoá</button>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="row m-b-sm">
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-success" ng-click="OpenDetailForm()">
+                        <span class="glyphicon glyphicon-plus"></span> Thêm mới
+                    </button>
+                    <button type="button" class="btn btn-info" ng-click="XuatFileExcel()">
+                        <span class="glyphicon glyphicon-file"></span> Xuất excel
+                    </button>
+                    <button type="button" class="btn btn-warning" ng-click="OpenPopupInportExcel()">
+                        <span class="glyphicon glyphicon-import"></span> Import
+                    </button>
+                </div>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" id="sSearch" class="form-control" ng-change="refreshData(1)" ng-model-options="{updateOn : 'change blur'}" 
+                        placeholder="Tìm kiếm..." ng-model="mQueryParam.sSearch" />
+                        <label class="input-group-addon"><i class="fa fa-search"></i></label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <ui-select data-ng-model="mParam.idLoai" reset-search-input="true" ng-change="refreshData(1);">
+                        <ui-select-match allow-clear="true" placeholder="-Chọn danh mục-">{{$select.selected.Ten}}</ui-select-match>
+                        <ui-select-choices repeat="lk.Id as lk in DsLoaiSanPham | filter: $select.search">
+                            <div ng-class="{'select-cap1': lk.Cap == 1,'select-cap2': lk.Cap == 2, 'select-cap3': lk.Cap == 3}" ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="col-sm-1" style="width: 15%;">
+                    <select class="form-control" ng-change="refreshData(1)" ng-model="mQueryParam.phanLoai"
+                            ng-options="o.v as o.n for o in [{v: '',n:'-Loại-'},{v:1,n:'Sảm phẩm đơn'},{v:2,n:'Sản phẩm combo'}]">
+                    </select>
+                </div>
+                <div class="col-sm-1" style="width: 10%;">
+                    <select class="form-control" ng-change="refreshData(1)" ng-model="mQueryParam.tinhTrang"
+                            ng-options="o.v as o.n for o in [{v: '',n:'-Tình trạng-'},{v:1,n:'Còn hàng'},{v:2,n:'Hết hàng'}]">
+                    </select>
+                </div>
+            </div>
+            <div class="list-item">
+                <table class="table table-bordered table-striped table-hover table-middle">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="32px">STT</th>
+                            <th class="text-center" width="110px">Hình ảnh</th>
+                            <th class="text-center">Sản phẩm</th>
+                            <th class="text-center">Danh mục</th>
+                            <th class="text-center">Thông tin</th>
+                            <th class="text-center" width="139px">Giá</th>
+                            <th class="text-center" width="50px">Nổi bật</th>
+                            <th class="text-center" width="150px">#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="r in ListDatas">
+                            <td class="text-center">{{$index + 1 + ((iPageIndex -1)*iPageSize)}}</td>
+                            <td class="text-center">
+                                <div style="width: 100px; height: 100px;"><img ng-if="r.UrlHinhAnh" ng-src="{{r.UrlHinhAnh}}" style="max-width: 100%; max-height: 100%;" /></div>
+                            </td>
+                            <td><b>Tên: </b>{{r.Ten}}<br/><b>Mã: </b>{{r.MaSanPham}}</td>
+                            <td><span ng-if="r.DanhMucCap1">{{r.DanhMucCap1}}/<br/></span><span ng-if="r.DanhMucCap2">{{r.DanhMucCap2}}/<br/></span>{{r.DanhMuc}}</td>
+                            <td class="text-left"><b>Loại: </b>{{r.PhanLoai == 1? 'Sảm phẩm đơn' : 'Sản phẩm combo'}}<br/>
+                            <div ng-repeat="th in r.DsThuocTinh"><b>{{th.TenThuocTinh}}: </b><span ng-repeat="vl in th.DsGiaTri"> {{vl.GiaTri}},</span></div>
+                            </td>
+                            <td class="text-left">
+                                <b>Giá gốc: </b>{{r.GiaGoc | number: 0}}<br/>
+                                <b>Giá bán: </b>{{r.GiaBan | number: 0}}<br/>
+                                <b>Giá sỉ: </b>{{r.GiaSi | number: 0}}
+                                <div ng-repeat="gs in r.DsGiaSi">Sl > {{gs.SoLuong}}: {{gs.GiaSi | number: 0}} </span>
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" class="i-checks" ng-model="r.NoiBat" ng-disabled="true" data-title="" data-style="padding-bottom: 19px; margin: 0px;"><br/>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-white btn-sm" ng-click="OpenDetailForm(r)"><i class="fa fa-pencil text-warning"></i> Chi tiết </a>
+                                <a class="btn btn-white btn-sm" ng-click="delete(r)"><i class="fa fa-trash text-danger"></i> Xóa </a>
+                            </td>
+                        </tr>
+                        <tr ng-if="total == 0 ">
+                            <td colspan="9" class="text-center">Không có dữ liệu</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-1">
+                        <select class="form-control" ng-change="refreshData(1)" ng-model="iPageSize"
+                                ng-options="o.v as o.n for o in [{v:5,n:'05'},{v:10,n:'10'},{v:20,n:'20'},{v:50,n:'50'},{v:100,n:'100'}]">
+                        </select>
+                    </div>
+                    <div class="col-sm-3 form-control-static">
+                        Tổng: <strong>{{total}}</strong>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="dataTables_paginate paging_simple_numbers text-right">
+                            <ul class="pagination" id="lstPage"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal-detail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="text-right m-t-n-xs float-right">
+                    <button class="btn btn-primary" ng-click="CreateOrUpdate()">Lưu dữ liệu</button>
+                    <button class="btn btn-white" ng-click="CheckSave()">Thoát</button>
+                </div>
+                <h4 class="modal-title">Thông tin Sản phẩm</h4>
+            </div>
+            <div class="modal-body">
+                <form method="get" class="form-horizontal">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-options">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a id="btn-tab-1" data-toggle="tab" href="#tab-1">Thông tin</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-2">Thuộc tính</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-3">Hình ảnh</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-4">Bán sỉ</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <div id="tab-1" class="tab-pane active">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Tên<i style='color:red'>(*)</i></label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" ng-model="mData.Ten" required ng-change="ChangeTen()" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Đường dẫn</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" ng-model="mData.Url" ng-change="ChangeData()" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Mã sản phẩm</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" ng-model="mData.MaSanPham" ng-change="ChangeData()" />
+                                        </div>
+                                        <label class="col-sm-2 control-label">Giá gốc<i style='color:red'>(*)</i></label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" ng-model="mData.GiaGoc" ng-change="ChangeData()" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Loại</label>
+                                        <div class="col-sm-4">
+                                            <select class="form-control" ng-change="ChangeData()" ng-model="mData.PhanLoai"
+                                                    ng-options="o.v as o.n for o in [{v:1,n:'Sảm phẩm đơn'},{v:2,n:'Sản phẩm combo'}]">
+                                            </select>
+                                        </div>
+                                        <label class="col-sm-2 control-label">Giá bán<i style='color:red'>(*)</i></label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" ng-model="mData.GiaBan" ng-change="ChangeData()" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Tồn kho</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" ng-model="mData.TonKho" ng-change="ChangeData()" />
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="checkbox" class="i-checks" ng-model="mData.NoiBat" ng-change="ChangeData()"
+                                                   data-title="Nổi bật">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="checkbox" class="i-checks" ng-model="mData.Active" ng-change="ChangeData()"
+                                                   data-title="Kích hoạt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Danh mục<i style='color:red'>(*)</i></label>
+                                        <div class="col-sm-10">
+                                            <ui-select data-ng-model="mData.IdLoai" reset-search-input="true" ng-change="ChangeData()">
+                                                <ui-select-match placeholder="Chọn danh mục ">{{$select.selected.Ten}}</ui-select-match>
+                                                <ui-select-choices repeat="lk.Id as lk in DsLoaiSanPham | filter: $select.search">
+                                                    <div ng-class="{'select-cap1': lk.Cap == 1,'select-cap2': lk.Cap == 2, 'select-cap3': lk.Cap == 3}" ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Mô tả</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" data-ng-model="mData.MoTa" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab-2" class="tab-pane">
+                                    <div>
+                                        <button type="button" class="btn btn-primary btn-sm" ng-click="ThemThuocTinhMoi()"><i class="fa fa-plus fa-lg"></i> Thêm thuộc tính</button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6" ng-repeat="th in mData.DsThuocTinh">
+                                            <div style="border: 1px solid #e7eaec; padding: 10px;">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Tên thuộc tính:</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control m-b-xs" ng-model="th.TenThuocTinh" placeholder="Màu" />
+                                                            <span class="input-group-addon"><a class="text-danger" ng-click="XoaThuocTinh($index)"><i class="fa fa-trash-o fa-lg"></i></a></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Thuộc tính:</label>
+                                                    <div class="col-sm-7">
+                                                        <div class="input-group m-b-xs" ng-repeat="vl in th.DsGiaTri track by $index">
+                                                            <input type="text" class="form-control" placeholder="Hồng" ng-model="vl.GiaTri"> 
+                                                            <span class="input-group-addon"><a class="text-danger" ng-click="XoaGiaTri(th, $index)"><i class="fa fa-trash"></i></a></span>
+                                                        </div>
+                                                        <div><button class="btn btn-link" ng-click="ThemGiaTri(th)"><i class="fa fa-plus text-success"></i> Thêm</button></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab-3" class="tab-pane">
+                                    <h4>Hình ảnh (Tỷ lệ 1:1)</h4>
+                                    <div class="text-center">
+                                        <a href="#" class="thumbnail center-block" style="width: 200px; height: 200px; background-color: #eee;" title="Chọn ảnh"  onclick="$('#myFile').click();">
+                                            <img id="imgdAnh" class="img-thumbnail" style="max-width: 100%; max-height: 100%;" src="{{mData.UrlHinhAnh}}" />
+                                        </a>
+                                        <input type="file" id="myFile" class="hidden" accept=".jpg,.png" onchange="angular.element(this).scope().ChonAnh()">
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <h4>Danh sách ảnh (Tỷ lệ 1:1) 
+                                        <a href="#" class="btn btn-sm btn-primary" title="Chọn ảnh"  onclick="$('#myImages').click();"><i class="fa fa-upload"></i> Chọn ảnh </a>
+                                    <input type="file" id="myImages" class="hidden" multiple accept=".jpg,.png" onchange="angular.element(this).scope().ChonDsAnh()">
+                                    </h4>
+                                    <div>
+                                        <style>
+                                            .file-box {
+                                                width: 190px;
+                                            }
+
+                                            .file-box .file {
+                                                margin-bottom: 10px;
+                                                margin-right: 15px;
+                                            }
+                                        </style>
+                                        <div class="file-box" ng-repeat="anh in DsHinhAnh track by $index">
+                                            <div class="file">
+                                                <div class="thumbnail center-block" style="width: 180px; height: 180px;">
+                                                    <img alt="image" class="img-thumbnail" style="max-width: 100%; max-height: 100%;" ng-src="{{anh}}" />
+                                                </div>
+                                                <div class="file-delete">
+                                                    <a class="btn btn-sm btn-white text-danger" ng-click="XoaAnh(anh, $index)"><i class="fa fa-trash-o fa-lg"></i> Xoá</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="file-box" ng-repeat="anh in DsHinhAnhTam track by $index">
+                                            <div class="file">
+                                                <div class="thumbnail center-block" style="width: 180px; height: 180px;">
+                                                    <img alt="image" class="img-thumbnail" style="max-width: 100%; max-height: 100%;" ng-src="{{anh}}">
+                                                </div>
+                                                <div class="file-delete">
+                                                    <a class="btn btn-sm btn-white text-danger" ng-click="XoaAnhTam($index)"><i class="fa fa-trash-o fa-lg"></i> Xoá</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab-4" class="tab-pane">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Giá sỉ mặc định:</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Sl > 0</span>
+                                                        <input type="text" class="form-control m-b-xs" ng-model="mData.GiaSi" placeholder="Giá bán sỉ" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <button type="button" class="btn btn-primary btn-sm" ng-click="ThemGiaSiMoi()"><i class="fa fa-plus fa-lg"></i> Thêm chiết khấu</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6" ng-repeat="th in mData.DsGiaSi">
+                                            <div style="border: 1px solid #e7eaec; padding: 10px;">
+                                                <div class="form-group">
+                                                    <label class="col-sm-4 control-label">Số lượng</label>
+                                                    <div class="col-sm-3">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">></span>
+                                                            <input type="text" class="form-control m-b-xs" ng-model="th.SoLuong" placeholder="Số lượng" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-5">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control m-b-xs" ng-model="th.GiaSi" placeholder="Giá sỉ" />
+                                                            <span class="input-group-addon"><a class="text-danger" ng-click="XoaGiaSi($index)"><i class="fa fa-trash-o fa-lg"></i></a></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="myModal-import">
+    <div class="modal-xl" style="margin: 10px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="text-right m-t-n-xs float-right">
+                    <button type="button" class="btn btn-warning" ng-click="DownloadFileMau()">
+                        <span class="glyphicon glyphicon-download-alt"></span> Download file mẫu
+                    </button>
+
+                    <button class="btn btn-primary" ng-click="SaveDataImport()">Lưu dữ liệu</button>
+                    <button class="btn btn-white" ng-click="ClosePopupImportExcel()">Thoát</button>
+                </div>
+                <h4 class="modal-title">Import file excel</h4>
+                <br>
+                <div class="input-group-prepend">
+                    <input type="file" class="custom-file-input" id="fileUpload" onchange="angular.element(this).scope().UploadProcess()" 
+                    accept= application/vnd.openxmlformats-officedocument.spreadsheetml.sheet (.XLSX)>
+                  </div>
+            </div>
+            <div class="modal-body">
+                <form method="get" class="form-horizontal">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-options">
+                                <ul class="nav nav-tabs">
+                                    <li class="active" id="tab11"><a id="i-btn-tab-1" data-toggle="tab" href="#i-tab-1">Dữ liệu excel</a></li>
+                                    <li class="" id="tab22"> <a data-toggle="tab" href="#i-tab-2">Chi tiết</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-body"  style="overflow-y: auto; max-height: 60vh;">
+                            <div class="tab-content">
+                                <div id="i-tab-1" class="tab-pane active">
+                                    <table class="table table-bordered table-striped table-hover table-middle">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="width: 4%;">STT</th>
+                                                <th class="text-center" style="width: 10%;">Ảnh</th>
+                                                <th class="text-center">Tên</th>
+                                                <th class="text-center" style="width: 10%;">Danh Mục</th>
+                                                <th class="text-center" style="width: 16%;">Mô tả</th>
+                                                <th class="text-center" style="width: 20%;">Thông tin</th>
+                                                <th class="text-center" style="width: 12%;">Giá</th>
+                                                <!-- <th class="text-center" style="width: 3%;">Tồn kho</th> -->
+                                                <th class="text-center" style="width: 3%;">Nổi bật</th>
+                                                <th class="text-center" style="width: 3%;">Trạng thái</th>
+                                                <th style="width: 3%;">#</th>
+                                            </tr>
+                                        </thead>
+    
+                                        <tbody ng-repeat="item in dsDataImport">
+                                            <tr>
+                                                <td>{{$index + 1}}</td>
+                                                <td class="text-center">
+                                                    <div style="width: 100px; height: 100px;"><img ng-if="item.UrlHinhAnh" ng-src="{{item.UrlHinhAnh}}" style="max-width: 100%; max-height: 100%;" /></div>
+                                                </td>
+                                                <td><b>Tên:</b> {{item.Ten}}
+                                                    <br> <b>Mã: </b> {{item.MaSanPham}}</td>
+                                                <td>{{item.strLoai}}</td>
+                                                <td title="{{item.MoTa}}">{{item.MoTa | limitTo: 60}}</td>
+                                                <td>
+                                                    <span ng-repeat="gs in item.objThuocTinh">
+                                                        <b>{{gs.TenThuocTinh}}:</b> 
+                                                        <span ng-repeat="gt in gs.DsGiaTri">{{gt.GiaTri}},</span>
+                                                        <br>
+                                                    </span>
+                                                    <b>Loại: </b>{{item.strPhanLoai}} 
+                                                </td>
+                                                <td><b>Giá gốc: </b> {{item.GiaGoc | number: 0}}
+                                                    <br> <b>Giá bán: </b> {{item.GiaBan | number: 0}}
+                                                    <br> <b>Giá sỉ: </b> {{item.GiaSi | number: 0}}
+                                                    <br>
+                                                    <span ng-repeat="gs in item.objCauHinhGiaSi">
+                                                        <b>SL ></b> {{gs.SoLuong}} : {{gs.GiaSi | number: 0}}<br>
+                                                    </span>
+                                                </td>
+                                                <!-- <td>{{item.TonKho}}</td> -->
+                                                <td class="text-center">
+                                                    <input type="checkbox" class="i-checks" ng-model="item.NoiBat" ng-disabled="true" data-title="" data-style="padding-bottom: 19px; margin: 0px;">
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="checkbox" class="i-checks" ng-model="item.Active" ng-disabled="true" data-title="" data-style="padding-bottom: 19px; margin: 0px;">
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-white btn-sm" data-toggle="tab" href="#i-tab-2" ng-click="OpenDetailFormImport(item)"><i class="fa fa-pencil text-warning"></i> Chi tiết </a>
+                                                </td>
+                                            </tr>
+                                            <tr ng-show="item.Error.NoiDung.length > 0">
+                                                <td colspan="2" style="color: red;" ng-bind-html="item.Error.SoDong"></td>
+                                                <td colspan="10">
+                                                    <p style="color: red;" ng-repeat="err in item.Error.NoiDung">
+                                                    <span ng-bind-html="err"></span>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="dsDataImport.length == 0 ">
+                                                <td colspan="11" class="text-center">Không có dữ liệu</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div id="i-tab-2" class="tab-pane">
+                                    <div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Tên<i style='color:red'>(*)</i></label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" ng-model="mDataImport.Ten" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Đường dẫn</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" ng-model="mDataImport.Url" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Mã sản phẩm</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" ng-model="mDataImport.MaSanPham" disabled />
+                                            </div>
+                                            <label class="col-sm-2 control-label">Giá gốc<i style='color:red'>(*)</i></label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" ng-model="mDataImport.GiaGoc" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Loại</label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control" disabled ng-model="mDataImport.PhanLoai"
+                                                        ng-options="o.v as o.n for o in [{v:1,n:'Sảm phẩm đơn'},{v:2,n:'Sản phẩm combo'}]">
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-2 control-label">Giá bán<i style='color:red'>(*)</i></label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" ng-model="mDataImport.GiaBan" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Tồn kho</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" ng-model="mDataImport.TonKho" disabled />
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="checkbox" class="i-checks" ng-model="mDataImport.NoiBat" disabled
+                                                       data-title="Nổi bật">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="checkbox" class="i-checks" ng-model="mDataImport.Active" disabled
+                                                       data-title="Kích hoạt">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Danh mục<i style='color:red'>(*)</i></label>
+                                            <div class="col-sm-10">
+                                                <ui-select data-ng-model="mDataImport.IdLoai" reset-search-input="true" ng-disabled="true">
+                                                    <ui-select-match placeholder="Chọn danh mục ">{{$select.selected.Ten}}</ui-select-match>
+                                                    <ui-select-choices repeat="lk.Id as lk in DsLoaiSanPham | filter: $select.search">
+                                                        <div ng-class="{'select-cap1': lk.Cap == 1,'select-cap2': lk.Cap == 2, 'select-cap3': lk.Cap == 3}" ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Mô tả</label>
+                                            <div class="col-sm-10">
+                                                <textarea class="form-control" data-ng-model="mDataImport.MoTa" rows="5" disabled></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Thuộc tính</label>
+                                            <div class="col-sm-10">
+                                                <div class="row">
+                                                    <div class="col-sm-6" ng-repeat="th in mDataImport.objThuocTinh">
+                                                        <div style="border: 1px solid #e7eaec; padding: 10px;">
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label">Tên thuộc tính:</label>
+                                                                <div class="col-sm-8">
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control m-b-xs" ng-model="th.TenThuocTinh" placeholder="Màu" disabled/>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label">Thuộc tính:</label>
+                                                                <div class="col-sm-7">
+                                                                    <div class="input-group m-b-xs" ng-repeat="vl in th.DsGiaTri track by $index">
+                                                                        <input type="text" class="form-control" placeholder="Hồng" ng-model="vl.GiaTri" disabled> 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-groub">
+                                            <h4>Hình ảnh (Tỷ lệ 1:1)</h4>
+                                            <div class="text-center">
+                                                <a href="#" class="thumbnail center-block" style="width: 200px; height: 200px; background-color: #eee;">
+                                                    <img id="imgdAnh" class="img-thumbnail" style="max-width: 100%; max-height: 100%;" src="{{mDataImport.UrlHinhAnh}}" />
+                                                </a>
+                                                <!-- <input type="file" id="myFile" class="hidden" accept=".jpg,.png" onchange="angular.element(this).scope().ChonAnh()"> -->
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <h4>Danh sách ảnh (Tỷ lệ 1:1) 
+                                                <!-- <a href="#" class="btn btn-sm btn-primary" title="Chọn ảnh"  onclick="$('#myImages').click();"><i class="fa fa-upload"></i> Chọn ảnh </a> -->
+                                            <input type="file" id="myImages" class="hidden" multiple accept=".jpg,.png" onchange="angular.element(this).scope().ChonDsAnh()">
+                                            </h4>
+                                            <div>
+                                                <style>
+                                                    .file-box {
+                                                        width: 190px;
+                                                    }
+
+                                                    .file-box .file {
+                                                        margin-bottom: 10px;
+                                                        margin-right: 15px;
+                                                    }
+                                                </style>
+                                                <div class="file-box" ng-repeat="anh in mDataImport.DsAnh track by $index">
+                                                    <div class="file">
+                                                        <div class="thumbnail center-block" style="width: 180px; height: 180px;">
+                                                            <img alt="image" class="img-thumbnail" style="max-width: 100%; max-height: 100%;" ng-src="{{anh}}" />
+                                                        </div>
+                                                        <!-- <div class="file-delete">
+                                                            <a class="btn btn-sm btn-white text-danger" ng-click="XoaAnh(anh, $index)"><i class="fa fa-trash-o fa-lg"></i> Xoá</a>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+﻿<div class="body-wrapper space-pt--70 space-pb--120">
+    <!--====================  breadcrumb area ====================-->
+    <header>
+        <div class="breadcrumb-area space-y--15">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-auto pr-1">
+                        <div class="header-logo">
+                            <a href="javascript: history.back()" class="back-link"> <i class="fa fa-arrow-left">&nbsp;</i></a>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center px-1">
+                        <h1 class="page-title text-center">Giỏ hàng</h1>
+                    </div>
+                    <div class="col-auto pl-1">
+                        <a href="/" class="header-cart">
+                            <img src="assets/img/icons/home.svg" class="injectable" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--====================  End of breadcrumb area  ====================-->
+    <!--====================  cart product area ====================-->
+    <div class="cart-product-area">
+        <div class="cart-product-box  border-bottom--medium" ng-repeat="sp in GioHang.DsSanPham track by sp.IdTrack">
+            <div class="cart-product-actions">
+                <button ng-click="delCart(sp, $index)">Xoá</button>
+            </div>
+            <div class="cart-product" ng-class="{'actions': showActions}" ng-swipe-left="showActions = false" ng-swipe-right="showActions = true">
+                <div class="cart-product__image">
+                    <a ng-href="/Product?id={{sp.Id}}">
+                        <div class="img-fluid d-flex bg-img center" data-bg="{{UrlApp + sp.UrlHinhAnh}}"></div>
+                    </a>
+                </div>
+                <div class="cart-product__content">
+                    <h3 class="title"><a ng-href="/Product?id={{sp.Id}}">{{sp.Ten}}</a></h3>
+                    <!--<span class="category">Bag</span>-->
+                    <div class="price">
+                        <span class="main-price" ng-if="sp.GiaBan != sp.GiaGoc">{{sp.GiaGoc | number: 0}}đ</span>
+                        <span class="discounted-price">{{sp.GiaBan | number: 0}}đ</span>
+                    </div>
+                    <div class="cart-product__counter">
+                        <div class="cart-plus-minus">
+                            <input class="cart-plus-minus-box" type="text" name="qtybutton" ng-model="sp.SoLuong" ng-change="changeSoLuong(sp)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shop-product-button">
+        <button class="cart" ng-click="goToShop()">Tiếp tục mua hàng</button>
+        <button class="buy" ng-click="updateCart()">Cập nhật giỏ hàng</button>
+    </div>
+    <div class="footer-nav-wrapper">
+        <div class="grand-total">
+            <h4 class="grand-total-title">Tổng tiền <span>{{GioHang.TongTien | number: 0}} đ</span></h4>
+            <a href="/CheckOut">Tiến hành đặt hàng</a>
+        </div>
+    </div>
+</div>

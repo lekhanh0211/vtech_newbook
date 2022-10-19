@@ -1,0 +1,190 @@
+﻿<div class="body-wrapper space-pb--120">
+    <!--====================  header area ====================-->
+    <header class="product">
+        <div class="header-wrapper one">
+            <div class="container space-y--15">
+                <div class="row align-items-center">
+                    <div class="col-auto pr-1">
+                        <!-- header logo -->
+                        <div class="header-logo">
+                            <a href="javascript: history.back()" class="back-link"> <i class="fa fa-arrow-left">&nbsp;</i></a>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center px-1">
+                        
+                    </div>
+                    <div class="col-auto pl-1">
+                        <a href="/Cart" class="header-cart">
+                            <img src="assets/img/icons/cart.svg" class="injectable" alt="">
+                            <span ng-show="GioHang.SoSanPham" class="label">{{GioHang.SoSanPham}}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-wrapper hidden">
+            <div class="container space-y--15">
+                <div class="row align-items-center">
+                    <div class="col-auto pr-1">
+                        <!-- header logo -->
+                        <div class="header-logo">
+                            <a href="javascript: history.back()" class="back-link"> <i class="fa fa-arrow-left">&nbsp;</i></a>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center px-1">
+                        <!-- header search -->
+                        <div class="header-search">
+                            <form>
+                                <input type="text" class="header-search-input" ng-model="strSearch" ng-model-options="{updateOn : 'change blur'}"
+                                       ng-change="TimKiemSanPham(strSearch)" placeholder="{{mSanPham.DanhMuc}}">
+                                <img src="assets/img/icons/search.svg" class="injectable" alt="">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-auto pl-1">
+                        <a href="/Cart" class="header-cart">
+                            <img src="assets/img/icons/cart.svg" class="injectable" alt="">
+                            <span ng-show="GioHang.SoSanPham" class="label">{{GioHang.SoSanPham}}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- search keywords -->
+        <div class="search-keyword-area space-xy--15 bg-color--grey2" id="search-keyword-box">
+            <div class="search-keyword-header space-mb--20">
+                <h4 class="search-keyword-header__title">Từ khoá nổi bật</h4>
+            </div>
+            <ul class="search-keywords">
+                <li><a href="Shop?s=but">Bút</a></li>
+                <li><a href="Shop?s=so">Sổ</a></li>
+                <li><a href="Shop?s=lich">Lịch</a></li>
+                <li><a href="Shop?s=but mau">Bút màu</a></li>
+                <li><a href="Shop?s=binh hoa">Bình hoa</a></li>
+                <li><a href="Shop?s=truyen tranh">Truyện tranh</a></li>
+            </ul>
+        </div>
+    </header>
+    <!--====================  End of header area  ====================-->
+    <!--====================  product image slider ====================-->
+    <div class="product-image-slider-wrapper space-pb--30 space-mb--30">
+        <div class="product-image-single">
+            <img ng-src="{{UrlApp + mSanPham.UrlHinhAnh}}" class="img-fluid" alt="">
+        </div>
+        <div class="product-image-single" ng-repeat="ha in mlha">
+            <img ng-src="{{UrlApp + ha}}" class="img-fluid" alt="">
+        </div>
+    </div>
+    <!--====================  End of product image slider  ====================-->
+    <!--====================  product content ====================-->
+    <!-- product content header -->
+    <div class="product-content-header-area border-bottom--thick space-pb--15">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="product-content-header">
+                        <div class="product-content-header__main-info">
+                            <span>
+                                <b>Mã: </b>{{mSanPham.MaSanPham}}
+                            </span>
+                            <h3 class="title">{{mSanPham.Ten}}</h3>
+                            <div class="price gia-si" ng-if="user.isBanSi">
+                                <span class="main-price">{{mSanPham.GiaGoc | number: 0}}đ</span>
+                                <span class="discounted-price">{{mSanPham.mGiaSi | number: 0}}đ</span>
+                            </div>
+                            <div class="price" ng-if="!user.isBanSi">
+                                <span class="main-price" ng-if="mSanPham.GiaBan != mSanPham.GiaGoc">{{mSanPham.GiaGoc | number: 0}}đ</span>
+                                <span class="discounted-price">{{mSanPham.GiaBan | number: 0}}đ</span>
+                            </div>
+                        </div>
+                        <div class="product-content-header__wishlist-info text-center">
+                            <i class="fa fa-heart-o" ng-click="addToHeart(mSanPham)"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- product color picker -->
+    <div class="product-color-picker border-bottom--thick space-pt--15 space-pb--25">
+        <div class="container">
+            <div class="row">
+                <div class="col-12" ng-repeat="th in mThuocTinh" ng-init="$ThIndex=$index">
+                    <form>
+                        <ul class="color-picker">
+                            <li><h3>{{th.TenThuocTinh}}: </h3></li>
+                            <li ng-repeat="vl in th.DsGiaTri">
+                                <input id="value-{{$ThIndex}}-{{$index}}" type="radio" value="{{vl.GiaTri}}" ng-model="th.GiaTri">
+                                <label for="value-{{$ThIndex}}-{{$index}}">{{vl.GiaTri}}</label>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- shop product button -->
+    <div class="footer-nav-wrapper">
+        <div class="cart-product__counter space-mt--10 space-mb--5">
+            <div class="cart-plus-minus">
+                <input class="cart-plus-minus-box" type="text" name="qtybutton" ng-model="mSanPham.SoLuong" ng-change="changeSoLuong()">
+            </div>
+        </div>
+        <div class="shop-product-button" style="width: 100%">
+            <button class="cart" style="flex-basis: 100%;" ng-click="addToGioHang()">Thêm vào giỏ hàng</button>
+            <button class="buy" ng-click="addToGioHang(true)">Mua ngay</button>
+        </div>
+    </div>
+    <!-- product content description -->
+    <div class="product-content-description space-pt--25 space-pb--15">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p>{{mSanPham.MoTa}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====================  End of product content  ====================-->
+    <!--====================  featured product ====================-->
+    <div class="featured-product-area space-mb--25">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- section title -->
+                    <h2 class="section-title space-mb--20">
+                        {{mSanPham.DanhMuc}}<a ng-href="/Shop?id={{mSanPham.IdLoai}}">
+                            Xem thêm <span>
+                                <img src="assets/img/icons/arrow-right.svg" class="injectable" alt="">
+                            </span>
+                        </a>
+                    </h2>
+                    <!-- featured products -->
+                    <div class="featured-product-wrapper space-mb-m--15">
+                        <div class="row row-5">
+                            <div class="col-6" ng-repeat="sp in DsSanPham">
+                                <div class="grid-product space-mb--20">
+                                    <div class="grid-product__image">
+                                        <a ng-href="/Product?id={{sp.Id}}">
+                                            <div class="img-fluid d-flex bg-img" data-bg="{{UrlApp + sp.UrlHinhAnh}}"></div>
+                                        </a>
+                                        <button ng-click="addToHeart(sp)" class="icon"><img src="assets/img/icons/heart-dark.svg" class="injectable" alt=""></button>
+                                    </div>
+                                    <div class="grid-product__content">
+                                        <h3 class="title"><a ng-href="/Product?id={{sp.Id}}">{{sp.Ten}}</a></h3>
+                                        <span class="category">{{sp.DanhMuc}}</span>
+                                        <div class="price">
+                                            <span class="main-price" ng-if="sp.GiaBan != sp.GiaGoc">{{sp.GiaGoc | number: 0}}đ</span>
+                                            <span class="discounted-price">{{sp.GiaBan | number: 0}}đ</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====================  End of featured product  ====================-->
+</div>

@@ -1,0 +1,114 @@
+﻿
+<div class="content-css-body">
+    <div class="m-b-sm">
+        <button type="button" class="btn btn-success" ng-click="OpenDetailForm()">
+            <span class="glyphicon glyphicon-plus"></span> Thêm mới
+        </button>
+    </div>
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th class="text-center" width="5%">STT</th>
+                <th class="text-center">UserName</th>
+                <th class="text-center">Họ Tên</th>
+                <th class="text-center">Thông tin</th>
+                <th class="text-center">Role</th>
+                <th class="text-center" width="8%">Trạng thái</th>
+                <th class="text-center" width="150px">#</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in DsDanhMuc">
+                <td class="text-center">{{$index + 1}}</td>
+                <td><a ng-click="OpenDetailForm(row)">{{row.UserName}}</a></td>
+                <td><a ng-click="OpenDetailForm(row)">{{row.HoTen}}</a></td>
+                <td><b>Sđt: </b>{{row.SoDienThoai}}<br/>
+                <b>Email: </b>{{row.Email}}</td>
+                <td>{{row.sRole}}</td>
+                <td class="text-center">
+                    <i class="fa fa-check-square-o fa-lg text-success" ng-if="row.Active"
+                       data-toggle="tooltip" data-placement="top" data-original-title="Sử dụng"></i>
+                    <i class="fa fa-square-o fa-lg text-default" ng-if="!row.Active" data-toggle="tooltip"
+                       data-placement="top" data-original-title="Đã hủy"></i>
+                </td>
+                <td class="text-center">
+                    <a class="btn btn-white btn-sm" ng-click="OpenDetailForm(row)"><i class="fa fa-pencil text-warning"></i> Sửa </a>
+                    <a class="btn btn-white btn-sm" ng-click="Delete(row.Id)"><i class="fa fa-trash text-danger"></i> Xóa </a>
+                </td>
+            </tr>
+            <tr ng-if="total == 0 ">
+                <td colspan="6" class="text-center">Không có dữ liệu</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal inmodal" id="myModal-detail" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="CheckSave()"><span>&times;</span></button>
+                <h4 class="modal-title">Thông tin đơn vị</h4>
+            </div>
+            <div class="modal-body">
+                <form method="get" class="form-horizontal" id="iss-form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Username<a style='color:red'>(*)</a></label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" ng-model="mDanhMuc.UserName" required ng-change="ChangeData()" />
+                        </div>
+                        <label class="col-sm-2 control-label" ng-if="!mDanhMuc.Id">Password<a style='color:red'>(*)</a></label>
+                        <div class="col-sm-4" ng-if="!mDanhMuc.Id">
+                            <input type="text" class="form-control" ng-model="mDanhMuc.Password" ng-change="ChangeData()" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Họ tên</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" ng-model="mDanhMuc.HoTen" ng-change="ChangeData()" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">SĐT</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" ng-model="mDanhMuc.SoDienThoai" ng-change="ChangeData()" />
+                        </div>
+                        <label class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" ng-model="mDanhMuc.Email" ng-change="ChangeData()" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Chức năng</label>
+                        <div class="col-sm-10">
+                            <ui-select data-ng-model="mDanhMuc.mRoles" theme="bootstrap" close-on-select="false" multiple>
+                                <ui-select-match placeholder="Chọn chức năng...">{{$item}}</ui-select-match>
+                                <ui-select-choices repeat="lk in mClaimRole | filter: $select.search">
+                                    <div ng-bind-html="lk | highlight:$select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Role</label>
+                        <div class="col-sm-4">
+                            <ui-select data-ng-model="mDanhMuc.IdRole" reset-search-input="false" ng-change="ChangeData()">
+                                <ui-select-match placeholder="Chọn role ">{{$select.selected.Name}}</ui-select-match>
+                                <ui-select-choices repeat="lk.Id as lk in DsRole | filter: $select.search">
+                                    <div ng-bind-html="lk.Name | highlight:$select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="checkbox" class="i-checks" id="DaXoa" ng-model="mDanhMuc.Active"
+                                    data-title="Sử dụng">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="CreateOrUpdate()">Lưu dữ liệu</button>
+                <button class="btn btn-white float-right" ng-click="CheckSave()">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div>

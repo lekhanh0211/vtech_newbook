@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9E96349D-3C35-40B3-ACE6-E6C674B54590}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Lib.BusinessLogic</RootNamespace>
+    <AssemblyName>Lib.BusinessLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DTO\BaseDTO.cs" />
+    <Compile Include="DTO\DanhMuc\DMLoaiSanPham.cs" />
+    <Compile Include="DTO\DanhMuc\DMMedia.cs" />
+    <Compile Include="DTO\DanhMuc\DMSanPham.cs" />
+    <Compile Include="DTO\DanhMuc\DMTinhThanh.cs" />
+    <Compile Include="DTO\DatSach\DMGiaoVien.cs" />
+    <Compile Include="DTO\DatSach\DMHocSinh.cs" />
+    <Compile Include="DTO\DatSach\DMKhoi.cs" />
+    <Compile Include="DTO\DatSach\DMLop.cs" />
+    <Compile Include="DTO\DatSach\DMPhongGD.cs" />
+    <Compile Include="DTO\DatSach\DMTruong.cs" />
+    <Compile Include="DTO\DatSach\DMTruongKhoiDatSach.cs" />
+    <Compile Include="DTO\DonHang\DMDonHang.cs" />
+    <Compile Include="DTO\DonHang\DMDonHangChiTiet.cs" />
+    <Compile Include="DTO\DonHang\DMMaGiamGia.cs" />
+    <Compile Include="DTO\DonHang\DMNguoiDung.cs" />
+    <Compile Include="DTO\System\DMMauPhieuIn.cs" />
+    <Compile Include="DTO\System\CMLoaiTuDien.cs" />
+    <Compile Include="DTO\System\CMTuDien.cs" />
+    <Compile Include="DTO\System\DMBangMa.cs" />
+    <Compile Include="DTO\System\HTConfig.cs" />
+    <Compile Include="DTO\System\HTMenu.cs" />
+    <Compile Include="DTO\System\HTRole.cs" />
+    <Compile Include="DTO\System\HTRoleMenu.cs" />
+    <Compile Include="DTO\System\HTUser.cs" />
+    <Compile Include="DTO\Website\DMBanner.cs" />
+    <Compile Include="DTO\Website\DMBanTin.cs" />
+    <Compile Include="DTO\Website\DMDoiTac.cs" />
+    <Compile Include="DTO\Website\DMTrangTinh.cs" />
+    <Compile Include="Management\BaseManager.cs" />
+    <Compile Include="Management\DanhMuc\DMLoaiSanPhamManager.cs" />
+    <Compile Include="Management\DanhMuc\DMMediaManager.cs" />
+    <Compile Include="Management\DanhMuc\DMSanPhamManager.cs" />
+    <Compile Include="Management\DanhMuc\DMTinhThanhManager.cs" />
+    <Compile Include="Management\DatSach\DMGiaoVienManager.cs" />
+    <Compile Include="Management\DatSach\DMHocSinhManager.cs" />
+    <Compile Include="Management\DatSach\DMKhoiManager.cs" />
+    <Compile Include="Management\DatSach\DMLopManager.cs" />
+    <Compile Include="Management\DatSach\DMPhongGDManager.cs" />
+    <Compile Include="Management\DatSach\DMTruongKhoiDatSachManager.cs" />
+    <Compile Include="Management\DatSach\DMTruongManager.cs" />
+    <Compile Include="Management\DonHang\DMDonHangChiTietManager.cs" />
+    <Compile Include="Management\DonHang\DMDonHangManager.cs" />
+    <Compile Include="Management\DonHang\DMMaGiamGiaManager.cs" />
+    <Compile Include="Management\DonHang\DMNguoiDungManager.cs" />
+    <Compile Include="Management\System\HTConfigManager.cs" />
+    <Compile Include="Management\Website\DMBannerManager.cs" />
+    <Compile Include="Management\Website\DMBanTinManager.cs" />
+    <Compile Include="Management\Website\DMDoiTacManager.cs" />
+    <Compile Include="Management\Website\DMTrangTinhManager.cs" />
+    <Compile Include="Model\DanhMuc\DMLoaiSanPhamModel.cs" />
+    <Compile Include="Model\DanhMuc\DMMediaModel.cs" />
+    <Compile Include="Model\DanhMuc\DMSanPhamModel.cs" />
+    <Compile Include="Model\DanhMuc\DMTinhThanhModel.cs" />
+    <Compile Include="Model\DatSach\DMGiaoVienModel.cs" />
+    <Compile Include="Model\DatSach\DMHocSinhModel.cs" />
+    <Compile Include="Model\DatSach\DMKhoiModel.cs" />
+    <Compile Include="Model\DatSach\DMLopModel.cs" />
+    <Compile Include="Model\DatSach\DMPhongGDModel.cs" />
+    <Compile Include="Model\DatSach\DMTruongKhoiDatSachModel.cs" />
+    <Compile Include="Model\DatSach\DMTruongModel.cs" />
+    <Compile Include="Model\DonHang\DMDonHangChiTietModel.cs" />
+    <Compile Include="Model\DonHang\DMDonHangModel.cs" />
+    <Compile Include="Model\DonHang\DMMaGiamGiaModel.cs" />
+    <Compile Include="Management\System\BaoCaoManager.cs" />
+    <Compile Include="Management\System\DMMauPhieuInManager.cs" />
+    <Compile Include="Management\System\HTRoleManager.cs" />
+    <Compile Include="Management\IManager.cs" />
+    <Compile Include="Management\System\CMLoaiTuDienManager.cs" />
+    <Compile Include="Management\System\CMTuDienManager.cs" />
+    <Compile Include="Management\System\DMBangMaManager.cs" />
+    <Compile Include="Management\System\DMUserManager.cs" />
+    <Compile Include="Management\System\HTMenuManager.cs" />
+    <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="Model\DonHang\DMNguoiDungModel.cs" />
+    <Compile Include="Model\System\DMMauPhieuInModel.cs" />
+    <Compile Include="Model\ListSelect.cs" />
+    <Compile Include="Model\RptParams.cs" />
+    <Compile Include="Model\System\CMLoaiTuDienModel.cs" />
+    <Compile Include="Model\System\CMTuDienModel.cs" />
+    <Compile Include="Model\System\DMBangMaModel.cs" />
+    <Compile Include="Model\System\HTConfigModel.cs" />
+    <Compile Include="Model\System\HTMenuModel.cs" />
+    <Compile Include="Model\System\HTRoleMenuModel.cs" />
+    <Compile Include="Model\System\HTRoleModel.cs" />
+    <Compile Include="Model\System\HTUserModel.cs" />
+    <Compile Include="Model\Website\DMBannerModel.cs" />
+    <Compile Include="Model\Website\DMBanTinModel.cs" />
+    <Compile Include="Model\Website\DMDoiTacModel.cs" />
+    <Compile Include="Model\Website\DMTrangTinhModel.cs" />
+    <Compile Include="MyAttribute.cs" />
+    <Compile Include="MyInvalidDataExceptions.cs" />
+    <Compile Include="MyQueryTranslator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\Constant.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Lib.DataAccess\Lib.DataAccess.csproj">
+      <Project>{4328af36-07fd-41b5-95a6-278db4b06038}</Project>
+      <Name>Lib.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib.Extensions\Lib.Extensions.csproj">
+      <Project>{c6abaaa3-5222-4857-a539-f1abf2e843a7}</Project>
+      <Name>Lib.Extensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,106 @@
+﻿<div class="body-wrapper space-pt--70">
+    <header>
+        <div class="breadcrumb-area space-y--15">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-auto pr-1">
+                        <div class="header-logo">
+                            <a href="javascript: history.back()" class="back-link"> <i class="fa fa-arrow-left">&nbsp;</i></a>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center px-1">
+                        <h1 class="page-title text-center">Thông tin tài khoản</h1>
+                    </div>
+                    <div class="col-auto pl-1">
+                        <a href="/" class="header-cart">
+                            <img src="assets/img/icons/home.svg" class="injectable" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--====================  profile header ====================-->
+    <div class="profile-header-area space-pt--30 space-mb--15">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="profile-header">
+                        <div class="profile-header__image">
+                            <img ng-if="user.Avatar" ng-src="{{UrlApp + user.Avatar}}" class="img-fluid" alt="">
+                            <img ng-if="!user.Avatar" src="/assets/img/profile.jpg" class="img-fluid" alt="">
+                        </div>
+                        <div class="profile-header__content space-mt--10">
+                            <h3 class="name space-mb--15">{{user.HoTen}}</h3>
+                            <div class="profile-info space-mb--10">
+                                <div class="profile-info-block">
+                                    <div class="profile-info-block__value">
+                                        {{user.UserName}}
+                                    </div>
+                                    <div class="profile-info-block__title">
+                                        Tên đăng nhập
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="profile-level">
+                                <div class="profile-level__title">
+                                    Đăng ký ngày {{user.NgayDangKy | date: 'dd/MM/yyyy'}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====================  End of profile header  ====================-->
+    <!--====================  profile body ====================-->
+    <div class="profile-body-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="profile-body">
+                        <div class="profile-info-table space-mb--15">
+                            <div class="profile-info-block">
+                                <div class="profile-info-block__title">Đơn mua</div>
+                                <div class="profile-info-block__value"><a ng-href="/LichSuMuaHang?tt={{mtt}}">Xem lịch sử mua hàng ></a></div>
+                            </div>
+                            <div class="profile-info-block order">
+                                <a ng-href="/LichSuMuaHang?tt={{tt.Ma}}" class="order-nav-single" ng-repeat="tt in lTrangThaiDH">
+                                    <i class="fa fa-lg {{tt.Icon}}"></i>
+                                    <span class="count" ng-show="tt.SoDonHang">{{tt.SoDonHang}}</span>
+                                    <span>{{tt.TenNgan}}</span>
+                                </a>
+                            </div>
+                            <div class="profile-info-block">
+                                <div class="profile-info-block__title">Họ tên</div>
+                                <div class="profile-info-block__value">{{user.HoTen}}</div>
+                            </div>
+                            <div class="profile-info-block">
+                                <div class="profile-info-block__title">Tên đăng nhập</div>
+                                <div class="profile-info-block__value">{{user.UserName}}</div>
+                            </div>
+                            <div class="profile-info-block">
+                                <div class="profile-info-block__title">Số điện thoại</div>
+                                <div class="profile-info-block__value">{{user.DienThoai}}</div>
+                            </div>
+                            <div class="profile-info-block">
+                                <div class="profile-info-block__title">E-mail</div>
+                                <div class="profile-info-block__value">{{user.Email}}</div>
+                            </div>
+                            <div class="profile-info-block">
+                                <div class="profile-info-block__title">Địa chỉ</div>
+                                <div class="profile-info-block__value">{{user.FullDiaChi}}</div>
+                            </div>
+                            <div class="profile-info-block">
+                                <div class="profile-info-block__title">Chỉnh sửa</div>
+                                <div class="profile-info-block__value"><a href="/EditProfile"><img src="assets/img/icons/edit.svg" class="injectable" alt=""></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====================  End of profile body  ====================-->
+</div>

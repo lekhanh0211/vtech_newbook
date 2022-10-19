@@ -1,0 +1,57 @@
+﻿<div class="body-wrapper space-pt--70 space-pb--60">
+    <!--====================  breadcrumb area ====================-->
+    <header>
+        <div class="breadcrumb-area space-y--15">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-1">
+                        <a href="javascript: history.back()" class="back-link"> <i class="fa fa-arrow-left">&nbsp;</i></a>
+                    </div>
+                    <div class="col-10">
+                        <h1 class="page-title text-center">Sản phẩm yêu thích</h1>
+                    </div>
+                    <div class="col-1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--====================  End of breadcrumb area  ====================-->
+    <!--====================  products area ====================-->
+    <div class="wishlist-products-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="notification-item" ng-if="YeuThich.DsSanPham.length == 0">
+                        <p class="notification-item__content text-danger"> <b> Chưa có sẩn phẩm</b> trong danh sách yêu thích của bạn!</p>
+
+                    </div>
+                    <!-- shop grid products -->
+                    <div class="wishlist-grid-products-wrapper space-mt--30 space-mb-m--20">
+                        <div class="row row-10">
+                            <div class="col-6" ng-repeat="sp in YeuThich.DsSanPham">
+                                <div class="grid-product space-mb--20">
+                                    <div class="grid-product__image">
+                                        <a ng-href="/Product?id={{sp.Id}}">
+                                            <div class="img-fluid d-flex bg-img" data-bg="{{UrlApp + sp.UrlHinhAnh}}"></div>
+                                        </a>
+                                        <button ng-click="delHeart(sp)" class="icon"><i class="fa fa-times text-danger" style="font-size: 1.3em;"></i></button>
+                                    </div>
+                                    <div class="grid-product__content">
+                                        <h3 class="title"><a ng-href="/Product?id={{sp.Id}}">{{sp.Ten}}</a></h3>
+                                        <span class="category">{{sp.DanhMuc}}</span>
+                                        <div class="price">
+                                            <span class="main-price" ng-if="sp.GiaBan != sp.GiaGoc">{{sp.GiaGoc | number: 0}}đ</span>
+                                            <span class="discounted-price">{{sp.GiaBan | number: 0}}đ</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====================  End of products area  ====================-->
+</div>

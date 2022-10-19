@@ -1,0 +1,71 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SeaBook - Quản lý bán hàng</title>
+
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="~/css/animate.css" rel="stylesheet">
+    <link href="~/css/style-login.css" rel="stylesheet">
+    <link href="~/plugins/ngprogress/ngProgress.css" rel="stylesheet" />
+    <link href="~/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/plugins/AngularJS-Toaster/toaster.min.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg" ng-app="myApp">
+    <toaster-container toaster-options="{'close-button': true, 'position-class': 'toast-bottom-right'}"></toaster-container>
+    <div class="middle-box text-center loginscreen animated fadeInDown" ng-controller="loginCtrl">
+        <div class="ibox-content">
+            <div class="log-img">
+                <img src="~/img/logo-vtech.png" />
+                <img src="~/img/logo-color.png" />
+            </div>
+            
+            <h3>
+                QUẢN LÝ SẢN PHẨM - BÁN HÀNG
+            </h3>
+            <br />
+            <form class="m-t" method="post" ng-submit="Login()">
+                <div class="form-group">
+                    <input class="form-control input-lg" placeholder="Tài khoản" type="text" name="username" ng-model="LoginData.UserName" required="">
+                </div>
+                <div class="form-group">
+                    <input class="form-control input-lg" placeholder="Mật khẩu" type="password" name="password" ng-model="LoginData.Password" required="">
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b btn-lg">Đăng Nhập</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Mainly scripts -->
+    <script src="~/Plugins/jquery.min.js"></script>
+    <script src="~/Plugins/angular.min.js"></script>
+    <script src="~/Plugins/jquery.ba-bbq.js"></script>
+    <script src="~/plugins/ngprogress/build/ngprogress.js"></script>
+    <script src="~/plugins/AngularJS-Toaster/toaster.min.js"></script>
+
+    <script src="~/js/site.js"></script>
+    <script src="~/js/app/loginCtrl.js"></script>
+
+    <div id="loader">
+    </div>
+    <div id="loader-progress">
+        <div class="spinner-icon"></div>
+        <div class="spinner-icon-2"></div>
+        <p>
+            Vui lòng chờ trong giây lát
+        </p>
+    </div>
+</body>
+
+</html>

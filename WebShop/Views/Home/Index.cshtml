@@ -1,0 +1,194 @@
+﻿<!-- Hero Section Begin -->
+<section class="hero-section">
+    <div class="hero-items owl-carousel">
+        @foreach (var r in ViewBag.ListBanner)
+        {
+            <div class="single-hero-items set-bg" data-setbg="@Contant.UrlWebApp@r.UrlHinhAnh">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <span></span>
+                            <h1>@r.TieuDe</h1>
+                            @*<p>Mô tả</p>*@
+                            <a href="@r.LinkWeb" class="primary-btn">XEM THÊM</a>
+                        </div>
+                    </div>
+                    @*<div class="off-card">
+                            <h2>Giảm <span>50%</span></h2>
+                        </div>*@
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<!-- Hero Section End -->
+<!-- Banner Section Begin -->
+<div class="banner-section spad">
+    <div class="container-fluid">
+        <div class="row">
+            @foreach (var r in ViewBag.ListDanhMucNoiBat)
+            {
+                <div class="col-lg-4">
+                    <div class="single-banner">
+                        <img src="@Contant.UrlWebApp@r.UrlHinhAnh" alt="">
+                        <a href="/shop/@r.Url" class="inner-text">
+                            <h4>@r.Ten</h4>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Banner Section End -->
+<div ng-controller="HomeCtrl">
+    <!-- Women Banner Section Begin -->
+    <section class="women-banner spad">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="filter-control">
+                        <ul>
+                            <li ng-class="{'active': DanhMuc1.IdDanhMuc == DanhMuc1.Id}" ng-click="loadSanPham(DanhMuc1, DanhMuc1)">{{DanhMuc1.Ten}}</li>
+                            <li ng-class="{'active': DanhMuc1.IdDanhMuc == r.Id}" ng-repeat="r in DanhMuc1.DMCapDuoi" ng-click="loadSanPham(DanhMuc1, r)">{{r.Ten}}</li>
+                        </ul>
+                        <a ng-href="/shop/{{DanhMuc1.UrlDanhMuc}}" class="btn-viewall">Xem thêm</a>
+                    </div>
+                    <div class="product-slider owl-carousel" ng-repeat="sli in DanhMuc1.DsSanPham">
+                        <div class="product-item" ng-product-item ng-repeat="sp in sli">
+                            <div class="pi-pic set-bg middle" data-setbg="@Contant.UrlWebApp{{sp.UrlHinhAnh}}">
+                                <div ng-if="sp.GiaBan != sp.GiaGoc" class="sale">Giảm giá</div>
+                                <div class="icon">
+                                    <i class="icon_heart_alt" ng-click="addToHeart(sp)"></i>
+                                </div>
+                                <ul>
+                                    <li class="w-icon active"><a href="javascript:void(0)" title="Thêm vào giỏ hàng" ng-click="addToCart(sp)"><i class="icon_cart_alt"></i></a></li>                                    
+                                </ul>
+                            </div>
+                            <div class="pi-text">
+                                <div class="catagory-name">{{sp.DanhMuc}}</div>
+                                <a ng-href="/{{sp.Url}}.html">
+                                    <h5>{{sp.Ten}}</h5>
+                                </a>
+                                <div class="product-price">
+                                    {{sp.GiaBan | number: 0}}
+                                    <span ng-if="sp.GiaBan != sp.GiaGoc">{{sp.GiaGoc | number: 0}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Women Banner Section End -->
+    @if (ViewBag.MiddleBanner != null)
+    {
+        var r = ViewBag.MiddleBanner;
+        <!-- Deal Of The Week Section Begin-->
+        <section class="deal-of-week set-bg spad" data-setbg="@Contant.UrlWebApp@r.UrlHinhAnh">
+            <div class="container">
+                <div class="col-lg-6 text-center">
+                    <div class="section-title">
+                        <h2>@r.TieuDe</h2>
+                        @*<p></p>*@
+                    </div>
+                    <a href="@r.LinkWeb" class="primary-btn">XEM THÊM</a>
+                </div>
+            </div>
+        </section>
+        <!-- Deal Of The Week Section End -->
+    }
+
+    <!-- Man Banner Section Begin -->
+    <section class="man-banner spad" ng-repeat="dm in ListDanhMuc">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="filter-control">
+                        <ul>
+                            <li ng-class="{'active': dm.IdDanhMuc == dm.Id}" ng-click="loadSanPham(dm, dm)">{{dm.Ten}}</li>
+                            <li ng-class="{'active': dm.IdDanhMuc == r.Id}" ng-repeat="r in dm.DMCapDuoi" ng-click="loadSanPham(dm, r)">{{r.Ten}}</li>
+                        </ul>
+                        <a ng-href="/shop/{{dm.UrlDanhMuc}}" class="btn-viewall">Xem thêm</a>
+                    </div>
+                    <div class="product-slider owl-carousel" ng-repeat="sli in dm.DsSanPham">
+                        <div class="product-item" ng-product-item ng-repeat="sp in sli">
+                            <div class="pi-pic set-bg middle" data-setbg="@Contant.UrlWebApp{{sp.UrlHinhAnh}}">
+                                <div ng-if="sp.GiaBan != sp.GiaGoc" class="sale">Giảm giá</div>
+                                <div class="icon">
+                                    <i class="icon_heart_alt" ng-click="addToHeart(sp)"></i>
+                                </div>
+                                <ul>
+                                    <li class="w-icon active"><a href="javascript:void(0)" title="Thêm vào giỏ hàng" ng-click="addToCart(sp)"><i class="icon_cart_alt"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="pi-text">
+                                <div class="catagory-name">{{sp.DanhMuc}}</div>
+                                <a ng-href="/{{sp.Url}}.html">
+                                    <h5>{{sp.Ten}}</h5>
+                                </a>
+                                <div class="product-price">
+                                    {{sp.GiaBan | number: 0}}
+                                    <span ng-if="sp.GiaBan != sp.GiaGoc">{{sp.GiaGoc | number: 0}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Man Banner Section End -->
+    <!-- Latest Blog Section Begin -->
+    <section class="latest-blog" ngi-if="ListDatas.length > 0">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>SỰ KIỆN - KHUYẾN MẠI</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6" ng-repeat="row in ListDatas">
+                    <div class="single-latest-blog">
+                        <div class="latest-img"><img ng-src="@Contant.UrlWebApp{{row.UrlHinh}}" alt=""></div>
+                        <div class="latest-text">
+                            <div class="tag-list">
+                                <div class="tag-item">
+                                    <i class="fa fa-calendar-o"></i>
+                                    {{row.NgayDang | date: 'dd/MM/yyyy'}}
+                                </div>
+                            </div>
+                            <a ng-href="/ban-tin/{{row.url}}_{{row.Id}}.html">
+                                <h4>{{row.TieuDe}}</h4>
+                            </a>
+                            <p>{{row.TomTat}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Latest Blog Section End -->
+</div>
+<!-- Partner Logo Section Begin -->
+<div class="partner-logo">
+    <div class="container">
+        <div class="logo-carousel owl-carousel">
+            @foreach (var dt in ViewBag.ListDoiTac)
+            {
+                <div class="logo-item">
+                    <div class="tablecell-inner">
+                        <img src="@Contant.UrlWebApp@dt.LogoUrl" alt="@dt.TenDoiTac">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Partner Logo Section End -->
+@section Scripts{
+    <script type="text/javascript" src="~/js/Shop/app.home.js?v=20220808"></script>
+}

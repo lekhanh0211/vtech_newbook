@@ -1,0 +1,120 @@
+/* Styling for the ngProgress itself */
+#ngProgress {
+    margin: 0;
+    padding: 0;
+    z-index: 99998;
+    background-color: green;
+    color: green;
+    box-shadow: 0 0 10px 0; /* Inherits the font color */
+    height: 2px;
+    opacity: 0;
+    /* Add CSS3 styles for transition smoothing */
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Styling for the ngProgress-container */
+#ngProgress-container {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+}
+
+    #ngProgress-container .spinner-icon {
+        width: 18px;
+        height: 18px;
+        box-sizing: border-box;
+        border: solid 2px transparent;
+        border-top-color: inherit;
+        border-left-color: inherit;
+        border-radius: 50%;
+        position: fixed;
+        top: 5px;
+        left: 5px;
+        -webkit-animation: nprogress-spinner 400ms linear infinite;
+        animation: nprogress-spinner 400ms linear infinite;
+    }
+
+@-webkit-keyframes nprogress-spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes nprogress-spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+#loader-progress {
+    color: #fff;
+    top: calc(50% - 55px);
+    left: calc(50% - 50px);
+    padding: 10px;
+    position: fixed;
+    text-align: center;
+    text-shadow: 0 0 10px #000;
+    font-weight: bold;
+    display: none;
+    z-index: 99999;
+    font-size: 16px;
+}
+
+#loader, #loader2 {
+    text-align: center;
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+    top: 0;
+    left: 0;
+    z-index: 99998;
+    background-color: #000;
+    filter: alpha(opacity=90);
+}
+
+#loader-progress .spinner-icon {
+    width: 80px;
+    height: 80px;
+    box-sizing: border-box;
+    border: solid 6px transparent;
+    border-top-color: #2196F3;
+    border-left-color: #2196F3;
+    border-radius: 50%;
+    -webkit-animation: nprogress-spinner 1000ms cubic-bezier(0.18, 0.89, 0.32, 1.28) infinite;
+    animation: nprogress-spinner 1000ms cubic-bezier(0.18, 0.89, 0.32, 1.28) infinite;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+#loader-progress .spinner-icon-2 {
+    width: 60px;
+    height: 60px;
+    box-sizing: border-box;
+    border: solid 3px transparent;
+    border-top-color: #2196F3;
+    border-left-color: #2196F3;
+    border-radius: 50%;
+    -webkit-animation: nprogress-spinner 600ms linear infinite;
+    animation: nprogress-spinner 600ms linear infinite;
+    position: absolute;
+    top: 18px;
+    left: calc(50% - 30px);
+}

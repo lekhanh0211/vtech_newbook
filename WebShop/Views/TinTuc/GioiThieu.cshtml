@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <meta name="keywords" content="@Model.KeyWord">
+    <meta name="description" content="Nhà sách SeaBook">
+    <meta property="og:description" content='Nhà sách SeaBook' />
+}
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <a href="/"><i class="fa fa-home"></i> Trang chủ</a>
+                    <span>@Model.TieuDe</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section Begin -->
+<!-- Blog Details Section Begin -->
+<section class="blog-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="blog-details-inner">
+                    <div class="blog-detail-title">
+                        <h2>@Model.TieuDe</h2>
+                    </div>
+                    <p>@Html.Raw(Model.NoiDung)</p>
+                    <div class="tag-share">
+                        <div class="details-tag">
+                            <ul>
+                                <li><i class="fa fa-tags"></i></li>
+                                @if (Model.KeyWord != null)
+                                {
+                                    var lKey = Model.KeyWord.Split(',');
+                                    foreach (var item in lKey)
+                                    {
+                                        <li>@item</li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <div class="blog-share">
+                            <span>Chia sẻ:</span>
+                            <div class="social-links">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-google-plus"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Details Section End -->

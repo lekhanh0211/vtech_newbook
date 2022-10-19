@@ -1,0 +1,98 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <a href="/"><i class="fa fa-home"></i> Trang chủ</a>
+                    <span>Đăng nhập</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Form Section Begin -->
+<!-- Register Section Begin -->
+<div class="register-login-section spad" ng-controller="LoginCtrl">
+    <div class="container">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" ng-if="RegisterSuccess">
+            <strong>Tạo tài khoản thành công!</strong> Bạn hãy nhập lại mật khẩu để đăng nhập.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="login-form">
+                    <h2>Đăng nhập</h2>
+                    <form method="post" ng-submit="Login()">
+                        <div class="group-input">
+                            <label for="username">Số điện thoại / Email *</label>
+                            <input type="text" id="username" ng-model="LoginData.UserName">
+                        </div>
+                        <div class="group-input">
+                            <label for="pass">Mật khẩu *</label>
+                            <input type="password" id="pass" ng-model="LoginData.Password">
+                        </div>
+                        <div class="group-input gi-check">
+                            <div class="gi-more">
+                                <a href="/" class="forget-pass">Bạn quên mật khẩu?</a>
+                            </div>
+                        </div>
+                        <button type="submit" class="site-btn login-btn">Đăng nhập</button>
+                    </form>
+                    <div class="switch-login">
+                        <a href="/oauth/register" class="or-login">Hoặc đăng ký tài khoản</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Register Form Section End -->
+@section Scripts{
+    <script src="~/Plugins/angular.min.js"></script>
+    <script src="~/Plugins/jquery.ba-bbq.js"></script>
+    <script>
+        app.controller('LoginCtrl', function ($scope, $http, ngProgress, toaster) {
+            var urlObj = $.deparam.querystring();
+            $scope.LoginData = {
+                UserName: '',
+                Password: ''
+            }
+            $scope.Login = function () {
+                ngProgress.start(true);
+                $http({
+                    method: 'POST',
+                    url: '/oauth/token',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    data: $scope.LoginData,
+                }).then(function mySuccess(result) {
+                    ngProgress.complete(true);
+                    if (result && result.data && result.data.Id) {
+                        toaster.pop('success', 'Đăng nhập thành công!');
+                        localStorage.setItem('currentUser', JSON.stringify(result.data));
+                        location.href = urlObj.ReturnUrl || '/';
+                    } else {
+                        toaster.pop('error', 'Đăng nhập thất bại!');
+                    }
+                }, function myError(data) {
+                    ngProgress.complete(true);
+                    console.error('Login error: ', data);
+                    toaster.pop('error', 'Đăng nhập thất bại!', data.status == 400 ? data.data : '');
+                });
+            }
+
+            if (urlObj.user) {
+                $scope.LoginData.UserName = urlObj.user;
+                $scope.RegisterSuccess = true;
+            }
+        });
+    </script>
+}

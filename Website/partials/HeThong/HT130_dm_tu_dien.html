@@ -1,0 +1,139 @@
+<div class="row border-bottom white-bg dashboard-header">
+    <div class="col-sm-12" ng-show="!ViewDanhMuc">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Thêm / Sửa</h3>
+            </div>
+            <div class="panel-body">
+                <form method="get" class="form-horizontal" name="formName">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Mã <span style="color:red">(*)</span></label>
+                        <div class="col-sm-8" data-ng-class="{'has-error':formName.ma.$invalid}">
+                            <input type="text" class="form-control" ng-model="TuDien.MaTuDien" name="ma" ng-change="ChangeData()" required autofocus>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Tên <span style="color:red">(*)</span></label>
+                        <div class="col-sm-8" data-ng-class="{'has-error':formName.ten.$invalid}">
+                            <input type="text" class="form-control" ng-model="TuDien.Ten" name="ten" ng-change="ChangeData()" required/>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Ưu tiên</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-model="TuDien.UuTien" ng-change="ChangeData()"/>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Ghi chú</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-model="TuDien.GhiChu" ng-change="ChangeData()" />
+                        </div>
+                    </div>
+                     <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Chọn Loại <span style="color:red">(*)</span></label>
+                        <div class="col-sm-8" data-ng-class="{'has-error':formName.loai.$invalid}">
+                                <select class="form-control" ng-model="TuDien.IdLoaiTuDien" name="loai" ng-change="ChangeData()" required>
+                                    <option value=""> --Chọn Loại-- </option>
+                                     <option value="{{lk.Id}}" ng-repeat="lk in DsLoaiTuDien">{{lk.TenLoai}}</option>
+                                </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" class="i-checks" id="DaXoa" ng-model="TuDien.Active" data-title="Sử dụng" ng-change="ChangeData()">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn btn-white" ng-click="CheckSave()" formnovalidate>Thoát</button>
+                            <button class="btn btn-primary" ng-click="CreateOrUpdate()" >Lưu dữ liệu</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12" ng-show="ViewDanhMuc">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Danh mục từ điển<span class="float-right">Tổng: {{total}}</span></h4>
+            </div>
+            <div class="panel-body">
+                <div class="row m-b-sm">
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-success" ng-click="OpenDetailForm()">
+                            <span class="glyphicon glyphicon-plus"></span> Thêm mới
+                        </button>
+                        <a type="button" class="btn btn-warning" href="/DanhMuc/HT131_dm_loai_tu_dien/" title="(Alt+B)">
+                             <span class="glyphicon glyphicon-edit"></span> Loại từ điển
+                        </a>
+                    </div>
+                    <div class="col-sm-3 float-right">
+                        <div class="input-group">
+                            <span class="input-group-addon" data-toggle="tooltip" data-placement="left" title="Lọc theo loại"><i class="fa fa-filter"></i></span>
+                            <ui-select ng-model="$parent.mLoaiTuDien" reset-search-input="false" ng-change="refreshData(1)">
+                                <ui-select-match placeholder="Chọn loại  ">{{$select.selected.TenLoai}}</ui-select-match>
+                                <ui-select-choices repeat="lk.MaLoai as lk in DsLoaiTuDien | filter: $select.search" value="{{$select.selected.MaLoai}}">
+                                    <div ng-bind-html="lk.TenLoai | highlight:$select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 float-right">
+                        <div class="input-group ">
+                            <input type="text" id="SearchName" class="form-control" placeholder="Tìm kiếm" ng-model="sSearch" onchange="angular.element(this).scope().refreshData(1)" />
+                            <label class="input-group-addon"><i class="fa fa-search"></i></label>
+                        </div>
+                    </div>
+                </div>
+                <table st-table="rowCollection" class="table table-bordered table-striped table-hover  dataTable">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="5%">STT</th>
+                            <th st-sort="getters.ma" class="text-center">Mã</th>
+                            <th class="text-center">Tên</th>
+                            <th class="text-center">Ghi chú</th>
+                            <th class="text-center" width="8%">Ưu tiên</th>
+                            <th class="text-center" width="8%">Hoạt động</th>
+                            <th class="text-center" width="10%">#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in DsTuDien">
+                            <td class="text-center">{{$index + 1 + ((iPageIndex -1)*iPageSize)}}</td>
+                            <td><a ng-click="OpenDetailForm(row)">{{row.MaTuDien}}</a></td>
+                            <td><a ng-click="OpenDetailForm(row)">{{row.Ten}}</a></td>
+                            <td>{{row.GhiChu}}</td>
+                            <td class="text-center">{{row.UuTien}}</td>
+                            <td class="text-center">
+                                <input type="checkbox" class="i-checks" id="IsActive" ng-model="row.Active" disabled="disabled">
+                            </td>
+                            <td class="text-center">
+                                <button type="button" ng-click="OpenDetailForm(row)" class="btn btn-warning btn-sm">Sửa</button>
+                                <button type="button" ng-click="Delete(row.Id)" class="btn btn-danger btn-sm">Xóa</button>
+                            </td>
+                        </tr>
+                        <tr ng-if="total == 0 ">
+                            <td colspan="8" class="text-center">Không có dữ liệu</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row" ng-visible="{{totalPage>1}}">
+                    <div class="col-sm-12" style="float: right">
+                        <div class="dataTables_paginate paging_simple_numbers">
+                            <ul class="pagination" id="lstPage"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

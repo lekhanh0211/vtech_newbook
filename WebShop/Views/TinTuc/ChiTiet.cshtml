@@ -1,0 +1,107 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <meta name="keywords" content="@Model.KeyWord">
+    <meta name="description" content="@Model.TomTat">
+    <meta property="og:description" content='@Model.TomTat' />
+    <meta property="og:image" content="@Contant.UrlWebApp@Model.UrlHinh" />
+}
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <a href="/"><i class="fa fa-home"></i> Trang chủ</a>
+                    <a href="/ban-tin">Bản tin</a>
+                    <span>Chi tiết</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section Begin -->
+<!-- Blog Details Section Begin -->
+<section class="blog-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="blog-details-inner">
+                    <div class="blog-detail-title">
+                        <h2>@Model.TieuDe</h2>
+                        <p><span>@Model.NgayDang.ToString("HH:mm dd/MM/yyyy")</span></p>
+                    </div>
+                    <div class="blog-large-pic">
+                        <img src="@Contant.UrlWebApp@Model.UrlHinh" alt="">
+                    </div>
+                    <div class="blog-detail-desc">
+                        <p>@Model.TomTat</p>
+                    </div>
+                    <p>@Html.Raw(Model.NoiDung)</p>
+                    <div class="tag-share">
+                        <div class="details-tag">
+                            <ul>
+                                <li><i class="fa fa-tags"></i></li>
+                                @if (Model.KeyWord != null)
+                                {
+                                    var lKey = Model.KeyWord.Split(',');
+                                    foreach (var item in lKey)
+                                    {
+                                        <li>@item</li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <div class="blog-share">
+                            <span>Chia sẻ:</span>
+                            <div class="social-links">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-google-plus"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Details Section End -->
+<!-- Latest Blog Section Begin -->
+<section class="latest-blog">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Bản tin liên quan</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var row in ViewBag.ListBanTin)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-latest-blog">
+                        <div class="latest-img"><img src="@Contant.UrlWebApp@row.UrlHinh" alt=""></div>
+                        <div class="latest-text">
+                            <div class="tag-list">
+                                <div class="tag-item">
+                                    <i class="fa fa-calendar-o"></i>
+                                    @row.NgayDang.ToString("dd/MM/yyyy")
+                                </div>
+                            </div>
+                            <a href="/ban-tin/@(row.url)_@(row.Id).html">
+                                <h4>@row.TieuDe</h4>
+                            </a>
+                            <p>@row.TomTat</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<!-- Latest Blog Section End -->

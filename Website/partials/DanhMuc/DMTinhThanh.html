@@ -1,0 +1,110 @@
+﻿<div class="wrapper-content animated fadeInUp" style="padding-bottom: 0;">
+    <div class="ibox m-b-none">
+        <div class="ibox-title">
+            <h5>Quản lý Giá ship theo tỉnh, huyện</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="input-group m-b-xs">
+                        <label class="input-group-addon"><i class="fa fa-search"></i></label>
+                        <input type="text" id="sSearch" class="form-control" ng-model-options="{updateOn : 'change blur'}" placeholder="Tìm kiếm..." ng-model="sSearch" />
+                    </div>
+                    <div class="list-item" style="max-height: calc(100vh - 200px); overflow-y: auto;">
+                        <table class="table table-bordered table-striped table-hover table-middle table-fixed-head">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" width="32px">STT</th>
+                                    <th class="text-center">Tỉnh thành</th>
+                                    <th class="text-center" width="100px">Giá ship</th>
+                                    <th class="text-center" width="169px">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in ListDatas | filter: sSearch" ng-class="{'info': mTinh && row.Id === mTinh.Id}">
+                                    <td class="text-center">{{$index + 1}}</td>
+                                    <td>{{row.Ten}}</td>
+                                    <td>{{row.PhiShip | number: 0}}</td>
+                                    <td class="text-center">
+                                        <a class="btn btn-white btn-sm" ng-click="OpenDetailForm(row)"><i class="fa fa-pencil text-warning"></i> Sửa </a>
+                                        <a class="btn btn-white btn-sm" ng-click="loadDsHuyen(row)"><i class="fa fa-list text-navy"></i> Huyện/TP </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <b class="form-control">{{mTinh.Ten}}</b>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group m-b-xs">
+                                <label class="input-group-addon"><i class="fa fa-search"></i></label>
+                                <input type="text" id="sSearchHuyen" class="form-control" ng-model-options="{updateOn : 'change blur'}" placeholder="Tìm kiếm..." ng-model="sSearchHuyen" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-item" style="max-height: calc(100vh - 200px); overflow-y: auto;">
+                        <table class="table table-bordered table-striped table-hover table-middle table-fixed-head">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" width="32px">STT</th>
+                                    <th class="text-center">Huyện / TP</th>
+                                    <th class="text-center" width="100px">Giá ship</th>
+                                    <th class="text-center" width="100px">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in DsHuyen | filter: sSearchHuyen">
+                                    <td class="text-center">{{$index + 1}}</td>
+                                    <td>{{row.Ten}}</td>
+                                    <td>{{row.PhiShip | number: 0}}</td>
+                                    <td class="text-center">
+                                        <a class="btn btn-white btn-sm" ng-click="OpenDetailForm(row)"><i class="fa fa-pencil text-warning"></i> Sửa </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal-detail">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Chỉnh giá ship</h4>
+            </div>
+            <div class="modal-body">
+                <form method="get" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{mData.Cap == 1 ? 'Tỉnh thành' : 'Huyện/TP'}}: </label>
+                        <div class="col-sm-10 form-control-static">
+                            {{mData.Ten}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Giá ship: </label>
+                        <div class="col-sm-2">
+                            <input type="text" id="input-phiship" class="form-control" ng-model="mData.PhiShip" required ng-change="ChangeData()" />
+                        </div>
+                        <div class="col-sm-8 form-control-static">
+                            {{DocSoTien(mData.PhiShip)}}
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn btn-primary" ng-click="CreateOrUpdate()">Lưu dữ liệu</button>
+                            <button class="btn btn-white float-right" ng-click="CheckSave()" formnovalidate>Thoát</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

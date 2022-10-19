@@ -1,0 +1,33 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse" ng-controller="LeftNavCtrl">
+        <ul class="nav" id="side-menu">
+            <li class="nav-header">
+                <div class="profile-element" style="color: white;">
+                    <a href="/"><img src="/img/logo-icon.png" />  SeaBook</a>
+                </div>
+                <div class="logo-element">
+                    <a href="/"><img src="/img/logo-icon.png" /></a>
+                </div>
+
+            </li>
+            <li ng-repeat="item in menus track by $index" ng-class="[checkActiveMenu(item), {'parent': item.IsParent}]">
+                <a ng-if="item.IsParent" href="#">
+                    <i class="fa fa-th-list"></i>
+                    <span class="nav-label" ng-bind="item.Text"></span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul ng-if="item.IsParent" class="nav nav-second-level">
+                    <li ng-repeat="child in item.Children" ng-class="checkActiveMenu(child)">
+                        <a ui-sref="{{child.Action}}">
+                            {{child.Text}}
+                        </a>
+                    </li>
+                </ul>
+                <a ng-if="!item.IsParent" ui-sref="{{item.Action}}">
+                    <i class="fa fa-circle"></i>
+                    <span class="nav-label" ng-bind="item.Text"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

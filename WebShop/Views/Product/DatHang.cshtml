@@ -1,0 +1,250 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <a href="/"><i class="fa fa-home"></i> Trang chủ</a>
+                    <a href="/shop">Shop</a>
+                    <span>Đặt hàng</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section Begin -->
+<!-- Shopping Cart Section Begin -->
+<section class="checkout-section spad" ng-controller="CheckOutCtrl">
+    <div class="container">
+        <form class="checkout-form">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Địa chỉ giao hàng</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="fir">Họ tên<span>*</span></label>
+                            <input type="text" id="fir" ng-model="mDonHang.TenNguoiNhan">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email">Email<span>*</span></label>
+                            <input type="text" id="email" ng-model="mDonHang.Email">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone">Số điện thoại<span>*</span></label>
+                            <input type="text" id="phone" ng-model="mDonHang.SoDienThoai">
+                        </div>
+                        <div class="col-md-12">
+                            <label for="tinhthanh">Tỉnh/Thành phố<span>*</span></label>
+                            <ui-select id="tinhthanh" data-ng-model="mDonHang.IdTinhThanh" reset-search-input="true" ng-change="mDonHang.TinhThanh = $select.selected.Ten; LoadQuanHuyen($select.selected);">
+                                <ui-select-match placeholder="-Chọn Tỉnh / Thành phố-">{{$select.selected.Ten}}</ui-select-match>
+                                <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
+                                    <div ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="quanhuyen">Quận/Huyện<span>*</span></label>
+                            <ui-select id="quanhuyen" data-ng-model="mDonHang.IdQuanHuyen" reset-search-input="true" ng-change="mDonHang.QuanHuyen = $select.selected.Ten; LoadXaPhuong($select.selected);">
+                                <ui-select-match placeholder="-Chọn Quận / Huyện-">{{$select.selected.Ten}}</ui-select-match>
+                                <ui-select-choices repeat="lk.Id as lk in DsQuanHuyen | filter: $select.search">
+                                    <div ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="quanhuyen">Xã/Phường<span>*</span></label>
+                            <ui-select id="quanhuyen" data-ng-model="mDonHang.IdXaPhuong" reset-search-input="true" ng-change="mDonHang.XaPhuong = $select.selected.Ten;">
+                                <ui-select-match placeholder="-Chọn Xã / Phường-">{{$select.selected.Ten}}</ui-select-match>
+                                <ui-select-choices repeat="lk.Id as lk in DsXaPhuong | filter: $select.search">
+                                    <div ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="cun">Địa chỉ số nhà<span>*</span></label>
+                            <input type="text" id="cun" ng-model="mDonHang.DiaChi">
+                        </div>
+                        <div class="col-md-12">
+                            <label for="cun">Ghi chú</label>
+                            <input type="text" id="cun" ng-model="mDonHang.GhiChuNhanHang">
+                        </div>
+                        <div class="col-md-12" ng-if="!IsDangNhap">
+                            <div class="create-item">
+                                <label for="acc-create">
+                                    Tạo tài khoản?
+                                    <input type="checkbox" id="acc-create">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="place-order">
+                        <h4>Đơn hàng</h4>
+                        <div class="order-total">
+                            <ul class="order-table">
+                                <li>Sản phẩm <span>Tổng tiền</span></li>
+                                <li ng-repeat="sp in GioHang.DsSanPham track by sp.IdTrack" class="fw-normal">{{sp.Ten}} x {{sp.SoLuong}} <span>{{sp.GiaBan * sp.SoLuong | number: 0}} đ</span></li>
+                                <li class="fw-normal total-price">Tạm tính: <span>{{GioHang.TongTien | number: 0}} đ</span></li>
+                                <li class="fw-normal total-price">Phí vận chuyển: <span>{{mDonHang.TienVanChuyen | number: 0}} đ</span></li>
+                                <li class="fw-normal total-price">THÀNH TIỀN: <span>{{mDonHang.TongTien | number: 0}} đ</span></li>
+                            </ul>
+                            <div class="payment-check">
+                                <div class="pc-item">
+                                    <label for="pc-check">
+                                        Thanh toán khi giao hàng
+                                        <input type="checkbox" id="pc-check" disabled checked>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="order-btn">
+                                <a href="/gio-hang" class="site-btn place-btn view-card">Quay lại giỏ hàng</a>
+                                <button type="button" ng-click="saveDonHang()" class="site-btn place-btn">ĐẶT HÀNG</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+@section Scripts{
+    <script type="text/javascript" src="/plugins/moment/moment.js"></script>
+    <script type="text/javascript" src="/plugins/moment/locale/vi.js"></script>
+    <script type="text/javascript">
+        app.config(['uiSelectConfig', function (uiSelectConfig) {
+            uiSelectConfig.theme = 'bootstrap';
+        }])
+        app.controller('CheckOutCtrl', ['$scope', '$http', 'toaster', 'ngProgress', function ($scope, $http, toaster, ngProgress) {
+            $scope.mDonHang = {
+                TrangThai: 0,
+                SoLuongSanPham: 0,
+                TongTienhang: $scope.GioHang.TongTien,
+                TienVanChuyen: 0,
+                TongTien: $scope.GioHang.TongTien,
+                TTLoai: 0,
+                TTTrangThai: 0
+            };
+            if (guidIsNotNuLL($scope.user.Id)) {
+                $scope.IsDangNhap = true;
+                $scope.mDonHang.IdNguoiDung = $scope.user.Id;
+                $scope.mDonHang.TenNguoiNhan = $scope.user.HoTen;
+                $scope.mDonHang.DiaChi = $scope.user.DiaChi;
+                $scope.mDonHang.IdTinhThanh = $scope.user.IdTinhThanh;
+                $scope.mDonHang.IdQuanHuyen = $scope.user.IdHuyeTP;
+                $scope.mDonHang.IdXaPhuong = $scope.user.IdXaPhuong;
+                $scope.mDonHang.SoDienThoai = $scope.user.DienThoai;
+                $scope.mDonHang.Email = $scope.user.Email;
+            }
+            $scope.saveDonHang = function () {
+                if ($scope.GioHang.DsSanPham.length == 0) {
+                    toaster.pop('warning', 'Không có sản phẩm trong giỏ hàng.');
+                    return;
+                }
+                if (strIsNull($scope.mDonHang.TenNguoiNhan) || strIsNull($scope.mDonHang.Email) || strIsNull($scope.mDonHang.SoDienThoai) || strIsNull($scope.mDonHang.DiaChi)
+                    || guidIsNuLL($scope.mDonHang.IdTinhThanh) || guidIsNuLL($scope.mDonHang.IdQuanHuyen) || guidIsNuLL($scope.mDonHang.IdXaPhuong)) {
+                    toaster.pop('warning', 'Vui lòng điền đủ thuôn tin bắt buộc.');
+                    return;
+                }
+                let dssp = [];
+                _.each($scope.GioHang.DsSanPham, (x, $index) => {
+                    dssp.push({
+                        IdSanPham: x.Id,
+                        TenSanPham: x.Ten,
+                        SoLuong: x.SoLuong,
+                        ThuocTinh: x.ThuocTinh,
+                        GiaGoc: x.GiaGoc,
+                        GiaBan: x.GiaBan,
+                        ThuTu: $index
+                    });
+                });
+                $scope.mDonHang.DiaChiFull = `${$scope.mDonHang.DiaChi}, ${$scope.mDonHang.XaPhuong}, ${$scope.mDonHang.QuanHuyen}, ${$scope.mDonHang.TinhThanh}`;
+                $scope.mDonHang.NgayDatHang = moment().format(EFormat.DateISO);
+                $scope.mDonHang.NgayTao = moment().format(EFormat.DateISO);
+                $scope.mDonHang.DsSanPham = dssp;
+                ngProgress.start(true);
+                $http({
+                    method: 'POST',
+                    url: `/api/donhang`,
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    data: $scope.mDonHang
+                }).then(function mySuccess(result) {
+                    if (result && result.data) {
+                        ngProgress.complete(true);
+                        toaster.pop('success', 'Tạo đơn hàng thành công.');
+                        // reset Gio hang
+                        $scope.GioHang = { "DsSanPham": [], "SoSanPham": 0, "TongTien": 0 };
+                        localStorage.setItem(EStorageKey.GioHang, JSON.stringify($scope.GioHang));
+                        location.href = "/thank-you?ma=" + result.data.MaDonHang;
+                    }
+                }, function myError(data) {
+                    ngProgress.complete(true);
+                    toaster.pop('error', 'Không tạo được đơn hàng, vui lòng thử lại sau.');
+                });
+            }
+
+            $scope.LoadTinhThanh = function () {
+                $http({
+                    method: 'GET',
+                    url: `/api/tinhthanh/cap/1`,
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                }).then(function mySuccess(result) {
+                    if (result && result.data) {
+                        $scope.DsTinhThanh = result.data;
+                    }
+                }, function myError(data) {
+                });
+            }
+            $scope.LoadQuanHuyen = function (th) {
+                $scope.mDonHang.TienVanChuyen = th.PhiShip;
+                $scope.mDonHang.TongTien = $scope.mDonHang.TongTienhang + th.PhiShip;
+                $http({
+                    method: 'GET',
+                    url: `/api/tinhthanh/${th.Id}/diaphuong`,
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                }).then(function mySuccess(result) {
+                    if (result && result.data) {
+                        $scope.DsQuanHuyen = result.data;
+                        $scope.mDonHang.IdQuanHuyen = null;
+                    }
+                }, function myError(data) {});
+            }
+            $scope.LoadXaPhuong = function (qh) {
+                if (qh.PhiShip > 0) {
+                    $scope.mDonHang.TienVanChuyen = qh.PhiShip;
+                    $scope.mDonHang.TongTien = $scope.mDonHang.TongTienhang + qh.PhiShip;
+                }
+                $http({
+                    method: 'GET',
+                    url: `/api/tinhthanh/${qh.Id}/diaphuong`,
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                }).then(function mySuccess(result) {
+                    if (result && result.data) {
+                        $scope.DsXaPhuong = result.data;
+                        $scope.mDonHang.IdXaPhuong = null;
+                    }
+                }, function myError(data) { });
+            }
+
+            setTimeout(() => {
+                $scope.LoadTinhThanh();
+            }, 10);
+        }]);
+    </script>
+}
+

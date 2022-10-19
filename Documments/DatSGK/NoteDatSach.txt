@@ -1,0 +1,26 @@
+
+I. Quản trị
+- Đợt đặt sách: Lập hàng năm: Tên, Ngày kết thúc của học sinh, Ngày kết thúc của giáo viên, Ngày kết thúc đợt đặt sách, Danh sách sách theo khối
+- Đơn hàng các trường: Thống kê sách đã đặt theo tất cả, khối, phòng, trường
+- Đơn đặt sách: Xem tất cả đơn đặt sách
+- Danh mục đặt sách: Để giới hạn các sản phẩm được chọn khi lập trong đợt đặt sách
+- Danh mục PDG, trường học, khối, lớp học, giáo viên, học sinh
+II. Phòng giáo dục
+- Đợt đặt sách
+- DM trường
+III. Trường
+- Đợt đặt sách
+- Chi tiết đợt đặt sách
+- Nộp bản đặt
+- đơn đặt sách
+IV. Giáo viên (app)
+- Thống kê phiếu đặt sách của lớp theo đợt
+- Danh sách, số lượng sách đã đặt
+- Danh sách học sinh đã đặt sách
+- Chi tiết đơn đặt sách của học sinh
+- Thông tin đợt đặt sách - ds sách cấu hình trong đợt
+V. Học sinh (app)
+- Ô nhập mã lớp, nút "Đặt sách GK"
+- Giao diện đặt sách: - hiển thị thông tin lớp học - thông tin các sách cần mua - Thêm, xoá bớt sách - Nhấn đặt sách
+- Nhập thông tin học sinh
+- Xác nhận đơn hàng - chọn hình thức thanh toán (Gửi tiền cho giáo viên, chuyển khoản, thanh toán VNPay)
