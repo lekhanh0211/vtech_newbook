@@ -153,25 +153,26 @@
                             <input type="text" class="form-control" ng-model="mData.TenPGD" required
                                 ng-change="ChangeTen()" />
                         </div>
-                        <label class="col-sm-2 control-label">Mật khẩu đầu tiên </label>
+                        <label class="col-sm-2 control-label">Mật khẩu mặc định </label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="mData.Email" required
+                            <input type="text" class="form-control" ng-model="mData.Email" value="" required readonly
                                 ng-change="ChangeTen()" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Khối </label>
-                        <div class="col-sm-4">
+                        <label class="col-sm-2 control-label">Khối <i style='color:red'>(*)</i></label>
+                        <div class="col-sm-10">
                             <input type="text" class="form-control" ng-model="mData.TenPGD" required
                                 ng-change="ChangeTen()" />
                         </div>
-                        <label class="col-sm-2 control-label">Khối đặt sách </label>
-                        <div class="col-sm-4">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Khối đặt sách <i style='color:red'>(*)</i></label>
+                        <div class="col-sm-10">
                             <input type="text" class="form-control" ng-model="mData.Email" required
                                 ng-change="ChangeTen()" />
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>
