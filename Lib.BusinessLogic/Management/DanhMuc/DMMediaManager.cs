@@ -5,5 +5,6 @@ namespace Lib.BusinessLogic.Management
 {
     public class DMMediaManager : BaseManager<DMMediaManager, DMMedia, DMMediaModel>
     {
+
     }
 }

@@ -17,7 +17,6 @@
                     </select>
                 </div>
 
-
                 <div class="col-sm-3 float-right">
                     <div class="input-group">
                         <input type="text" id="sSearch" class="form-control" ng-change="refreshData(1)"
@@ -28,17 +27,17 @@
                 </div>
 
                 <div class="col-sm-3 float-right">
-                    <ui-select data-ng-model="mParam.IdTinhThanh" reset-search-input="true" ng-change="refreshData(1);">
-                        <ui-select-match allow-clear="true" placeholder="- Tỉnh thành -">
+
+                    <ui-select data-ng-model="mParam.loai" reset-search-input="true" ng-change="refreshData(1);">
+                        <ui-select-match allow-clear="true" placeholder="-- Tỉnh thành --">
                             {{$select.selected.Ten}}
                         </ui-select-match>
                         <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
-                            <div ng-class="{'select-cap1': lk.Cap == 1}"
-                                ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                            <div ng-class="{'select-tinh': lk.Cap == 1}"
+                                ng-bind-html="lk.Ten | highlight:$select.search">
+                            </div>
                         </ui-select-choices>
                     </ui-select>
-
-
                 </div>
             </div>
 
@@ -65,7 +64,7 @@
                                 </a>
                             </td>
                             <td>{{r.TaiKhoan}}</td>
-                            <td>{{r.TinhThanh}}</td>
+                            <td>{{r.IdTinhThanh}}</td>
                             <td>{{r.Email}}</td>
                             <td>{{r.NgayTao | date: 'dd/MM/yyyy'}}</td>
                             <td class="text-center">
@@ -121,33 +120,16 @@
                         </div>
                     </div>
 
-
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Tỉnh thành</label>
-
-
                         <div class="col-sm-4">
-
-                            <!-- <ui-select data-ng-model="mData.IdTinhThanh" reset-search-input="true" ng-change="refreshData(1);">
-                                <ui-select-match allow-clear="true" placeholder="- Tỉnh thành -">
-                                    {{$select.selected.Ten}}
-                                </ui-select-match>
+                            <ui-select data-ng-model="mData.IdTinhThanh" reset-search-input="false" ng-change="ChangeData()">
+                                <ui-select-match placeholder="Tỉnh thành ">{{$select.selected.Ten}}</ui-select-match>
                                 <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
-                                    <div ng-class="{'select-cap1': lk.Cap == 1}"
-                                         ng-bind-html="lk.Ten | highlight:$select.search"></div>
-                                </ui-select-choices>
-                            </ui-select> -->
-
-                            <ui-select data-ng-model="mData.IdTinhThanh" reset-search-input="true"
-                                ng-change="ChangeData()">
-                                <ui-select-match placeholder="Chọn tỉnh thành ">{{$select.selected.Ten}}</ui-select-match>
-                                <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
-                                    <div ng-class="{'select-cap1': lk.Cap == 1}"
-                                        ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                                    <div ng-bind-html="lk.Ten | highlight:$select.search"></div>
                                 </ui-select-choices>
                             </ui-select>
-
-
+                           
                         </div>
 
                         <label class="col-sm-2 control-label">Địa chỉ</label>
@@ -168,9 +150,7 @@
                             <input type="text" class="form-control" ng-model="mData.MatKhauMacDinh" required
                                 value="{{MatKhauMacDinh}}" readonly ng-change="ChangeTen()" />
                         </div>
-                        <label class="col-sm-2 control-label"></label>
-                        <div class="col-sm-4">
-                        </div>
+                       
                     </div>
                 </form>
             </div>

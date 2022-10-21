@@ -235,7 +235,7 @@
     <Content Include="partials\DanhMuc\DMSanPham.html" />
     <Content Include="partials\DanhMuc\DMTinhThanh.html" />
     <Content Include="partials\DatSach\DMLop.html" />
-    <Content Include="partials\DatSach\DmTruong.html" />
+    <Content Include="partials\DatSach\DMTruong.html" />
     <Content Include="partials\DatSach\DMGiaoVien.html" />
     <Content Include="partials\DatSach\DMHocSinh.html" />
     <Content Include="partials\DatSach\DMKhoi.html" />

@@ -18,7 +18,7 @@
                 <div class="col-sm-3 float-right">
                     <div class="input-group">
                         <input type="text" id="sSearch" class="form-control" ng-change="refreshData(1)"
-                            ng-model-options="{updateOn : 'change blur'}" placeholder="Tìm kiếm tên phòng GD & ĐT"
+                            ng-model-options="{updateOn : 'change blur'}" placeholder="Tìm kiếm tên trường học"
                             ng-model="sSearch" />
                         <label class="input-group-addon"><i class="fa fa-search"></i></label>
                     </div>
@@ -65,13 +65,13 @@
                             <td>
                                 <a ng-click="OpenDetailForm(r)">
                                     <img ng-if="r.UrlIcon" ng-src="{{r.UrlIcon}}" style="width: 39px; height: 39px;" />
-                                    {{r.TenPGD}}
+                                    {{r.MaLop }}
                                 </a>
                             </td>
-                            <td>{{r.TaiKhoan}}</td>
-                            <td>{{r.TinhThanh}}</td>
-                            <td>{{r.Email}}</td>
-                            <td>{{r.Email}}</td>
+                            <td>{{r.TenLop}}</td>
+                            <td>{{r.Khoi}}</td>
+                            <td>{{r.Truong}}</td>
+                            <td>{{r.GVChuNhiem}}</td>
                             <td>{{r.NgayTao | date: 'dd/MM/yyyy'}}</td>
                             <td class="text-center">
                                 <a class="btn btn-white btn-sm" ng-click="OpenDetailForm(r)">
@@ -116,12 +116,12 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Tên <i style='color:red'>(*)</i></label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="mData.TenPGD" required
+                            <input type="text" class="form-control" ng-model="mData.TenLop" required
                                 ng-change="ChangeTen()" />
                         </div>
                         <label class="col-sm-2 control-label">Mã lớp </label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="mData.Email" required
+                            <input type="text" class="form-control" ng-model="mData.MaLop" required
                                 ng-change="ChangeTen()" />
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Khối <i style='color:red'>(*)</i></label>
                         <div class="col-sm-10">
-                            <ui-select data-ng-model="mData.IdTinhThanh" reset-search-input="true"
+                            <ui-select data-ng-model="mData.IdKhoi" reset-search-input="true"
                                 ng-change="ChangeData()">
                                 <ui-select-match placeholder="Chọn Khối ">{{$select.selected.Ten}}
                                 </ui-select-match>

@@ -21,6 +21,7 @@ namespace Website.Controllers.Api
             var result = _manager.SelectBy(lFilter, " UuTien");
             return ApiOk(result);
         }
+
         [Route("GetCapDuoi")]
         [HttpGet]
         [AllowAnonymous]

@@ -18,12 +18,15 @@
                 <div class="col-sm-3 float-right">
                     <div class="input-group">
                         <input type="text" id="sSearch" class="form-control" ng-change="refreshData(1)"
-                            ng-model-options="{updateOn : 'change blur'}" placeholder="Tìm kiếm tên phòng GD & ĐT"
+                            ng-model-options="{updateOn : 'change blur'}" placeholder="Tìm kiếm tên trường học"
                             ng-model="sSearch" />
                         <label class="input-group-addon"><i class="fa fa-search"></i></label>
                     </div>
                 </div>
+
                 <div class="col-sm-3 float-right">
+
+
                     <ui-select data-ng-model="mParam.mDMCap1" reset-search-input="false"
                         ng-change="refreshData(1); reloadCapDuoi(mParam.mDMCap1);">
                         <ui-select-match allow-clear="true" placeholder="Chọn DM cấp 1 ">
@@ -44,6 +47,9 @@
                         </ui-select-choices>
                     </ui-select>
                 </div>
+
+
+
             </div>
             <div class="list-item">
                 <table class="table table-bordered table-striped table-hover">
@@ -68,8 +74,8 @@
                                 </a>
                             </td>
                             <td>{{r.TaiKhoan}}</td>
-                            <td>{{r.TinhThanh}}</td>
-                            <td>{{r.Email}}</td>
+                            <td>{{r.DiaChi}}</td>
+                            <td>{{r.TenTruong}}</td>
                             <td>{{r.NgayTao | date: 'dd/MM/yyyy'}}</td>
                             <td class="text-center">
                                 <a class="btn btn-white btn-sm" ng-click="OpenDetailForm(r)">
@@ -114,19 +120,19 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Mã trường <i style='color:red'>(*)</i></label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="mData.TenPGD" required
+                            <input type="text" class="form-control" ng-model="mData.MaTruong" required
                                 ng-change="ChangeTen()" />
                         </div>
                         <label class="col-sm-2 control-label">Tên </label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="mData.Email" required
+                            <input type="text" class="form-control" ng-model="mData.TenTruong" required
                                 ng-change="ChangeTen()" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Địa chỉ </label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="mData.TenPGD" required
+                            <input type="text" class="form-control" ng-model="mData.DiaChi" required
                                 ng-change="ChangeTen()" />
                         </div>
                         <label class="col-sm-2 control-label">Email </label> </label>
@@ -138,20 +144,36 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Tỉnh thành </label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="mData.TenPGD" required
-                                ng-change="ChangeTen()" />
+                            <ui-select data-ng-model="mDataImport.IdTinhThanh" reset-search-input="true">
+                                <ui-select-match placeholder="">{{$select.selected.Ten}}</ui-select-match>
+                                <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
+                                    <div ng-class="{'select-cap1': lk.Cap == 1,"
+                                        ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+
                         </div>
                         <label class="col-sm-2 control-label">Phòng GD & ĐT </label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="mData.Email" required
-                                ng-change="ChangeTen()" />
+                            <ui-select data-ng-model="mDataImport.IdTinhThanh" reset-search-input="true">
+                                <ui-select-match placeholder="">{{$select.selected.Ten}}</ui-select-match>
+                                <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
+                                    <div ng-class="{'select-cap1': lk.Cap == 1,"
+                                        ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Quận / Huyện </label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" ng-model="mData.TenPGD" required
-                                ng-change="ChangeTen()" />
+                            <ui-select data-ng-model="mDataImport.IdTinhThanh" reset-search-input="true">
+                                <ui-select-match placeholder="">{{$select.selected.Ten}}</ui-select-match>
+                                <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
+                                    <div ng-class="{'select-cap1': lk.Cap == 1,"
+                                        ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
                         <label class="col-sm-2 control-label">Mật khẩu mặc định </label>
                         <div class="col-sm-4">
@@ -159,20 +181,32 @@
                                 ng-change="ChangeTen()" />
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Khối <i style='color:red'>(*)</i></label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" ng-model="mData.TenPGD" required
-                                ng-change="ChangeTen()" />
+                            <ui-select data-ng-model="mDataImport.IdTinhThanh" reset-search-input="true">
+                                <ui-select-match placeholder="">{{$select.selected.Ten}}</ui-select-match>
+                                <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
+                                    <div ng-class="{'select-cap1': lk.Cap == 1,"
+                                        ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Khối đặt sách <i style='color:red'>(*)</i></label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" ng-model="mData.Email" required
-                                ng-change="ChangeTen()" />
+                            <ui-select data-ng-model="mDataImport.IdTinhThanh" reset-search-input="true">
+                                <ui-select-match placeholder="">{{$select.selected.Ten}}</ui-select-match>
+                                <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
+                                    <div ng-class="{'select-cap1': lk.Cap == 1,"
+                                        ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>

@@ -7,6 +7,7 @@ namespace Lib.BusinessLogic.Model
     {
         [StrSearch]
         public string MaLop { get; set; }
+        [StrSearch]
         public string TenLop { get; set; }
         public Guid? Khoi { get; set; }
         public Guid? Truong { get; set; }
