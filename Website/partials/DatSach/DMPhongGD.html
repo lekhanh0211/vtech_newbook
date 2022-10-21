@@ -10,13 +10,11 @@
                         <span class="glyphicon glyphicon-plus"></span> Thêm mới
                     </button>
                 </div>
-
                 <div class="col-sm-1 float-right">
                     <select class="form-control" ng-change="refreshData(1)" ng-model="iPageSize"
                         ng-options="o.v as o.n for o in [{v:5,n:'05'},{v:10,n:'10'},{v:20,n:'20'},{v:50,n:'50'},{v:100,n:'100'}]">
                     </select>
                 </div>
-
                 <div class="col-sm-3 float-right">
                     <div class="input-group">
                         <input type="text" id="sSearch" class="form-control" ng-change="refreshData(1)"
@@ -33,14 +31,13 @@
                             {{$select.selected.Ten}}
                         </ui-select-match>
                         <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
-                            <div ng-class="{'select-tinh': lk.Cap == 1}"
+                            <div ng-class="{'select-tinh': lk.cap == 1}"
                                 ng-bind-html="lk.Ten | highlight:$select.search">
                             </div>
                         </ui-select-choices>
                     </ui-select>
                 </div>
             </div>
-
             <div class="list-item">
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
