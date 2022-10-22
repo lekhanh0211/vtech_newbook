@@ -26,16 +26,14 @@
 
                 <div class="col-sm-3 float-right">
 
-
-                    <ui-select data-ng-model="mParam.mDMCap1" reset-search-input="false"
-                        ng-change="refreshData(1); reloadCapDuoi(mParam.mDMCap1);">
-                        <ui-select-match allow-clear="true" placeholder="Chọn DM cấp 1 ">
-                            {{$select.selected.Ten}}
-                        </ui-select-match>
-                        <ui-select-choices repeat="lk as lk in DsDMCap1 | filter: $select.search">
+                    <ui-select data-ng-model="mData.IdTinhThanh" reset-search-input="false">
+                        <ui-select-match placeholder="Tỉnh thành ">{{$select.selected.Ten}}</ui-select-match>
+                        <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
                             <div ng-bind-html="lk.Ten | highlight:$select.search"></div>
                         </ui-select-choices>
                     </ui-select>
+
+                   
                 </div>
                 <div class="col-sm-3 float-right" ng-show="mParam.mDMCap1">
                     <ui-select data-ng-model="mParam.mDMCap2" reset-search-input="false" ng-change="refreshData(1)">
@@ -144,20 +142,23 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Tỉnh thành </label>
                         <div class="col-sm-4">
-                            <ui-select data-ng-model="mDataImport.IdTinhThanh" reset-search-input="true">
-                                <ui-select-match placeholder="">{{$select.selected.Ten}}</ui-select-match>
+                            <ui-select data-ng-model="mData.IdTinhThanh" reset-search-input="false">
+                                <ui-select-match placeholder="Tỉnh thành ">{{$select.selected.Ten}}</ui-select-match>
                                 <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
-                                    <div ng-class="{'select-cap1': lk.Cap == 1,"
-                                        ng-bind-html="lk.Ten | highlight:$select.search"></div>
+                                    <!-- <div ng-bind-html="lk.Ten | highlight:$select.search"></div> -->
+                                    <div ng-class="{'select-cap1': lk.Cap == 1,'select-cap2': lk.Cap == 2, 'select-cap3': lk.Cap == 3}" ng-bind-html="lk.Ten | highlight:$select.search"></div>
                                 </ui-select-choices>
                             </ui-select>
+                            
 
                         </div>
                         <label class="col-sm-2 control-label">Phòng GD & ĐT </label>
                         <div class="col-sm-4">
+                          
+
                             <ui-select data-ng-model="mDataImport.IdTinhThanh" reset-search-input="true">
                                 <ui-select-match placeholder="">{{$select.selected.Ten}}</ui-select-match>
-                                <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
+                                <ui-select-choices repeat="lk.Id as lk in DsPhongGD | filter: $select.search">
                                     <div ng-class="{'select-cap1': lk.Cap == 1,"
                                         ng-bind-html="lk.Ten | highlight:$select.search"></div>
                                 </ui-select-choices>
@@ -170,7 +171,7 @@
                             <ui-select data-ng-model="mDataImport.IdTinhThanh" reset-search-input="true">
                                 <ui-select-match placeholder="">{{$select.selected.Ten}}</ui-select-match>
                                 <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
-                                    <div ng-class="{'select-cap1': lk.Cap == 1,"
+                                    <div ng-class="{'select-cap1': lk.Cap == 2,"
                                         ng-bind-html="lk.Ten | highlight:$select.search"></div>
                                 </ui-select-choices>
                             </ui-select>

@@ -30,7 +30,7 @@ app.controller('baseDanhMucCtrl', ['$scope', '$compile', 'hotkeys', 'ngProgress'
             }
         }
 
-        $scope.setListDatas = function () {}
+        $scope.setListDatas = function () { }
 
         $scope.refreshData = function (iPageindex) {
             ngProgress.start();
@@ -510,7 +510,7 @@ app.controller('DMLoaiSanPhamCtrl', ['$scope', '$controller', '$http', 'toaster'
             reader.readAsDataURL(input.files[0]);
         }
     };
-    
+
     $scope.ChonAnh1 = function () {
         if (input1.files && input1.files[0]) {
             if (input1.files[0].type != "image/jpeg" && input1.files[0].type != "image/png") {
@@ -608,14 +608,13 @@ app.controller('DMLoaiSanPhamCtrl', ['$scope', '$controller', '$http', 'toaster'
     }, 0);
 }]);
 
-app.controller('DMSanPhamCtrl', ['$scope','$http', '$controller', 'toaster', 'svDanhMuc', 'svTuDien', 'svBaoCao', 'ngProgress', function myfunction($scope, $http, $controller, toaster, svDanhMuc, svTuDien, svBaoCao, ngProgress) {
+app.controller('DMSanPhamCtrl', ['$scope', '$http', '$controller', 'toaster', 'svDanhMuc', 'svTuDien', 'svBaoCao', 'ngProgress', function myfunction($scope, $http, $controller, toaster, svDanhMuc, svTuDien, svBaoCao, ngProgress) {
     angular.extend(this, $controller('baseDanhMucCtrl', { $scope: $scope, svService: svDanhMuc }));
     const mSuper = angular.extend({}, $scope);
     $scope.tbName = 'DMSanPham';
     var input = $("#myFile").get(0);
     $scope.mParam = {};
     $scope.dsDataImport = [];
-    $scope.mDataImport = {};
     $scope.mQueryParam = {
         tbName: $scope.tbName,
         sSearch: '',
@@ -665,7 +664,7 @@ app.controller('DMSanPhamCtrl', ['$scope','$http', '$controller', 'toaster', 'sv
         $scope.mQueryParam.iPageSize = $scope.iPageSize;
     }
 
-    $scope.setListDatas = function() {
+    $scope.setListDatas = function () {
         _.each($scope.ListDatas, x => {
             if (x.ThuocTinh) {
                 x.DsThuocTinh = JSON.parse(x.ThuocTinh);
@@ -689,7 +688,7 @@ app.controller('DMSanPhamCtrl', ['$scope','$http', '$controller', 'toaster', 'sv
             $scope.DsHinhAnh = $scope.mData.DanhSachHinhAnh.split(',');
         } else $scope.DsHinhAnh = [];
     }
-    $scope.afterOpenDetailForm = function() {
+    $scope.afterOpenDetailForm = function () {
         $scope.DsHinhAnhTam = [];
         $scope.DsHinhAnh = [];
         $scope.DsFile = [];
@@ -752,26 +751,26 @@ app.controller('DMSanPhamCtrl', ['$scope','$http', '$controller', 'toaster', 'sv
     };
 
     // #region Thuốc tính
-    $scope.ThemThuocTinhMoi = function() {
-        $scope.mData.DsThuocTinh.push({TenThuocTinh: '', DsGiaTri: [{}]});
+    $scope.ThemThuocTinhMoi = function () {
+        $scope.mData.DsThuocTinh.push({ TenThuocTinh: '', DsGiaTri: [{}] });
     }
-    $scope.XoaThuocTinh = function(index) {
+    $scope.XoaThuocTinh = function (index) {
         $scope.mData.DsThuocTinh.splice(index, 1);
     }
-    $scope.ThemGiaTri = function(th) {
+    $scope.ThemGiaTri = function (th) {
         th.DsGiaTri.push({});
     }
-    $scope.XoaGiaTri = function(th, index) {
+    $scope.XoaGiaTri = function (th, index) {
         th.DsGiaTri.splice(index, 1);
     }
     // #endregion
 
     // #region Thuốc tính
-    $scope.ThemGiaSiMoi = function() {
+    $scope.ThemGiaSiMoi = function () {
         var vlast = _.last($scope.mData.DsGiaSi);
-        $scope.mData.DsGiaSi.push({SoLuong: (vlast ? vlast.SoLuong : 0)+ 1000, GiaSi: $scope.mData.GiaBan});
+        $scope.mData.DsGiaSi.push({ SoLuong: (vlast ? vlast.SoLuong : 0) + 1000, GiaSi: $scope.mData.GiaBan });
     }
-    $scope.XoaGiaSi = function(index) {
+    $scope.XoaGiaSi = function (index) {
         $scope.mData.DsGiaSi.splice(index, 1);
     }
     // #endregion
@@ -793,7 +792,7 @@ app.controller('DMSanPhamCtrl', ['$scope','$http', '$controller', 'toaster', 'sv
                     }, 2000);
                 } else {
                     var reader = new FileReader();
-        
+
                     reader.onload = function (e) {
                         $scope.DsHinhAnhTam.push(e.target.result);
                         setTimeout(() => {
@@ -807,11 +806,11 @@ app.controller('DMSanPhamCtrl', ['$scope','$http', '$controller', 'toaster', 'sv
             inputAnh.value = '';
         }
     };
-    $scope.XoaAnhTam = function(index) {
+    $scope.XoaAnhTam = function (index) {
         $scope.DsHinhAnhTam.splice(index, 1);
         $scope.DsFile.splice(index, 1);
     }
-    $scope.XoaAnh = function(url, index) {
+    $scope.XoaAnh = function (url, index) {
         $scope.DsHinhAnh.splice(index, 1);
         $scope.mData.DsAnhXoa.push(url);
     }
@@ -919,13 +918,13 @@ app.controller('DMSanPhamCtrl', ['$scope','$http', '$controller', 'toaster', 'sv
     $scope.chooseFile = function (event) {
         var input = event.target;
         var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
-        if (regex.test(input.files[0].name.toLowerCase())) { 
+        if (regex.test(input.files[0].name.toLowerCase())) {
             if (typeof (FileReader) != "undefined") {
                 var reader = new FileReader();
-                reader.onload = function(){
+                reader.onload = function () {
                     var fileData = reader.result;
-                    var wb = XLSX.read(fileData, {type : 'binary'});
-                    var rowObj =XLSX.utils.sheet_to_row_object_array(wb.Sheets['SanPham']);
+                    var wb = XLSX.read(fileData, { type: 'binary' });
+                    var rowObj = XLSX.utils.sheet_to_row_object_array(wb.Sheets['SanPham']);
                     var jsonObj = JSON.stringify(rowObj);
                     console.log(rowObj)
                 };
@@ -990,68 +989,68 @@ app.controller('DMSanPhamCtrl', ['$scope','$http', '$controller', 'toaster', 'sv
         var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[Sheet]);
         //Add the data rows from Excel file.
         for (var i = 2; i < excelRows.length && i < 1000; i++) {
-          const col = Object.values(excelRows[i]);
-          if (strIsNotNull(col[1]) && strIsNotNull(col[2])) {
-            let code = '';
-            if (strIsNotNull(col[6])) {
-                const arrLoai = col[6].split('-');
-                code = arrLoai.length > 1 ? arrLoai[0] : '';
-            }
-            const loaiSP =  code != '' ? _.find($scope.DsLoaiSanPham, x => x.Code == code) : {Id: null, Ten: ''};
-            const data = {
-                MaSanPham: col[1],
-                Ten: col[2],
-                GiaGoc: col[3],
-                GiaBan: col[4],
-                PhanLoai: col[5] == 'Sảm phẩm đơn' ? 1 : 2,
-                strPhanLoai: col[5],
-                IdLoai: loaiSP.Id,
-                strLoai: loaiSP.Ten,
-                MoTa: col[7],
-                UrlHinhAnh: col[8],
-                DanhSachHinhAnh: col[9],
-                TonKho: col[10] || 0,
-                GiaSi: col[11],
-                NoiBat: col[14] == '1' ? true : false,
-                Active: col[15] == '1' ? true : false,
-            }
-            data.Url = strToUrl(data.Ten);
-            data.DsAnh = data.DanhSachHinhAnh.split(',');
-            data.objCauHinhGiaSi = $scope.ConvertGiaSi(col[12]);
-            data.CauHinhGiaSi = JSON.stringify(data.objCauHinhGiaSi);
-
-            // thuộc tính
-            data.objThuocTinh = $scope.ConvertThuocTinh(col[13]);
-            data.ThuocTinh = JSON.stringify(data.objThuocTinh);
-            // Kiểm tra trường dữ liệu
-            data.Error = {
-                SoDong: '',
-                NoiDung: []
-            }
-            if (strIsNotNull(data.UrlHinhAnh)) {
-                // check hình ảnh
-                if (data.UrlHinhAnh.slice(-4) != '.png' && data.UrlHinhAnh.slice(-4) != '.jpg') {
-                    data.Error.NoiDung.push('- File Ảnh không đúng định dạng! url: ' + data.UrlHinhAnh);
+            const col = Object.values(excelRows[i]);
+            if (strIsNotNull(col[1]) && strIsNotNull(col[2])) {
+                let code = '';
+                if (strIsNotNull(col[6])) {
+                    const arrLoai = col[6].split('-');
+                    code = arrLoai.length > 1 ? arrLoai[0] : '';
                 }
+                const loaiSP = code != '' ? _.find($scope.DsLoaiSanPham, x => x.Code == code) : { Id: null, Ten: '' };
+                const data = {
+                    MaSanPham: col[1],
+                    Ten: col[2],
+                    GiaGoc: col[3],
+                    GiaBan: col[4],
+                    PhanLoai: col[5] == 'Sảm phẩm đơn' ? 1 : 2,
+                    strPhanLoai: col[5],
+                    IdLoai: loaiSP.Id,
+                    strLoai: loaiSP.Ten,
+                    MoTa: col[7],
+                    UrlHinhAnh: col[8],
+                    DanhSachHinhAnh: col[9],
+                    TonKho: col[10] || 0,
+                    GiaSi: col[11],
+                    NoiBat: col[14] == '1' ? true : false,
+                    Active: col[15] == '1' ? true : false,
+                }
+                data.Url = strToUrl(data.Ten);
+                data.DsAnh = data.DanhSachHinhAnh.split(',');
+                data.objCauHinhGiaSi = $scope.ConvertGiaSi(col[12]);
+                data.CauHinhGiaSi = JSON.stringify(data.objCauHinhGiaSi);
+
+                // thuộc tính
+                data.objThuocTinh = $scope.ConvertThuocTinh(col[13]);
+                data.ThuocTinh = JSON.stringify(data.objThuocTinh);
+                // Kiểm tra trường dữ liệu
+                data.Error = {
+                    SoDong: '',
+                    NoiDung: []
+                }
+                if (strIsNotNull(data.UrlHinhAnh)) {
+                    // check hình ảnh
+                    if (data.UrlHinhAnh.slice(-4) != '.png' && data.UrlHinhAnh.slice(-4) != '.jpg') {
+                        data.Error.NoiDung.push('- File Ảnh không đúng định dạng! url: ' + data.UrlHinhAnh);
+                    }
+                }
+                // check định dạng
+                if (isNaN(data.GiaBan)) {
+                    data.Error.NoiDung.push('- Giá bán không đúng định dạng');
+                }
+                if (isNaN(data.GiaGoc)) {
+                    data.Error.NoiDung.push('- Giá gốc không đúng định dạng');
+                }
+                if (isNaN(data.GiaSi)) {
+                    data.Error.NoiDung.push('- Giá sỉ không đúng định dạng');
+                }
+                if (!strIsNotNull(data.PhanLoai)) {
+                    data.Error.NoiDung.push('- Phân loại không được để trống!');
+                }
+                if (data.Error.NoiDung.length > 0) {
+                    data.Error.SoDong = '* <b>File Excel dòng ' + (i + 2) + ' lỗi: </b>';
+                }
+                $scope.dsDataImport.push(data);
             }
-            // check định dạng
-            if (isNaN(data.GiaBan)) {
-                data.Error.NoiDung.push('- Giá bán không đúng định dạng');
-            }
-            if (isNaN(data.GiaGoc)) {
-                data.Error.NoiDung.push('- Giá gốc không đúng định dạng');
-            }
-            if (isNaN(data.GiaSi)) {
-                data.Error.NoiDung.push('- Giá sỉ không đúng định dạng');
-            }
-            if (!strIsNotNull(data.PhanLoai)) {
-                data.Error.NoiDung.push('- Phân loại không được để trống!');
-            }
-            if (data.Error.NoiDung.length > 0) {
-                data.Error.SoDong = '* <b>File Excel dòng ' + (i + 2) + ' lỗi: </b>';
-            }
-            $scope.dsDataImport.push(data);
-          }
         }
         setTimeout(() => {
             toaster.pop("success", "Hoàn thành đọc file Excel");
@@ -1120,13 +1119,13 @@ app.controller('DMSanPhamCtrl', ['$scope','$http', '$controller', 'toaster', 'sv
         svDanhMuc.post({
             tbName: $scope.tbName,
             fName: 'importExcel'
-        }, $scope.dsDataImport).$promise.then(function(d) {
+        }, $scope.dsDataImport).$promise.then(function (d) {
             $scope.dsDataImport = [];
             ngProgress.complete(true);
             $scope.ClosePopupImportExcel();
             toaster.pop('success', 'Thông báo', 'Import dữ liệu thành công!');
             $scope.refreshData(1);
-        }, function(err) {
+        }, function (err) {
             ngProgress.complete(true);
             toaster.pop('error', 'Thông báo', 'Import dữ liệu không thành công!');
         })
@@ -1345,7 +1344,34 @@ app.controller('DMPhongGDCtrl', ['$scope', '$controller', 'toaster', 'svDanhMuc'
     angular.extend(this, $controller('baseDanhMucCtrl', { $scope: $scope, svService: svDanhMuc }));
     const mSuper = angular.extend({}, $scope);
     $scope.tbName = 'DMPhongGD';
+    $scope.mParam = {};
+    $scope.dsDataImport = [];
+    $scope.mDataImport = {};
+    $scope.ChangeTen = function () {
+        if ($scope.mData.Ten) {
+            $scope.mData.Url = strToUrl($scope.mData.Ten);
+        }
+        $scope.ChangeData();
+    }
 
+    svDanhMuc.getAll({ tbName: 'DMTinhThanh' }).$promise.then(d => {
+        const dsCap1 = _.filter(d, x => x.Cap === 1);
+        let LisData = [];
+        _.each(dsCap1, c1 => {
+            LisData.push(c1);
+            const dsCap2 = _.filter(d, x => x.IdCap1 === c1.Id && x.Cap === 2);
+            _.each(dsCap2, c2 => {
+                LisData.push(c2);
+                const dsCap3 = _.filter(d, x => x.IdCap2 === c2.Id && x.Cap === 3);
+                _.each(dsCap3, c3 => {
+                    LisData.push(c3);
+                });
+            });
+        });
+        $scope.DsTinhThanh = LisData;
+
+
+    });
     setTimeout(() => {
         $scope.refreshData(1);
     }, 0);
@@ -1355,6 +1381,14 @@ app.controller('DMTruongCtrl', ['$scope', '$controller', 'toaster', 'svDanhMuc',
     angular.extend(this, $controller('baseDanhMucCtrl', { $scope: $scope, svService: svDanhMuc }));
     const mSuper = angular.extend({}, $scope);
     $scope.tbName = 'DMTruong';
+
+    $scope.ChangeTen = function () {
+        if ($scope.mData.Ten) {
+            $scope.mData.Url = strToUrl($scope.mData.Ten);
+        }
+        $scope.ChangeData();
+    }
+
 
     setTimeout(() => {
         $scope.refreshData(1);

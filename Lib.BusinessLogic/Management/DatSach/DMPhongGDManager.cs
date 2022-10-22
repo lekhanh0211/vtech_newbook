@@ -11,18 +11,8 @@ namespace Lib.BusinessLogic.Management
 {
     public class DMPhongGDManager : BaseManager<DMPhongGDManager, DMPhongGD, DMPhongGDModel>
     {
-        public override DMPhongGDModel GetById(Guid id)
-        {
-            using (BaseData db = new BaseData(_nameConnStr))
-            {
-                var vResult = db.Query<DMPhongGDModel>(@"select x.*, l.Ten TinhThanh from DMPhongGD x join DMTinhThanh l on x.IdTinhThanh = l.Id where x.Id = @id"
-                    , new { id = id }).FirstOrDefault();
-                return vResult;
-            }
-        }
-     
         public IEnumerable<DMPhongGDModel> SelectDataByPage(string sSearch, Guid? idTinhThanh,
-           DateTime? dateFrom, DateTime? dateTo, int dcPageIndex, int dcPageItem, out int total, string sOrder = null)
+            DateTime? dateFrom, DateTime? dateTo, int dcPageIndex, int dcPageItem, out int total, string sOrder = null)
         {
             total = 0;
             using (BaseData db = new BaseData(_nameConnStr))
@@ -52,18 +42,23 @@ namespace Lib.BusinessLogic.Management
                 if (idTinhThanh.IsNotNull())
                 {
                     vParams.Add("idTinhThanh", idTinhThanh.Value);
-                    strWhere += " and (x.IdTinhThanh = @idTinhThanh or x.IdTinhThanh in (select l.Id from DMTinhThanh l where l.Id = @idTinhThanh)) ";
+                    strWhere += " and (x.IdTinhThanh = @idTinhThanh or x.IdTinhThanh in (select l.Id from DMTinhThanh l where l.IdCapTren = @idTinhThanh )) ";
                 }
+               
+                string strQurey = @"select * INTO #dataList from DMPhongGD x where 1 = 1 " + strWhere;
 
-                // string strQurey = @"select * INTO #dataList from DMPhongGD x where 1 = 1 " + strWhere;
+                strQurey = strQurey + @"
 
-                string strQurey = @"select x.*, r.[Ten] TenTT from DMTinhThanh x join DMPhongGD r on x.IdTinhThanh = r.Id where 1 = 1 " + strWhere;
+                select count(id) Total from #dataList
 
-                if (sOrder.IsNotNullOrEmpty())
-                {
-                    strQurey = strQurey + @" order by " + sOrder;
-                }
+                select x.Id, x.TenPGD, x.IdTinhThanh, x.DiaChi, x.Email, x.TaiKhoan, x.MatKhau, x.MatKhauMacDinh,x.NgayTao, x.StrSearch,
+                
+                tt.Ten TinhThanh, tt.TenCapTren TinhThanhCapTren from #dataList x left join (select l.*, c1.Ten TenCapTren from DMTinhThanh l left join DMTinhThanh c1 on l.IdCapTren = c1.Id) tt on x.IdTinhThanh = tt.Id
+                order by " + (sOrder.IsNotNullOrEmpty() ? sOrder : "x.NgayTao desc") + @" 
+                OFFSET @dcPageItem * (@dcPageIndex - 1) ROWS
+                FETCH NEXT @dcPageItem ROWS ONLY OPTION (RECOMPILE)
 
+                drop table #dataList";
                 if (dcPageItem > 10000)
                 {
                     dcPageItem = 10000;
@@ -75,6 +70,5 @@ namespace Lib.BusinessLogic.Management
                 return db.QueryAndTotal<DMPhongGDModel>(strQurey, out total, vParams);
             }
         }
-
     }
 }
