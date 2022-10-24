@@ -8,5 +8,6 @@ namespace Website.Controllers.Api
     [RoutePrefix("api/DMLop")]
     public class DMLopController : BaseApiController<DMLopManager, DMLopModel>
     {
+
     }
 }

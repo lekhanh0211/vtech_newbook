@@ -14,5 +14,6 @@ namespace Lib.BusinessLogic.Model
         public string MatKhau { get; set; }
         public string MatKhauMacDinh { get; set; }
         public DateTime? NgayTao { get; set; }
+        public string TenTinhThanh { get; set; }
     }
 }

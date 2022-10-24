@@ -42,19 +42,19 @@ namespace Lib.BusinessLogic.Management
                 if (idTinhThanh.IsNotNull())
                 {
                     vParams.Add("idTinhThanh", idTinhThanh.Value);
-                    strWhere += " and (x.IdTinhThanh = @idTinhThanh or x.IdTinhThanh in (select l.Id from DMTinhThanh l where l.IdCapTren = @idTinhThanh )) ";
+                    strWhere += " and (x.IdTinhThanh = @idTinhThanh)";
                 }
-               
-                string strQurey = @"select * INTO #dataList from DMPhongGD x where 1 = 1 " + strWhere;
+
+                string strQurey = @"select x.*, tt.Ten TenTinhThanh INTO #dataList from DMPhongGD x
+                left join dmtinhthanh tt on tt.Id = x.idtinhthanh   
+                where 1 = 1 " + strWhere;
 
                 strQurey = strQurey + @"
 
                 select count(id) Total from #dataList
 
-                select x.Id, x.TenPGD, x.IdTinhThanh, x.DiaChi, x.Email, x.TaiKhoan, x.MatKhau, x.MatKhauMacDinh,x.NgayTao, x.StrSearch,
-                
-                tt.Ten TinhThanh, tt.TenCapTren TinhThanhCapTren from #dataList x left join (select l.*, c1.Ten TenCapTren from DMTinhThanh l left join DMTinhThanh c1 on l.IdCapTren = c1.Id) tt on x.IdTinhThanh = tt.Id
-                order by " + (sOrder.IsNotNullOrEmpty() ? sOrder : "x.NgayTao desc") + @" 
+                select x.* from #dataList x
+                order by x.NgayTao desc 
                 OFFSET @dcPageItem * (@dcPageIndex - 1) ROWS
                 FETCH NEXT @dcPageItem ROWS ONLY OPTION (RECOMPILE)
 
@@ -70,5 +70,7 @@ namespace Lib.BusinessLogic.Management
                 return db.QueryAndTotal<DMPhongGDModel>(strQurey, out total, vParams);
             }
         }
+
+       
     }
 }

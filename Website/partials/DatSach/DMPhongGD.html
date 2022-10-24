@@ -24,19 +24,19 @@
                     </div>
                 </div>
 
-                <div class="col-sm-3 float-right">
 
-                    <ui-select data-ng-model="mData.idTinhThanh" reset-search-input="true" ng-change="refreshData(1);">
+
+                <div class="col-sm-3 float-right">
+                    <ui-select data-ng-model="$parent.idTinhThanh" reset-search-input="true" ng-change="refreshData(1);">
                         <ui-select-match allow-clear="true" placeholder="-- Tỉnh thành --">
                             {{$select.selected.Ten}}
                         </ui-select-match>
                         <ui-select-choices repeat="lk.Id as lk in DsTinhThanh | filter: $select.search">
-                            <div ng-class="{'select-tinh': lk.cap == 1}"
+                            <div 
                                 ng-bind-html="lk.Ten | highlight:$select.search">
                             </div>
                         </ui-select-choices>
                     </ui-select>
-
                 </div>
             </div>
             <div class="list-item">
@@ -62,7 +62,7 @@
                                 </a>
                             </td>
                             <td>{{r.TaiKhoan}}</td>
-                            <td>{{r.IdTinhThanh}}</td>
+                            <td>{{r.TenTinhThanh}}</td>
                             <td>{{r.Email}}</td>
                             <td>{{r.NgayTao | date: 'dd/MM/yyyy'}}</td>
                             <td class="text-center">
@@ -147,7 +147,7 @@
                             <input type="text" class="form-control" ng-model="mData.MatKhauMacDinh" required
                                 value="{{MatKhauMacDinh}}" readonly ng-change="ChangeTen()" />
                         </div>
-                       
+
                     </div>
                 </form>
             </div>

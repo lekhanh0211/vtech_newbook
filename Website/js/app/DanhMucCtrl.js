@@ -1344,9 +1344,23 @@ app.controller('DMPhongGDCtrl', ['$scope', '$controller', 'toaster', 'svDanhMuc'
     angular.extend(this, $controller('baseDanhMucCtrl', { $scope: $scope, svService: svDanhMuc }));
     const mSuper = angular.extend({}, $scope);
     $scope.tbName = 'DMPhongGD';
+
     $scope.mParam = {};
     $scope.dsDataImport = [];
     $scope.mDataImport = {};
+    $scope.idTinhThanh = '';
+    $scope.setQueryParam = function () {
+        $scope.mQueryParam = {
+            tbName: $scope.tbName,
+            sSearch: $scope.sSearch,
+            from: '',
+            to: '',
+            iPageIndex: $scope.iPageIndex,
+            iPageSize: $scope.iPageSize,
+            idTinhThanh: $scope.idTinhThanh,
+        }
+    }
+
     $scope.ChangeTen = function () {
         if ($scope.mData.Ten) {
             $scope.mData.Url = strToUrl($scope.mData.Ten);
@@ -1354,23 +1368,13 @@ app.controller('DMPhongGDCtrl', ['$scope', '$controller', 'toaster', 'svDanhMuc'
         $scope.ChangeData();
     }
 
-    svDanhMuc.getAll({ tbName: 'DMTinhThanh' }).$promise.then(d => {
-        const dsCap1 = _.filter(d, x => x.Cap === 1);
-        let LisData = [];
-        _.each(dsCap1, c1 => {
-            LisData.push(c1);
-            const dsCap2 = _.filter(d, x => x.IdCap1 === c1.Id && x.Cap === 2);
-            _.each(dsCap2, c2 => {
-                LisData.push(c2);
-                const dsCap3 = _.filter(d, x => x.IdCap2 === c2.Id && x.Cap === 3);
-                _.each(dsCap3, c3 => {
-                    LisData.push(c3);
-                });
-            });
-        });
-        $scope.DsTinhThanh = LisData;
-
-
+    svDanhMuc.getList({ tbName: 'DMTinhThanh', fName: 'GetAllByLoai', loai: 1}).$promise.then(d => {
+        $scope.DsTinhThanh = d;
+        $scope.DsTinhThanh.splice(0, 0, {
+            Ten: '- Tất cả -',
+            Id: ''
+        })
+        console.log(d);
     });
     setTimeout(() => {
         $scope.refreshData(1);
@@ -1410,6 +1414,15 @@ app.controller('DMLopCtrl', ['$scope', '$controller', 'toaster', 'svDanhMuc', fu
     const mSuper = angular.extend({}, $scope);
     $scope.tbName = 'DMLop';
 
+    $scope.ChangeTen = function () {
+        if ($scope.mData.Ten) {
+            $scope.mData.Url = strToUrl($scope.mData.Ten);
+        }
+        $scope.ChangeData();
+    }
+
+
+    
     setTimeout(() => {
         $scope.refreshData(1);
     }, 0);
